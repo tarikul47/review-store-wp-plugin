@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All person page</title>
+    <link rel="stylesheet" href="wp-style.css">
+    <link rel="stylesheet" href="custom-table-css.css">
+</head>
+
+<body>
+
+    <form id="posts-filter" method="get">
+        <p class="search-box">
+            <label class="screen-reader-text" for="post-search-input">Search Pages:</label>
+            <input type="search" id="post-search-input" name="s" value="">
+            <input type="submit" id="search-submit" class="button" value="Search Pages">
+        </p>
+        <div class="tablenav top">
+
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label><select
+                    name="action" id="bulk-action-selector-top">
+                    <option value="-1">Bulk actions</option>
+                    <option value="edit" class="hide-if-no-js">Edit</option>
+                    <option value="trash">Move to Trash</option>
+                </select>
+                <input type="submit" id="doaction" class="button action" value="Apply">
+            </div>
+
+            <div class="tablenav-pages one-page"><span class="displaying-num">2 items</span>
+
+            </div>
+            <br class="clear">
+        </div>
+        <table class="wp-list-table widefat fixed striped table-view-list pages">
+
+            <thead>
+                <tr>
+                    <td id="cb" class="manage-column column-cb check-column">
+                        <input id="cb-select-all-1" type="checkbox">
+                    </td>
+                    <th scope="col" id="" class="manage-column column-first-name">First Name</th>
+
+                    <th scope="col" id="" class="manage-column column-last-name">Last Name</th>
+
+                    <th scope="col" id="" class="manage-column column-title">Title</th>
+
+                    <th scope="col" id="" class="manage-column column-City">City</th>
+
+                    <th scope="col" id="" class="manage-column column-email">Email</th>
+
+                    <th scope="col" id="" class="manage-column column-reviews">Reviews</th>
+
+                    <th scope="col" id="" class="manage-column column-view-reviews">View Reviews</th>
+
+                    <th scope="col" id="" class="manage-column column-actions">Actions</th>
+
+                </tr>
+            </thead>
+
+            <tbody id="the-list">
+                <tr id="post-id-1001" class="">
+
+                    <th scope="row" class="check-column"> <input id="cb-select-35" type="checkbox" value="1001"> </th>
+
+                    <td class="column-first-name" data-colname="">Rokeybur</td>
+
+                    <td class="column-last-name" data-colname="">Rahman</td>
+
+                    <td class="column-title" data-colname="">Web Developer</td>
+
+                    <td class="column-City" data-colname="">Dhaka</td>
+
+                    <td class="column-email" data-colname="">info@rokeyfx.com</td>
+
+                    <td class="column-reviews" data-colname="">4.5/300<br> <img class="review-icon-backend"
+                            src="review-4.png" alt=""></td>
+
+                    <td class="column-view-reviews" data-colname="">
+                        <a class="table-btn" href="">View Reviews</a>
+                    </td>
+
+                    <td class="column-actions" data-colname="">
+                        <a class="table-btn" href="">Edit</a>
+                        <a class="table-btn" href="">Delete</a>
+                    </td>
+
+                </tr>
+
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td id="cb" class="manage-column column-cb check-column">
+                        <input id="cb-select-all-1" type="checkbox">
+                    </td>
+                    <th scope="col" id="" class="manage-column column-first-name">First Name</th>
+
+                    <th scope="col" id="" class="manage-column column-last-name">Last Name</th>
+
+                    <th scope="col" id="" class="manage-column column-title">Title</th>
+
+                    <th scope="col" id="" class="manage-column column-City">City</th>
+
+                    <th scope="col" id="" class="manage-column column-email">Email</th>
+
+                    <th scope="col" id="" class="manage-column column-reviews">Reviews</th>
+
+                    <th scope="col" id="" class="manage-column column-view-reviews">View Reviews</th>
+
+                    <th scope="col" id="" class="manage-column column-actions">Action</th>
+
+                </tr>
+            </tfoot>
+
+        </table>
+        <div class="tablenav bottom">
+
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label><select
+                    name="action2" id="bulk-action-selector-bottom">
+                    <option value="-1">Bulk actions</option>
+                    <option value="edit" class="hide-if-no-js">Edit</option>
+                    <option value="trash">Move to Trash</option>
+                </select>
+                <input type="submit" id="doaction2" class="button action" value="Apply">
+            </div>
+            <div class="alignleft actions">
+            </div>
+            <div class="tablenav-pages one-page"><span class="displaying-num">2 items</span>
+
+            </div>
+            <br class="clear">
+        </div>
+    </form>
+
+
+</body>
+
+</html>

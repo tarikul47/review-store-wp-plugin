@@ -1,0 +1,12 @@
+1. Review-Store.php
+    - Singleton Class Init 
+    - A function call with our plugin init function call 
+
+2. Inc 
+    - Core 
+        >> Init Class 
+            - All constant define set in our plugin 
+            - load_dependencies 
+                -  
+    - Admin
+    - Frontend 

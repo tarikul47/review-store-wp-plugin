@@ -1,0 +1,20 @@
+{
+    "name": "tarikul/review-store",
+    "description": "Awesome Review Store and Selling Plugin",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "autoload": {
+        "psr-4": {
+            "Tarikul\\ReviewStore\\Inc\\": "inc/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tarikul Islam",
+            "email": "tarikul47@gmail.com"
+        }
+    ],
+    "require": {
+        "mpdf/mpdf": "8.2.1"
+    }
+}
