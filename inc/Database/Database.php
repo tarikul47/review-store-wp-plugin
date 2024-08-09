@@ -1,6 +1,8 @@
 <?php
 namespace Tarikul\ReviewStore\Inc\Database;
 
+use Tarikul\ReviewStore\Inc\Helper\Helper;
+
 class Database
 {
     private static $instance = null;
@@ -48,37 +50,30 @@ class Database
         $tables = [
             "external_profile" => "CREATE TABLE {$wpdb->prefix}external_profile (
                 external_profile_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
+                phone VARCHAR(20),
+                address VARCHAR(255),
+                zip_code VARCHAR(10),
                 city VARCHAR(255),
-                bio TEXT,
-                photo_url VARCHAR(255),
+                salary_per_month DECIMAL(10, 2),
+                employee_type VARCHAR(255),
+                region VARCHAR(255),
+                state VARCHAR(255),
+                country VARCHAR(255),
+                municipality VARCHAR(255),
                 department VARCHAR(255),
-                work_title VARCHAR(255),
-                location VARCHAR(255),
-                organization VARCHAR(255),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 product_id BIGINT(20) UNSIGNED
-            ) $charset_collate;",
-
-            "external_profile_claims" => "CREATE TABLE {$wpdb->prefix}external_profile_claims (
-                claim_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                external_profile_id BIGINT(20) UNSIGNED NOT NULL,
-                claimer_user_id BIGINT(20) UNSIGNED NOT NULL,
-                claim_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                claim_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                INDEX (external_profile_id),
-                INDEX (claimer_user_id),
-                UNIQUE KEY unique_claim (external_profile_id, claimer_user_id)
             ) $charset_collate;",
 
             "reviews" => "CREATE TABLE {$wpdb->prefix}reviews (
                 review_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 external_profile_id BIGINT(20) UNSIGNED NOT NULL,
                 reviewer_user_id BIGINT(20) UNSIGNED NOT NULL,
-                rating INT,
+                rating DECIMAL(3,2),
                 status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -111,7 +106,7 @@ class Database
                 status ENUM('unread', 'read') DEFAULT 'unread',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX (user_id)
-            ) $charset_collate;"
+            ) $charset_collate;",
         ];
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -125,74 +120,150 @@ class Database
     /**
      * Insert data into a table.
      *
-     * @param string $table
-     * @param array $data
+     * @param array $user_data
      * @return int|false
      */
-    public function insert(string $table, array $data)
+    public function insert(string $user_data)
     {
-        $table = $this->wpdb->prefix . $table;
-        $this->wpdb->insert($table, $data);
+        $table = $this->wpdb->prefix . 'external_profile';
+        $result = $this->wpdb->insert($table, $user_data);
+        if ($result === false) {
+            return false;
+        }
         return $this->wpdb->insert_id;
     }
 
-
     /**
-     * Insert a new user into the custom users table.
+     * Final 
+     * Insert a new user into the custom external_profile table.
      *
-     * @param string $name The name of the user.
-     * @param string $email The email of the user.
+     * @param array $user_data The associative array containing user data.
      * @param int $product_id The ID of the product associated with the user.
      * @return int The ID of the newly inserted user.
      */
-    public function insert_user($name, $email, $product_id)
+    public function insert_user($user_data, $product_id)
     {
         $this->wpdb->insert(
             "{$this->wpdb->prefix}external_profile",
             array(
-                'name' => $name,
-                'email' => $email,
+                'first_name' => $user_data['first_name'],
+                'last_name' => $user_data['last_name'],
+                'email' => $user_data['email'],
+                'phone' => $user_data['phone'],
+                'address' => $user_data['address'],
+                'zip_code' => $user_data['zip_code'],
+                'city' => $user_data['city'],
+                'salary_per_month' => $user_data['salary_per_month'], // Corrected field name
+                'employee_type' => $user_data['employee_type'],
+                'region' => $user_data['region'],
+                'state' => $user_data['state'],
+                'country' => $user_data['country'],
+                'municipality' => $user_data['municipality'],
+                'department' => $user_data['department'],
+                'created_at' => current_time('mysql'),
+                'updated_at' => current_time('mysql'),
                 'product_id' => $product_id,
             ),
             array(
-                '%s',
-                '%s',
-                '%d',
+                '%s', // first_name
+                '%s', // last_name
+                '%s', // email
+                '%s', // phone
+                '%s', // address
+                '%s', // zip_code
+                '%s', // city
+                '%f', // salary_per_month (Use '%f' for decimal)
+                '%s', // employee_type
+                '%s', // region
+                '%s', // state
+                '%s', // country
+                '%s', // municipality
+                '%s', // department
+                '%s', // created_at
+                '%s', // updated_at
+                '%d'  // product_id
             )
         );
+
+        return $this->wpdb->insert_id;
+    }
+
+
+    /**
+     * Insert a new review into the reviews table.
+     *
+     * @param int $external_profile_id The ID of the external profile being reviewed.
+     * @param int $reviewer_user_id The ID of the user who is reviewing.
+     * @param float $rating The rating given by the reviewer.
+     * @param string $status The status of the review ('pending', 'approved', 'rejected').
+     * @return int The ID of the newly inserted review.
+     */
+    public function insert_review($external_profile_id, $average_rating, $status = 'pending')
+    {
+        // TODO: current user id = $reviewer_user_id
+        // TODO: current user if admin then status will be approve 
+        $user_info = Helper::get_current_user_id_and_roles();
+
+        if ($user_info) {
+            //    echo 'User ID: ' . $user_info['user_id'] . '<br>';
+            //    echo 'User Roles: ' . implode(', ', $user_info['roles']);
+            $reviewer_user_id = $user_info['user_id'];
+            $status = in_array('administrator', $user_info['roles']) ?? 'approved';
+        } else {
+            die('Cheating');
+        }
+
+
+        $this->wpdb->insert(
+            "{$this->wpdb->prefix}reviews",
+            array(
+                'external_profile_id' => $external_profile_id,
+                'reviewer_user_id' => $reviewer_user_id,
+                'rating' => $average_rating,
+                'status' => $status,
+                'created_at' => current_time('mysql'),
+                'updated_at' => current_time('mysql')
+            ),
+            array(
+                '%d', // external_profile_id
+                '%d', // reviewer_user_id
+                '%f', // rating
+                '%s', // status
+                '%s', // created_at
+                '%s'  // updated_at
+            )
+        );
+
         return $this->wpdb->insert_id;
     }
 
     /**
-     * Insert a new review into the custom reviews table.
+     * Insert meta data for a review into the review_meta table.
      *
-     * @param int $user_id The ID of the user being reviewed.
-     * @param string $reviewer_name The name of the reviewer.
-     * @param string $review_content The content of the review.
-     * @param int $rating The rating given by the reviewer.
-     * @return int The ID of the newly inserted review.
+     * @param int $review_id The ID of the review.
+     * @param string $meta_key The meta key.
+     * @param mixed $meta_value The meta value.
+     * @return int The ID of the newly inserted review meta.
      */
-    public function insert_review($user_id, $reviewer_name, $review_content, $rating)
+    public function insert_review_meta($review_id, $meta_key, $meta_value)
     {
         $this->wpdb->insert(
-            "{$this->wpdb->prefix}urp_custom_reviews",
+            "{$this->wpdb->prefix}review_meta",
             array(
-                'user_id' => $user_id,
-                'reviewer_name' => $reviewer_name,
-                'review_content' => $review_content,
-                'rating' => $rating,
-                'status' => 'approved',
+                'review_id' => $review_id,
+                'meta_key' => $meta_key,
+                'meta_value' => maybe_serialize($meta_value)
             ),
             array(
-                '%d',
-                '%s',
-                '%s',
-                '%d',
-                '%s'
+                '%d', // review_id
+                '%s', // meta_key
+                '%s'  // meta_value
             )
         );
+
         return $this->wpdb->insert_id;
     }
+
 
     /**
      * Delete data from a table.

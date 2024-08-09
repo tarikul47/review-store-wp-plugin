@@ -12,11 +12,13 @@
  */
 
 ?>
-
 <div class="person-edit-page">
     <h3>Add New Person</h3>
     <div class="edit-options">
-        <form method="post" name="createperson" id="createperson" class="validate" novalidate="novalidate">
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" name="createperson"
+            id="createperson" class="validate" novalidate="novalidate">
+            <?php wp_nonce_field('add_user_with_review_nonce'); ?>
+            <input type="hidden" name="action" value="add_user_with_review">
             <table class="form-table" role="presentation">
                 <tbody>
                     <tr class="form-field">
@@ -36,7 +38,7 @@
                     </tr>
 
                     <tr class="form-field">
-                        <th scope="row"><label for="title">Title</label></th>
+                        <th scope="row"><label for="title">Professional Title</label></th>
                         <td>
                             <input name="title" type="text" id="title" value="" autocapitalize="none" autocorrect="off"
                                 autocomplete="off" required>
@@ -44,17 +46,81 @@
                     </tr>
 
                     <tr class="form-field">
-                        <th scope="row"><label for="organization">Organization</label></th>
+                        <th scope="row"><label for="email">Email</label></th>
                         <td>
-                            <input name="organization" type="text" id="organization" value="" autocapitalize="none"
+                            <input name="email" type="email" id="email" value="" autocapitalize="none" autocorrect="off"
+                                autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="phone">Phone Number</label></th>
+                        <td>
+                            <input name="phone" type="tel" id="phone" value="" autocapitalize="none" autocorrect="off"
+                                autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="address">Address</label></th>
+                        <td>
+                            <input name="address" type="text" id="address" value="" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
 
                     <tr class="form-field">
-                        <th scope="row"><label for="administration">Administration</label></th>
+                        <th scope="row"><label for="zip_code">Zip Code</label></th>
                         <td>
-                            <input name="administration" type="text" id="administration" value="" autocapitalize="none"
+                            <input name="zip_code" type="text" id="zip_code" value="" autocapitalize="none"
+                                autocorrect="off" autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="city">City</label></th>
+                        <td>
+                            <input name="city" type="text" id="city" value="" autocapitalize="none" autocorrect="off"
+                                autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="salary">Salary Per Month</label></th>
+                        <td>
+                            <input name="salary_per_month" type="number" id="salary" value="" autocapitalize="none"
+                                autocorrect="off" autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="employee_type">Type of Employee</label></th>
+                        <td>
+                            <input name="employee_type" type="text" id="employee_type" value="" autocapitalize="none"
+                                autocorrect="off" autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="region">Region</label></th>
+                        <td>
+                            <input name="region" type="text" id="region" value="" autocapitalize="none"
+                                autocorrect="off" autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="state">State</label></th>
+                        <td>
+                            <input name="state" type="text" id="state" value="" autocapitalize="none" autocorrect="off"
+                                autocomplete="off" required>
+                        </td>
+                    </tr>
+
+                    <tr class="form-field">
+                        <th scope="row"><label for="country">Country</label></th>
+                        <td>
+                            <input name="country" type="text" id="country" value="" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -68,29 +134,19 @@
                     </tr>
 
                     <tr class="form-field">
-                        <th scope="row"><label for="phone">Phone</label></th>
+                        <th scope="row"><label for="department">Department</label></th>
                         <td>
-                            <input name="phone" type="tel" id="phone" value="" autocapitalize="none" autocorrect="off"
-                                autocomplete="off" required>
+                            <input name="department" type="text" id="department" value="" autocapitalize="none"
+                                autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
 
-                    <tr class="form-field">
-                        <th scope="row"><label for="email">Email</label></th>
-                        <td>
-                            <input name="email" type="email" id="email" value="" autocapitalize="none" autocorrect="off"
-                                autocomplete="off" required>
-                        </td>
-                    </tr>
-
-
+                    <!-- Review Section -->
                     <tr class="form-field give-review">
                         <th scope="row" colspan="2">
                             <h4>Give reviews to Sven Nilsson?</h4>
                         </th>
-
                     </tr>
-
 
                     <tr class="form-field give-review">
                         <td>
@@ -147,14 +203,16 @@
                             <input type="number" name="recommend" id="recommend">
                         </td>
                     </tr>
+
                     <tr class="form-field give-review">
                         <td>
-                            <p>Say something about Sven nilsson</p>
+                            <p>Say something about Sven Nilsson</p>
                         </td>
                         <td>
-                            <textarea name="" id="" cols="20" rows="4"></textarea>
+                            <textarea name="comments" id="comments" cols="20" rows="4"></textarea>
                         </td>
                     </tr>
+
                 </tbody>
             </table>
 
