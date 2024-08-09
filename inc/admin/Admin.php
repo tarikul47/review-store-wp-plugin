@@ -2,6 +2,7 @@
 namespace Tarikul\ReviewStore\Inc\Admin;
 
 use Tarikul\ReviewStore\Inc\Database\Database;
+use Tarikul\ReviewStore\Inc\Email\Email;
 use Tarikul\ReviewStore\Inc\Helper\Helper;
 
 /**
@@ -228,17 +229,36 @@ class Admin
             }
         }
 
-        echo "<pre>";
-        print_r($review_id);
-        die();
-
         // TODO: Email Sending 
+        // Email sending for user 
+        // Define email details
+        $subject = 'Hurrah! A Review is live!';
+        $message = 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.';
 
-        // TODO: Notice showing 
+        // Get the global $wpdb object
+        global $wpdb;
 
+        // Get the singleton instance of the Email class
+        $email = Email::getInstance($wpdb);
 
+        // Set email details
+        $email->setEmailDetails($user_data['email'], $subject, $message);
 
+        // Send the email
+        $result = $email->send();
 
+        // Check if the email was sent successfully
+        if ($result) {
+            echo 'Email sent successfully!';
+            wp_redirect(admin_url('admin.php?page=add_user_with_review&success=1'));
+        } else {
+            echo 'Failed to send email.';
+            wp_redirect(admin_url('admin.php?page=add_user_with_review&fail=1'));
+        }
+
+    //    // echo "<pre>";
+    //     print_r($result);
+    //     die();
 
         /**
          * 1. All data process with sanitize 
@@ -248,8 +268,10 @@ class Admin
          * 2. Email Sending instant 
          */
 
+        // TODO: Notice showing 
+
         // Redirect back to the form page
-        wp_redirect(admin_url('admin.php?page=add_user_with_review&success=1'));
+        
         exit;
     }
 
