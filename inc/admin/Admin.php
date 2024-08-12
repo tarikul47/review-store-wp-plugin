@@ -137,6 +137,7 @@ class Admin
 
     public function urs_approve_reviews_page()
     {
+        $approved_reviews = $this->db->get_approved_reviews(); // Get approved reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-approve-reviews-display.php';
     }
 

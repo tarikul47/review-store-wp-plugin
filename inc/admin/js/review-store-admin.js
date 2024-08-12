@@ -44,6 +44,9 @@
       var reviewId = $(this).data("review-id");
       console.log("Review ID:", reviewId);
 
+      // Hide all open meta rows before showing the selected one
+      $(".review-meta-row").hide();
+
       // Toggle the corresponding meta row
       $("#meta-" + reviewId).toggle();
     });

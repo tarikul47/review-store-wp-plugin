@@ -374,5 +374,57 @@ class Database
         return $this->wpdb->get_results($query, OBJECT_K);  // Return an associative array with meta_key as the key
     }
 
+    public function get_approved_reviews()
+    {
+        global $wpdb;
+
+        // Query to get approved reviews with grouped meta data
+        $results = $wpdb->get_results("
+        SELECT 
+            r.review_id,
+            r.profile_id,
+            r.rating,
+            r.status,
+            r.created_at,
+            r.updated_at,
+            GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') as meta_keys,
+            GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') as meta_values
+        FROM 
+            {$wpdb->prefix}ps_reviews r
+        LEFT JOIN 
+            {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
+        WHERE 
+            r.status = 'approved'
+        GROUP BY 
+            r.review_id
+        ORDER BY 
+            r.created_at DESC
+        ", ARRAY_A);
+
+        // Process the results to convert meta data into an associative array
+        $approved_reviews = [];
+        foreach ($results as $row) {
+            $review_id = $row['review_id'];
+
+            $meta_keys = explode(',', $row['meta_keys']);
+            $meta_values = explode(',', $row['meta_values']);
+            $meta_data = array_combine($meta_keys, $meta_values);
+
+            $approved_reviews[] = [
+                'review_id' => $row['review_id'],
+                'profile_id' => $row['profile_id'],
+                'rating' => $row['rating'],
+                'status' => $row['status'],
+                'created_at' => $row['created_at'],
+                'updated_at' => $row['updated_at'],
+                'meta' => $meta_data, // Converted meta data
+            ];
+        }
+
+        return $approved_reviews;
+    }
+
+
+
 
 }
