@@ -64,10 +64,10 @@
 
             <tbody id="the-list">
                 <?php foreach ($users as $user): ?>
-                    <tr id="post-id-<?php echo esc_attr($user->external_profile_id); ?>">
+                    <tr id="post-id-<?php echo esc_attr($user->profile_id); ?>">
                         <th scope="row" class="check-column">
-                            <input id="cb-select-<?php echo esc_attr($user->external_profile_id); ?>" type="checkbox"
-                                name="external_profile_ids[]" value="<?php echo esc_attr($user->external_profile_id); ?>">
+                            <input id="cb-select-<?php echo esc_attr($user->profile_id); ?>" type="checkbox"
+                                name="profile_ids[]" value="<?php echo esc_attr($user->profile_id); ?>">
                         </th>
                         <td class="column-first-name" data-colname="First Name"><?php echo esc_html($user->first_name); ?>
                         </td>
@@ -78,13 +78,17 @@
                         <td class="column-department" data-colname="Department"><?php echo esc_html($user->department); ?>
                         </td>
                         <td class="column-rating" data-colname="Average Rating">
-                            <?php echo esc_html(number_format($user->average_rating, 2)); ?></td>
+                            <?php echo esc_html(number_format($user->average_rating, 2)); ?>
+                        </td>
                         <td class="column-total-reviews" data-colname="Total Reviews">
-                            <?php echo esc_html($user->total_reviews); ?></td>
+                            <?php echo esc_html($user->total_reviews); ?>
+                        </td>
                         <td class="column-approved-reviews" data-colname="Approved Reviews">
-                            <?php echo esc_html($user->approved_reviews); ?></td>
+                            <?php echo esc_html($user->approved_reviews); ?>
+                        </td>
                         <td class="column-pending-reviews" data-colname="Pending Reviews">
-                            <?php echo esc_html($user->pending_reviews); ?></td>
+                            <?php echo esc_html($user->pending_reviews); ?>
+                        </td>
                         <td class="column-view-reviews" data-colname="View Reviews">
                             <a class="table-btn"
                                 href="<?php echo esc_url(admin_url('admin.php?page=persons-store-view-reviews&profile_id=' . esc_attr($user->profile_id))); ?>">View
@@ -92,7 +96,8 @@
                         </td>
                         <td class="column-actions" data-colname="Actions">
                             <a class="table-btn"
-                                href="<?php echo esc_url(admin_url('admin.php?page=edit_user&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
+                                href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
+
                             <a class="table-btn"
                                 href="<?php echo esc_url(admin_url('admin.php?page=user-reviews-plugin&action=delete&profile_id=' . esc_attr($user->profile_id))); ?>"
                                 onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>

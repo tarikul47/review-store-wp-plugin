@@ -153,18 +153,40 @@ class Helper
         return $product->get_id();
     }
 
-    public static function get_current_external_profile_id_and_roles()
+    /**
+     * Retrieve the current user's ID, roles, and name.
+     *
+     * If the current user has a first and last name, it will return their full name.
+     * If either the first or last name is missing, it will return the username instead.
+     *
+     * @return array|null An associative array containing the profile ID, roles, and name (full name or username).
+     *                    Returns null if the user is not logged in.
+     */
+    public static function get_current_user_id_and_roles()
     {
         if (is_user_logged_in()) {
             $current_user = wp_get_current_user();
+
+            // Get the first and last name
+            $first_name = $current_user->user_firstname;
+            $last_name = $current_user->user_lastname;
+
+            // Determine the name to use (full name or username)
+            $name = trim($first_name . ' ' . $last_name);
+            if (empty($name)) {
+                $name = $current_user->user_login;
+            }
+
             return [
-                'external_profile_id' => $current_user->ID,
-                'roles' => $current_user->roles
+                'profile_id' => $current_user->ID,
+                'roles' => $current_user->roles,
+                'name' => $name
             ];
         }
 
         return null; // or return an empty array, depending on your use case
     }
+
 
     /**
      * Handles the form submission result by redirecting to a specified URL with a success or failure message.

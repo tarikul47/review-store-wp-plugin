@@ -116,24 +116,8 @@ class Database
     }
 
     /**
-     * Insert data into a table.
-     *
-     * @param array $user_data
-     * @return int|false
-     */
-    public function insert(string $user_data)
-    {
-        $table = $this->wpdb->prefix . 'external_profile';
-        $result = $this->wpdb->insert($table, $user_data);
-        if ($result === false) {
-            return false;
-        }
-        return $this->wpdb->insert_id;
-    }
-
-    /**
      * Final 
-     * Insert a new user into the custom external_profile table.
+     * Insert a new user into the custom profile table.
      *
      * @param array $user_data The associative array containing user data.
      * @param int $product_id The ID of the product associated with the user.
@@ -190,20 +174,20 @@ class Database
     /**
      * Insert a new review into the reviews table.
      *
-     * @param int $external_profile_id The ID of the external profile being reviewed.
+     * @param int $profile_id The ID of the external profile being reviewed.
      * @param int $reviewer_external_profile_id The ID of the user who is reviewing.
      * @param float $rating The rating given by the reviewer.
      * @param string $status The status of the review ('pending', 'approved', 'rejected').
      * @return int The ID of the newly inserted review.
      */
-    public function insert_review($external_profile_id, $average_rating, $status = 'pending')
+    public function insert_review($profile_id, $average_rating, $status = 'pending')
     {
         // TODO: current user id = $reviewer_external_profile_id
         // TODO: current user if admin then status will be approve 
-        $user_info = Helper::get_current_external_profile_id_and_roles();
+        $user_info = Helper::get_current_user_id_and_roles();
 
         if ($user_info) {
-            $reviewer_external_profile_id = $user_info['external_profile_id'];
+            $reviewer_user_id = $user_info['profile_id'];
             $status = in_array('administrator', $user_info['roles']) ? 'approved' : $status;
         } else {
             die('Cheating');
@@ -212,8 +196,8 @@ class Database
         $this->wpdb->insert(
             "{$this->wpdb->prefix}ps_reviews",
             array(
-                'profile_id' => $external_profile_id,
-                'reviewer_user_id' => $reviewer_external_profile_id,
+                'profile_id' => $profile_id,
+                'reviewer_user_id' => $reviewer_user_id,
                 'rating' => $average_rating,
                 'status' => $status,
                 'created_at' => current_time('mysql'),
@@ -286,6 +270,21 @@ class Database
         $table = $this->wpdb->prefix . $table;
         return $this->wpdb->update($table, $data, $where);
     }
+
+    /**
+     * Retrieve person data by profile ID.
+     *
+     * This function retrieves all columns from the `ps_person` table for the specified profile ID.
+     * It is a dedicated function to encapsulate the logic for fetching person data based on `profile_id`.
+     *
+     * @param int $profile_id The ID of the profile to retrieve.
+     * @return object|null The person data as an object, or null if no record is found.
+     */
+    public function get_person_by_id(int $profile_id)
+    {
+        return $this->get('ps_profile', ['profile_id' => $profile_id]);
+    }
+
 
     /**
      * Get data from a table.
@@ -374,12 +373,21 @@ class Database
         return $this->wpdb->get_results($query, OBJECT_K);  // Return an associative array with meta_key as the key
     }
 
-    public function get_approved_reviews()
+    /**
+     * Retrieve reviews based on their status with grouped meta data.
+     *
+     * This function retrieves reviews with the specified status ('pending', 'approved', etc.),
+     * along with their associated meta data. The meta data is returned as an associative array.
+     *
+     * @param string $status The status of the reviews to retrieve (e.g., 'pending', 'approved').
+     * @return array An array of reviews, each containing review details and associated meta data.
+     */
+    public function get_reviews_by_status($status)
     {
         global $wpdb;
 
-        // Query to get approved reviews with grouped meta data
-        $results = $wpdb->get_results("
+        // Query to get reviews based on status with grouped meta data
+        $results = $wpdb->get_results($wpdb->prepare("
         SELECT 
             r.review_id,
             r.profile_id,
@@ -387,30 +395,28 @@ class Database
             r.status,
             r.created_at,
             r.updated_at,
-            GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') as meta_keys,
-            GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') as meta_values
+            GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
+            GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
         FROM 
             {$wpdb->prefix}ps_reviews r
         LEFT JOIN 
             {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
         WHERE 
-            r.status = 'approved'
+            r.status = %s
         GROUP BY 
             r.review_id
         ORDER BY 
             r.created_at DESC
-        ", ARRAY_A);
+    ", $status), ARRAY_A);
 
         // Process the results to convert meta data into an associative array
-        $approved_reviews = [];
+        $reviews = [];
         foreach ($results as $row) {
-            $review_id = $row['review_id'];
-
             $meta_keys = explode(',', $row['meta_keys']);
             $meta_values = explode(',', $row['meta_values']);
             $meta_data = array_combine($meta_keys, $meta_values);
 
-            $approved_reviews[] = [
+            $reviews[] = [
                 'review_id' => $row['review_id'],
                 'profile_id' => $row['profile_id'],
                 'rating' => $row['rating'],
@@ -421,10 +427,73 @@ class Database
             ];
         }
 
-        return $approved_reviews;
+        return $reviews;
     }
 
 
+    /**
+     * Retrieve the full name of a person by their profile ID.
+     *
+     * @param int $profile_id The ID of the profile.
+     * @return string|null The full name of the person (first name and last name concatenated) or null if not found.
+     */
+    public function get_person_name_by_id($profile_id)
+    {
+        global $wpdb;
+
+        // Prepare and execute the SQL query to retrieve the first and last name based on the profile ID
+        $result = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT CONCAT(first_name, ' ', last_name) AS full_name 
+             FROM {$wpdb->prefix}ps_profile 
+             WHERE profile_id = %d",
+                $profile_id
+            ),
+            ARRAY_A
+        );
+
+        // Return the full name or null if the profile was not found
+        return $result ? $result['full_name'] : null;
+    }
+
+
+
+    /**
+     * Update person data by profile ID.
+     *
+     * @param int $profile_id
+     * @param array $data
+     * @return bool
+     */
+    public function update_person(int $profile_id, array $data): bool
+    {
+        global $wpdb;
+
+        // Prepare data for update
+        $table = $wpdb->prefix . 'ps_profile';
+        $where = ['profile_id' => $profile_id];
+        $format = ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'];
+        $data = [
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            // 'title' => $data['title'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'zip_code' => $data['zip_code'],
+            'city' => $data['city'],
+            'salary_per_month' => $data['salary_per_month'],
+            'employee_type' => $data['employee_type'],
+            'region' => $data['region'],
+            'state' => $data['state'],
+            'country' => $data['country'],
+            'municipality' => $data['municipality'],
+            'department' => $data['department'],
+        ];
+
+        // Perform the update
+        return $wpdb->update($table, $data, $where, $format);
+    }
 
 
 }

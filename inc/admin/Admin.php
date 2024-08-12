@@ -35,6 +35,7 @@ class Admin
 
         // Add action for form submission
         add_action('admin_post_add_user_with_review', [$this, 'handle_add_user_form_submission']);
+        add_action('admin_post_update_person_profile', [$this, 'handle_update_user_form_submission']);
 
         // Register form submission handler
         //   add_action('admin_post_handle_add_user_form', array($this, 'handle_add_user_form_submission'));
@@ -131,18 +132,24 @@ class Admin
 
     public function urs_add_user_page()
     {
+        // Check if this is an edit form  edit-person&profile_id
+        $profile_id = isset($_GET['edit-person']) && $_GET['profile_id'] && !empty($_GET['profile_id']) ? $_GET['profile_id'] : false;
+        $person_data = $this->db->get_person_by_id($profile_id);
+        // echo "<pre>";
+        // print_r($person_data);
 
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-add-person-display.php';
     }
 
     public function urs_approve_reviews_page()
     {
-        $approved_reviews = $this->db->get_approved_reviews(); // Get approved reviews
+        $approved_reviews = $this->db->get_reviews_by_status('approved'); // Get approved reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-approve-reviews-display.php';
     }
 
     public function urs_pending_reviews_page()
     {
+        $pending_reviews = $this->db->get_reviews_by_status('pending'); // Get pending reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-pending-reviews-display.php';
     }
 
@@ -165,8 +172,6 @@ class Admin
         // Include the view file to display the reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-view-reviews-display.php';
     }
-
-
 
     public function handle_add_user_form_submission()
     {
@@ -319,6 +324,77 @@ class Admin
 
         exit;
     }
+
+
+    public function handle_update_user_form_submission()
+    {
+        // Determine the expected nonce action
+        $nonce_action = isset($_POST['action']) && $_POST['action'] === 'update_person_profile'
+            ? 'update_user_with_review_nonce'
+            : 'add_user_with_review_nonce';
+
+     //   echo "<pre>";
+      //  print_r($_POST);
+        
+
+        // Verify the nonce
+        check_admin_referer($nonce_action);
+      //  die();
+
+        // Sanitize and validate data
+        $profile_id = intval($_POST['profile_id']);
+        $first_name = sanitize_text_field($_POST['first_name']);
+        $last_name = sanitize_text_field($_POST['last_name']);
+        $title = sanitize_text_field($_POST['title']);
+        $email = sanitize_email($_POST['email']);
+        $phone = sanitize_text_field($_POST['phone']);
+        $address = sanitize_text_field($_POST['address']);
+        $zip_code = sanitize_text_field($_POST['zip_code']);
+        $city = sanitize_text_field($_POST['city']);
+        $salary_per_month = floatval($_POST['salary_per_month']);
+        $employee_type = sanitize_text_field($_POST['employee_type']);
+        $region = sanitize_text_field($_POST['region']);
+        $state = sanitize_text_field($_POST['state']);
+        $country = sanitize_text_field($_POST['country']);
+        $municipality = sanitize_text_field($_POST['municipality']);
+        $department = sanitize_text_field($_POST['department']);
+
+        // Prepare data array
+        $data = [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'title' => $title,
+            'email' => $email,
+            'phone' => $phone,
+            'address' => $address,
+            'zip_code' => $zip_code,
+            'city' => $city,
+            'salary_per_month' => $salary_per_month,
+            'employee_type' => $employee_type,
+            'region' => $region,
+            'state' => $state,
+            'country' => $country,
+            'municipality' => $municipality,
+            'department' => $department,
+        ];
+
+        // Call the database update method
+        $result = $this->db->update_person($profile_id, $data);
+        // print_r($result);
+
+        // die();
+
+        if ($result !== false) {
+            // Success
+            wp_redirect(admin_url('admin.php?page=persons-store&message=updated'));
+            exit;
+        } else {
+            // Failure
+            wp_redirect(admin_url('admin.php?page=persons-store&message=error'));
+            exit;
+        }
+    }
+
 
     public function enqueue_styles()
     {
