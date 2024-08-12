@@ -1,6 +1,6 @@
 <?php
 
-namespace Tarikul\ReviewStore\Inc\Core;
+namespace Tarikul\PersonsStore\Inc\Core;
 
 /**
  * Define the internationalization functionality.

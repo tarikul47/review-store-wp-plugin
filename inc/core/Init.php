@@ -1,8 +1,8 @@
 <?php
-namespace Tarikul\ReviewStore\Inc\Core;
+namespace Tarikul\PersonsStore\Inc\Core;
 
-use Tarikul\ReviewStore\Inc\Admin as Admin;
-use Tarikul\ReviewStore\Inc\Frontend as Frontend;
+use Tarikul\PersonsStore\Inc\Admin as Admin;
+use Tarikul\PersonsStore\Inc\Frontend as Frontend;
 
 /**
  * The core plugin class.

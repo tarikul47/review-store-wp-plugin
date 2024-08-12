@@ -9,10 +9,10 @@
  *
  * @link              http://onlytarikul.com
  * @since             1.0.0
- * @package           Review_Store
+ * @package           Persons_Store
  *
  * @wordpress-plugin
- * Plugin Name:       Review Store
+ * Plugin Name:       Persons Store
  * Plugin URI:        http://onlytarikul.com/wp-plugin-name-uri/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -20,11 +20,11 @@
  * Author URI:        http://onlytarikul.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       review-store
+ * Text Domain:       persons-store
  * Domain Path:       /languages
  */
 
-//namespace Review_Store;
+//namespace Persons_Store;
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -35,21 +35,21 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-use Tarikul\ReviewStore\Inc\Core\Activate;
-use Tarikul\ReviewStore\Inc\Core\Deactivate;
-use Tarikul\ReviewStore\Inc\Core\Init;
+use Tarikul\PersonsStore\Inc\Core\Activate;
+use Tarikul\PersonsStore\Inc\Core\Deactivate;
+use Tarikul\PersonsStore\Inc\Core\Init;
 
 
 /**
  * Define Constants
  */
 
-define('PLUGIN_NAME', 'review-store');
+define('PLUGIN_NAME', 'persons-store');
 define('PLUGIN_VERSION', '1.0.0');
 define('PLUGIN_NAME_DIR', plugin_dir_path(__FILE__));
 define('PLUGIN_NAME_URL', plugin_dir_url(__FILE__));
 define('PLUGIN_BASENAME', plugin_basename(__FILE__));
-define('PLUGIN_TEXT_DOMAIN', 'review-store');
+define('PLUGIN_TEXT_DOMAIN', 'persons-store');
 
 
 // New constants for admin directories
@@ -76,7 +76,7 @@ register_deactivation_hook(__FILE__, array(Deactivate::class, 'deactivate'));
  *
  * @since    1.0.0
  */
-class Review_Store
+class Persons_Store
 {
     /**
      * The instance of the plugin.
@@ -112,14 +112,14 @@ class Review_Store
  * Also returns copy of the app object so 3rd party developers
  * can interact with the plugin's hooks contained within.
 //  **/
-function review_store_init()
+function persons_store_init()
 {
-    return Review_Store::init();
+    return Persons_Store::init();
 }
 
 $min_php = '5.6.0';
 
 // Check the minimum required PHP version and run the plugin.
 if (version_compare(PHP_VERSION, $min_php, '>=')) {
-    review_store_init();
+    persons_store_init();
 }

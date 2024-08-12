@@ -1,5 +1,5 @@
 <?php
-namespace Tarikul\ReviewStore\Inc\Email;
+namespace Tarikul\PersonsStore\Inc\Email;
 
 class Email
 {
@@ -15,17 +15,17 @@ class Email
     private $wpdb;
 
     // Private constructor to prevent direct instantiation
-    private function __construct($wpdb)
+    private function __construct()
     {
         global $wpdb;
         $this->wpdb = $wpdb;
     }
 
     // Get the singleton instance
-    public static function getInstance($wpdb)
+    public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new self($wpdb);
+            self::$instance = new self();
         }
         return self::$instance;
     }

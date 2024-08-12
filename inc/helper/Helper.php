@@ -1,5 +1,5 @@
 <?php
-namespace Tarikul\ReviewStore\Inc\Helper;
+namespace Tarikul\PersonsStore\Inc\Helper;
 
 class Helper
 {
@@ -153,12 +153,12 @@ class Helper
         return $product->get_id();
     }
 
-    public static function get_current_user_id_and_roles()
+    public static function get_current_external_profile_id_and_roles()
     {
         if (is_user_logged_in()) {
             $current_user = wp_get_current_user();
             return [
-                'user_id' => $current_user->ID,
+                'external_profile_id' => $current_user->ID,
                 'roles' => $current_user->roles
             ];
         }
@@ -166,7 +166,29 @@ class Helper
         return null; // or return an empty array, depending on your use case
     }
 
+    /**
+     * Handles the form submission result by redirecting to a specified URL with a success or failure message.
+     *
+     * @param bool $result Indicates success (true) or failure (false).
+     * @param string $redirect_url The URL to redirect to.
+     * @param string|null $message An optional custom message to display after redirection.
+     */
 
+    public static function handle_form_submission_result($result, $redirect_url, $message = null)
+    {
+        // Determine the query parameter based on the result
+        $status = $result ? 'success=1' : 'fail=1';
 
+        // Store the message in a transient (temporary data)
+        if ($message) {
+            set_transient('form_submission_message', $message, 60); // Store for 60 seconds
+        }
+
+        // Redirect to the specified URL with the status query parameter
+        wp_redirect(add_query_arg($status, '', $redirect_url));
+
+        // Ensure that no further code is executed after the redirect
+        exit;
+    }
 
 }

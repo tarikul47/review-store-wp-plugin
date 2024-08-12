@@ -1,26 +1,23 @@
 <?php
-namespace Tarikul\ReviewStore\Inc\Database;
+namespace Tarikul\PersonsStore\Inc\Database;
 
-use Tarikul\ReviewStore\Inc\Helper\Helper;
+use Tarikul\PersonsStore\Inc\Helper\Helper;
 
 class Database
 {
     private static $instance = null;
     private $wpdb;
 
-    private function __construct($wpdb)
+    private function __construct()
     {
-        // private constructor to prevent direct instantiation
+        global $wpdb;
         $this->wpdb = $wpdb;
     }
 
-    public static function getInstance($wpdb = null)
+    public static function getInstance()
     {
         if (self::$instance === null) {
-            if ($wpdb === null) {
-                global $wpdb;
-            }
-            self::$instance = new self($wpdb);
+            self::$instance = new self();
         }
         return self::$instance;
     }
@@ -44,12 +41,13 @@ class Database
     public static function create_tables(): void
     {
         global $wpdb;
+        $plugin_prefix = 'ps' . '_'; // Use the defined plugin name constant
 
         $charset_collate = $wpdb->get_charset_collate();
 
         $tables = [
-            "external_profile" => "CREATE TABLE {$wpdb->prefix}external_profile (
-                external_profile_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            "ps_profile" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}profile (
+                profile_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 first_name VARCHAR(255) NOT NULL,
                 last_name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
@@ -69,19 +67,19 @@ class Database
                 product_id BIGINT(20) UNSIGNED
             ) $charset_collate;",
 
-            "reviews" => "CREATE TABLE {$wpdb->prefix}reviews (
+            "ps_reviews" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}reviews (
                 review_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                external_profile_id BIGINT(20) UNSIGNED NOT NULL,
+                profile_id BIGINT(20) UNSIGNED NOT NULL,
                 reviewer_user_id BIGINT(20) UNSIGNED NOT NULL,
                 rating DECIMAL(3,2),
                 status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                INDEX (external_profile_id),
+                INDEX (profile_id),
                 INDEX (reviewer_user_id)
             ) $charset_collate;",
 
-            "review_meta" => "CREATE TABLE {$wpdb->prefix}review_meta (
+            "ps_review_meta" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}review_meta (
                 meta_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 review_id BIGINT(20) UNSIGNED NOT NULL,
                 meta_key VARCHAR(255),
@@ -90,7 +88,7 @@ class Database
                 INDEX (meta_key)
             ) $charset_collate;",
 
-            "email_queue" => "CREATE TABLE {$wpdb->prefix}email_queue (
+            "ps_email_queue" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}email_queue (
                 id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 to_email VARCHAR(255) NOT NULL,
                 subject VARCHAR(255) NOT NULL,
@@ -99,13 +97,13 @@ class Database
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) $charset_collate;",
 
-            "notifications" => "CREATE TABLE {$wpdb->prefix}notifications (
+            "ps_notifications" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}notifications (
                 id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                user_id BIGINT(20) UNSIGNED NOT NULL,
+                profile_id BIGINT(20) UNSIGNED NOT NULL,
                 message TEXT NOT NULL,
                 status ENUM('unread', 'read') DEFAULT 'unread',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                INDEX (user_id)
+                INDEX (profile_id)
             ) $charset_collate;",
         ];
 
@@ -144,7 +142,7 @@ class Database
     public function insert_user($user_data, $product_id)
     {
         $this->wpdb->insert(
-            "{$this->wpdb->prefix}external_profile",
+            "{$this->wpdb->prefix}ps_profile",
             array(
                 'first_name' => $user_data['first_name'],
                 'last_name' => $user_data['last_name'],
@@ -193,32 +191,29 @@ class Database
      * Insert a new review into the reviews table.
      *
      * @param int $external_profile_id The ID of the external profile being reviewed.
-     * @param int $reviewer_user_id The ID of the user who is reviewing.
+     * @param int $reviewer_external_profile_id The ID of the user who is reviewing.
      * @param float $rating The rating given by the reviewer.
      * @param string $status The status of the review ('pending', 'approved', 'rejected').
      * @return int The ID of the newly inserted review.
      */
     public function insert_review($external_profile_id, $average_rating, $status = 'pending')
     {
-        // TODO: current user id = $reviewer_user_id
+        // TODO: current user id = $reviewer_external_profile_id
         // TODO: current user if admin then status will be approve 
-        $user_info = Helper::get_current_user_id_and_roles();
+        $user_info = Helper::get_current_external_profile_id_and_roles();
 
         if ($user_info) {
-            //    echo 'User ID: ' . $user_info['user_id'] . '<br>';
-            //    echo 'User Roles: ' . implode(', ', $user_info['roles']);
-            $reviewer_user_id = $user_info['user_id'];
-            $status = in_array('administrator', $user_info['roles']) ?? 'approved';
+            $reviewer_external_profile_id = $user_info['external_profile_id'];
+            $status = in_array('administrator', $user_info['roles']) ? 'approved' : $status;
         } else {
             die('Cheating');
         }
 
-
         $this->wpdb->insert(
-            "{$this->wpdb->prefix}reviews",
+            "{$this->wpdb->prefix}ps_reviews",
             array(
-                'external_profile_id' => $external_profile_id,
-                'reviewer_user_id' => $reviewer_user_id,
+                'profile_id' => $external_profile_id,
+                'reviewer_user_id' => $reviewer_external_profile_id,
                 'rating' => $average_rating,
                 'status' => $status,
                 'created_at' => current_time('mysql'),
@@ -226,7 +221,7 @@ class Database
             ),
             array(
                 '%d', // external_profile_id
-                '%d', // reviewer_user_id
+                '%d', // reviewer_external_profile_id
                 '%f', // rating
                 '%s', // status
                 '%s', // created_at
@@ -248,7 +243,7 @@ class Database
     public function insert_review_meta($review_id, $meta_key, $meta_value)
     {
         $this->wpdb->insert(
-            "{$this->wpdb->prefix}review_meta",
+            "{$this->wpdb->prefix}ps_review_meta",
             array(
                 'review_id' => $review_id,
                 'meta_key' => $meta_key,
@@ -322,25 +317,62 @@ class Database
         }
         return implode(' AND ', $clauses);
     }
-
     /**
-     * Get users along with their total, approved, and pending review counts.
+     * Get users along with their associated review data.
      *
      * @return array|object|null
      */
     public function get_users_with_review_data()
     {
-
         $query = "
-            SELECT u.external_profile_id, u.name, u.email,
-                   COUNT(r.review_id) as total_reviews,
-                   SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
-                   SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
-            FROM {$this->wpdb->prefix}external_profile u
-            LEFT JOIN {$this->wpdb->prefix}reviews r ON u.external_profile_id = r.external_profile_id
-            GROUP BY u.id, u.name, u.email
-        ";
-
+        SELECT 
+            u.profile_id, 
+            u.first_name, 
+            u.last_name, 
+            u.email, 
+            u.phone, 
+            u.state, 
+            u.department,
+            IFNULL(AVG(r.rating), 0) as average_rating,
+            COUNT(r.review_id) as total_reviews,
+            SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
+            SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
+        FROM {$this->wpdb->prefix}ps_profile u
+        LEFT JOIN {$this->wpdb->prefix}ps_reviews r 
+            ON u.profile_id = r.profile_id
+        GROUP BY u.profile_id, u.first_name, u.last_name, u.email, u.phone, u.state, u.department
+    ";
         return $this->wpdb->get_results($query);
     }
+
+    public function get_reviews_by_external_profile_id($profile_id)
+    {
+        $query = $this->wpdb->prepare("
+        SELECT 
+            r.review_id, 
+            r.rating, 
+            r.status, 
+            r.created_at, 
+            r.updated_at
+        FROM {$this->wpdb->prefix}ps_reviews r
+        WHERE r.profile_id = %d
+    ", $profile_id);
+
+        return $this->wpdb->get_results($query, ARRAY_A);
+    }
+
+    public function get_review_meta_by_review_id($review_id)
+    {
+        $query = $this->wpdb->prepare("
+        SELECT 
+            meta_key, 
+            meta_value 
+        FROM {$this->wpdb->prefix}ps_review_meta
+        WHERE review_id = %d
+    ", $review_id);
+
+        return $this->wpdb->get_results($query, OBJECT_K);  // Return an associative array with meta_key as the key
+    }
+
+
 }

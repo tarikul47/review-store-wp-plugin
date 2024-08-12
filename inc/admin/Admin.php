@@ -1,9 +1,9 @@
 <?php
-namespace Tarikul\ReviewStore\Inc\Admin;
+namespace Tarikul\PersonsStore\Inc\Admin;
 
-use Tarikul\ReviewStore\Inc\Database\Database;
-use Tarikul\ReviewStore\Inc\Email\Email;
-use Tarikul\ReviewStore\Inc\Helper\Helper;
+use Tarikul\PersonsStore\Inc\Database\Database;
+use Tarikul\PersonsStore\Inc\Email\Email;
+use Tarikul\PersonsStore\Inc\Helper\Helper;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -31,7 +31,7 @@ class Admin
         $this->version = $version;
         $this->plugin_text_domain = $plugin_text_domain;
         add_action('admin_menu', array($this, 'urs_admin_menu'));
-        $this->db = Database::getInstance($wpdb);
+        $this->db = Database::getInstance();
 
         // Add action for form submission
         add_action('admin_post_add_user_with_review', [$this, 'handle_add_user_form_submission']);
@@ -47,8 +47,8 @@ class Admin
     public function urs_admin_menu()
     {
         add_menu_page(
-            __('Review Store', $this->plugin_text_domain),
-            __('Review Store', $this->plugin_text_domain),
+            __('Persons Store', $this->plugin_text_domain),
+            __('Persons Store', $this->plugin_text_domain),
             'manage_options',
             $this->plugin_name,
             array($this, 'urs_user_list_page'),
@@ -58,19 +58,19 @@ class Admin
 
         add_submenu_page(
             $this->plugin_name,
-            __('Edit User', $this->plugin_text_domain),
+            __('Edit Person', $this->plugin_text_domain),
             __('', $this->plugin_text_domain),
             'manage_options',
-            $this->plugin_name . '-edit-user',
+            $this->plugin_name . '-edit-person',
             array($this, 'urs_edit_user_page')
         );
 
         add_submenu_page(
             $this->plugin_name,
-            __('Add User', $this->plugin_text_domain),
-            __('Add User', $this->plugin_text_domain),
+            __('Add Person', $this->plugin_text_domain),
+            __('Add Person', $this->plugin_text_domain),
             'manage_options',
-            $this->plugin_name . '-add-user',
+            $this->plugin_name . '-add-person',
             array($this, 'urs_add_user_page')
         );
         add_submenu_page(
@@ -90,32 +90,49 @@ class Admin
             $this->plugin_name . '-pending-review',
             array($this, 'urs_pending_reviews_page')
         );
+        add_submenu_page(
+            $this->plugin_name,
+            __('View Reviews', $this->plugin_text_domain),
+            __('View Reviews', $this->plugin_text_domain),
+            'manage_options',
+            $this->plugin_name . '-view-reviews',
+            array($this, 'urs_view_reviews_page')
+        );
+
     }
 
     public function urs_user_list_page()
     {
-        // if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['user_id'])) {
-        //     $this->handle_delete_user(intval($_GET['user_id']));
+        // if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['external_profile_id'])) {
+        //     $this->handle_delete_user(intval($_GET['external_profile_id']));
         // }
 
-        // if (isset($_POST['bulk_delete_users']) && !empty($_POST['user_ids'])) {
-        //     $this->handle_bulk_delete_users(array_map('intval', $_POST['user_ids']));
+        // if (isset($_POST['bulk_delete_users']) && !empty($_POST['external_profile_ids'])) {
+        //     $this->handle_bulk_delete_users(array_map('intval', $_POST['external_profile_ids']));
         // }
+
+        // Display the message from the transient, if it exists
+        if ($message = get_transient('form_submission_message')) {
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
+            delete_transient('form_submission_message');
+        }
+
+        //  var_dump($_GET);
 
         $users = $this->db->get_users_with_review_data();
 
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-user-list-display.php';
+        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-persons-list-display.php';
     }
 
     public function urs_edit_user_page()
     {
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-edit-user-display.php';
+        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-edit-person-display.php';
     }
 
     public function urs_add_user_page()
     {
 
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-add-user-display.php';
+        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-add-person-display.php';
     }
 
     public function urs_approve_reviews_page()
@@ -128,6 +145,28 @@ class Admin
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-pending-reviews-display.php';
     }
 
+    public function urs_view_reviews_page()
+    {
+        // Get the external_profile_id from the URL parameter
+        $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : 0;
+
+        // Fetch reviews for the selected external profile
+        $reviews = $this->db->get_reviews_by_external_profile_id($profile_id);
+
+        // $reviews_with_meta = []; // Initialize a new array to hold reviews with meta data
+
+        // foreach ($reviews as $review) {
+        //     // Fetch meta data for each review and store it in a new array
+        //     $review['meta'] = $this->db->get_review_meta_by_review_id($review['review_id']);
+        //     $reviews_with_meta[] = $review; // Add the modified review to the new array
+        // }
+
+        // Include the view file to display the reviews
+        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-view-reviews-display.php';
+    }
+
+
+
     public function handle_add_user_form_submission()
     {
         // Check nonce for security
@@ -137,7 +176,7 @@ class Admin
          * Array
 (
     [_wpnonce] => 3249128e39
-    [_wp_http_referer] => /wp-admin/admin.php?page=review-store-add-user
+    [_wp_http_referer] => /wp-admin/admin.php?page=review-store-add-person
     [action] => add_user_with_review
     [first_name] => Raju
     [last_name] => Islam
@@ -212,14 +251,15 @@ class Admin
 
         $product_Id = Helper::create_or_update_downloadable_product($user_data['first_name'], $genearte_pdf_url);
 
-        // TODO: User add in Database 
 
-        // Insert user and review into database
-        $external_user_id = $this->db->insert_user($user_data, $product_Id);
+        // TODO: Person add in Database 
+
+        // Insert person and review into database
+        $external_external_profile_id = $this->db->insert_user($user_data, $product_Id);
 
         // TODO: Review add in Database 
-        if ($external_user_id) {
-            $review_id = $this->db->insert_review($external_user_id, $average_rating);
+        if ($external_external_profile_id) {
+            $review_id = $this->db->insert_review($external_external_profile_id, $average_rating);
         }
 
         if ($review_id) {
@@ -230,16 +270,13 @@ class Admin
         }
 
         // TODO: Email Sending 
-        // Email sending for user 
+        // Email sending for person 
         // Define email details
         $subject = 'Hurrah! A Review is live!';
         $message = 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.';
 
-        // Get the global $wpdb object
-        global $wpdb;
-
         // Get the singleton instance of the Email class
-        $email = Email::getInstance($wpdb);
+        $email = Email::getInstance();
 
         // Set email details
         $email->setEmailDetails($user_data['email'], $subject, $message);
@@ -248,30 +285,37 @@ class Admin
         $result = $email->send();
 
         // Check if the email was sent successfully
-        if ($result) {
-            echo 'Email sent successfully!';
-            wp_redirect(admin_url('admin.php?page=add_user_with_review&success=1'));
-        } else {
-            echo 'Failed to send email.';
-            wp_redirect(admin_url('admin.php?page=add_user_with_review&fail=1'));
-        }
+        // if ($result) {
+        //     echo 'Email sent successfully!';
+        //     wp_redirect(admin_url('admin.php?page=review-store&success=1'));
+        // } else {
+        //     echo 'Failed to send email.';
+        //     wp_redirect(admin_url('admin.php?page=review-store&fail=1'));
+        // }
 
-    //    // echo "<pre>";
-    //     print_r($result);
-    //     die();
+        // Define a custom message based on the result
+        // $message = $result ? 'Email sent successfully!' : 'Failed to send email.';
+        $message = $result ? 'Successfully Added Person!' : 'Something worng!.';
+
+        // Use the static method to handle the redirection with a success or fail message
+        Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
+
+        //    // echo "<pre>";
+        //     print_r($result);
+        //     die();
 
         /**
          * 1. All data process with sanitize 
          * 2. pdf url = Generate pdf and store pdf url 
          * 3. Product id = Create a product / update 
-         * 1. user id = User data add 
+         * 1. person id = Person data add 
          * 2. Email Sending instant 
          */
 
         // TODO: Notice showing 
 
         // Redirect back to the form page
-        
+
         exit;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tarikul\ReviewStore\Inc\Frontend;
+namespace Tarikul\PersonsStore\Inc\Frontend;
 
 /**
  * The public-facing functionality of the plugin.

@@ -1,11 +1,11 @@
 {
-    "name": "tarikul/review-store",
+    "name": "tarikul/persons-store",
     "description": "Awesome Review Store and Selling Plugin",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "autoload": {
         "psr-4": {
-            "Tarikul\\ReviewStore\\Inc\\": "inc/"
+            "Tarikul\\PersonsStore\\Inc\\": "inc/"
         }
     },
     "authors": [

@@ -24,7 +24,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="first_name">First Name</label></th>
                         <td>
-                            <input name="first_name" type="text" id="first_name" value="" autocapitalize="none"
+                            <input name="first_name" type="text" id="first_name" value="Tarikul" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -32,7 +32,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="last_name">Last Name</label></th>
                         <td>
-                            <input name="last_name" type="text" id="last_name" value="" autocapitalize="none"
+                            <input name="last_name" type="text" id="last_name" value="Islam" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -40,7 +40,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="title">Professional Title</label></th>
                         <td>
-                            <input name="title" type="text" id="title" value="" autocapitalize="none" autocorrect="off"
+                            <input name="title" type="text" id="title" value="WordPress Developer" autocapitalize="none" autocorrect="off"
                                 autocomplete="off" required>
                         </td>
                     </tr>
@@ -48,7 +48,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="email">Email</label></th>
                         <td>
-                            <input name="email" type="email" id="email" value="" autocapitalize="none" autocorrect="off"
+                            <input name="email" type="email" id="email" value="tarikul@gmail.com" autocapitalize="none" autocorrect="off"
                                 autocomplete="off" required>
                         </td>
                     </tr>
@@ -56,7 +56,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="phone">Phone Number</label></th>
                         <td>
-                            <input name="phone" type="tel" id="phone" value="" autocapitalize="none" autocorrect="off"
+                            <input name="phone" type="tel" id="phone" value="01752134658" autocapitalize="none" autocorrect="off"
                                 autocomplete="off" required>
                         </td>
                     </tr>
@@ -64,7 +64,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="address">Address</label></th>
                         <td>
-                            <input name="address" type="text" id="address" value="" autocapitalize="none"
+                            <input name="address" type="text" id="address" value="Dhaka" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -72,7 +72,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="zip_code">Zip Code</label></th>
                         <td>
-                            <input name="zip_code" type="text" id="zip_code" value="" autocapitalize="none"
+                            <input name="zip_code" type="text" id="zip_code" value="1204" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -80,7 +80,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="city">City</label></th>
                         <td>
-                            <input name="city" type="text" id="city" value="" autocapitalize="none" autocorrect="off"
+                            <input name="city" type="text" id="city" value="Tongi" autocapitalize="none" autocorrect="off"
                                 autocomplete="off" required>
                         </td>
                     </tr>
@@ -88,7 +88,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="salary">Salary Per Month</label></th>
                         <td>
-                            <input name="salary_per_month" type="number" id="salary" value="" autocapitalize="none"
+                            <input name="salary_per_month" type="number" id="salary" value="100000" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -96,7 +96,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="employee_type">Type of Employee</label></th>
                         <td>
-                            <input name="employee_type" type="text" id="employee_type" value="" autocapitalize="none"
+                            <input name="employee_type" type="text" id="employee_type" value="Freelancer" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -104,7 +104,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="region">Region</label></th>
                         <td>
-                            <input name="region" type="text" id="region" value="" autocapitalize="none"
+                            <input name="region" type="text" id="region" value="Region" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -112,7 +112,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="state">State</label></th>
                         <td>
-                            <input name="state" type="text" id="state" value="" autocapitalize="none" autocorrect="off"
+                            <input name="state" type="text" id="state" value="State" autocapitalize="none" autocorrect="off"
                                 autocomplete="off" required>
                         </td>
                     </tr>
@@ -120,7 +120,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="country">Country</label></th>
                         <td>
-                            <input name="country" type="text" id="country" value="" autocapitalize="none"
+                            <input name="country" type="text" id="country" value="Bangladesh" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -128,7 +128,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="municipality">Municipality</label></th>
                         <td>
-                            <input name="municipality" type="text" id="municipality" value="" autocapitalize="none"
+                            <input name="municipality" type="text" id="municipality" value="Municipality" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -136,7 +136,7 @@
                     <tr class="form-field">
                         <th scope="row"><label for="department">Department</label></th>
                         <td>
-                            <input name="department" type="text" id="department" value="" autocapitalize="none"
+                            <input name="department" type="text" id="department" value="Department" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -153,7 +153,7 @@
                             <p>Do you experience the official as fair and impartial (from 1 to 5)</p>
                         </td>
                         <td>
-                            <input type="number" name="fair" id="fair">
+                            <input type="number" name="fair" id="fair" value="2">
                         </td>
                     </tr>
 
@@ -163,7 +163,7 @@
                                 for his service (from 1 to 5)</p>
                         </td>
                         <td>
-                            <input type="number" name="professional" id="professional">
+                            <input type="number" name="professional" id="professional" value="3">
                         </td>
                     </tr>
 
@@ -172,7 +172,7 @@
                             <p>Do you feel that the official has a personal and good response (from 1 to 5)</p>
                         </td>
                         <td>
-                            <input type="number" name="response" id="response">
+                            <input type="number" name="response" id="response" value="4">
                         </td>
                     </tr>
 
@@ -182,7 +182,7 @@
                             </p>
                         </td>
                         <td>
-                            <input type="number" name="communication" id="communication">
+                            <input type="number" name="communication" id="communication" value="2">
                         </td>
                     </tr>
 
@@ -191,7 +191,7 @@
                             <p>Do you feel that the official makes fair decisions (from 1 to 5)</p>
                         </td>
                         <td>
-                            <input type="number" name="decisions" id="decisions">
+                            <input type="number" name="decisions" id="decisions" value="5">
                         </td>
                     </tr>
 
@@ -200,7 +200,7 @@
                             <p>Do you recommend this official employee? (from 1 to 5)</p>
                         </td>
                         <td>
-                            <input type="number" name="recommend" id="recommend">
+                            <input type="number" name="recommend" id="recommend" value="5">
                         </td>
                     </tr>
 

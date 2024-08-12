@@ -1,8 +1,8 @@
 <?php
 
-namespace Tarikul\ReviewStore\Inc\Core;
+namespace Tarikul\PersonsStore\Inc\Core;
 
-use Tarikul\ReviewStore\Inc\Database as Database;
+use Tarikul\PersonsStore\Inc\Database as Database;
 
 /**
  * Fired during plugin activation
