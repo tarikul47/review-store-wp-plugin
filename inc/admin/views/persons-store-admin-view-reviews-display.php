@@ -41,20 +41,18 @@ if ($reviews) { ?>
                         </a>
                     </td>
                     <td>
-                        <a class="table-btn"
-                            href="<?php echo esc_url(admin_url('admin.php?page=review-store-view-reviews&action=delete&external_profile_id=' . esc_attr($review['review_id']))); ?>"
-                            onclick="return confirm('Are you sure you want to delete this user?')">
-                            Delete
-                        </a>
-                        <a class="table-btn"
-                            href="<?php echo esc_url(admin_url('admin.php?page=review-store-view-reviews&action=approve&review_id=' . esc_attr($review['review_id']))); ?>">
-                            Approve
-                        </a>
-                        <a class="table-btn"
-                            href="<?php echo esc_url(admin_url('admin.php?page=review-store-view-reviews&action=reject&review_id=' . esc_attr($review['review_id']))); ?>">
-                            Reject
-                        </a>
+                        <?php if ($review['status'] === "approved") { ?>
+                            <a href="#">Approved</a>
+                        <?php } elseif ($review['status'] === "rejected") { ?>
+                            <a href="#">Rejected</a>
+                        <?php } else { // status is "pending" or other values ?>
+                            <a class="table-btn approve_reject" data-review-id="<?php echo esc_attr($review['review_id']); ?>"
+                                href="#">Approve</a>
+                            <a class="table-btn approve_reject" data-review-id="<?php echo esc_attr($review['review_id']); ?>"
+                                href="#">Reject</a>
+                        <?php } ?>
                     </td>
+
                 </tr>
                 <tr class="review-meta-row" id="meta-<?php echo esc_attr($review['review_id']); ?>" style="display: none;">
                     <td colspan="6">

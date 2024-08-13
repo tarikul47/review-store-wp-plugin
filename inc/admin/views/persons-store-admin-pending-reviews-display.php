@@ -92,10 +92,12 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                                 <?php echo Helper::get_current_user_id_and_roles()['name']; ?>
                             </td>
                             <td class="column-actions" data-colname="">
-                                <a class="table-btn approve_reject" data-review-id="<?php echo esc_attr($review['review_id']); ?>"
-                                    href="#">Approve</a>
-                                <a class="table-btn approve_reject" data-review-id="<?php echo esc_attr($review['review_id']); ?>"
-                                    href="#">Reject</a>
+
+                                <a class="table-btn approve_reject"
+                                    data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
+
+                                <a class="table-btn approve_reject"
+                                    data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Reject</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -46,42 +46,42 @@
       var action = $(this).text().toLowerCase(); // 'approve' or 'reject'
       var reviewId = $(this).data("review-id");
 
-      console.log(
-        action.charAt(0).toUpperCase() +
-          action.slice(1) +
-          " button clicked for Review ID:",
-        reviewId
-      );
+      // Confirm action
+      var confirmationMessage =
+        action === "approve"
+          ? "Are you sure you want to approve this review?"
+          : "Are you sure you want to reject this review?";
 
-      console.log("action", action + "__review");
-
-      // AJAX request to approve or reject the review
-      $.ajax({
-        url: myPluginAjax.ajax_url,
-        type: "POST",
-        data: {
-          action: action + "_review",
-          review_id: reviewId,
-          security: myPluginAjax.nonce,
-        },
-        success: function (response) {
-          if (response.success) {
-            alert(response.data.message);
-            console.log(
-              "Review ID " + reviewId + " " + action + "d successfully."
-            );
-            location.reload(); // Refresh the page to reflect changes
-          } else {
-            alert(response.data.message);
-            console.log(
-              "[ERROR] Failed to " + action + " Review ID " + reviewId + "."
-            );
-          }
-        },
-        error: function (xhr, status, error) {
-          console.log("[ERROR] AJAX request failed: " + error);
-        },
-      });
+          
+      if (confirm(confirmationMessage)) {
+        // AJAX request to approve or reject the review
+        $.ajax({
+          url: myPluginAjax.ajax_url,
+          type: "POST",
+          data: {
+            action: action + "_review",
+            review_id: reviewId,
+            security: myPluginAjax.nonce,
+          },
+          success: function (response) {
+            if (response.success) {
+              alert(response.data.message);
+              console.log(
+                "Review ID " + reviewId + " " + action + "d successfully."
+              );
+              location.reload(); // Refresh the page to reflect changes
+            } else {
+              alert(response.data.message);
+              console.log(
+                "[ERROR] Failed to " + action + " Review ID " + reviewId + "."
+              );
+            }
+          },
+          error: function (xhr, status, error) {
+            console.log("[ERROR] AJAX request failed: " + error);
+          },
+        });
+      }
     });
   });
 })(jQuery);
