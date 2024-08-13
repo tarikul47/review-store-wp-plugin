@@ -2,40 +2,22 @@
   "use strict";
 
   /**
-   * All of the code for your admin-facing JavaScript source
-   * should reside in this file.
+   * This function encapsulates all of the admin-facing JavaScript logic
+   * for handling user interactions on the review management page.
+   * It is executed when the DOM is fully loaded.
    *
-   * Note: It has been assumed you will write jQuery code here, so the
-   * $ function reference has been prepared for usage within the scope
-   * of this function.
-   *
-   * This enables you to define handlers, for when the DOM is ready:
-   *
-   * $(function() {
-   *
-   * });
-   *
-   * When the window is loaded:
-   *
-   * $( window ).load(function() {
-   *
-   * });
-   *
-   * ...and/or other possibilities.
-   *
-   * Ideally, it is not considered best practise to attach more than a
-   * single DOM-ready or window-load handler for a particular page.
-   * Although scripts in the WordPress core, Plugins and Themes may be
-   * practising this, we should strive to set a better example in our own work.
-   *
-   * The file is enqueued from inc/admin/class-admin.php.
+   * @since 1.0.0
    */
-  //alert("ggg");
-  // Wait until the DOM is fully loaded
+
   $(document).ready(function () {
     console.log("DOM ready");
 
-    // Click event handler for view-details-link
+    /**
+     * Click event handler for the 'View Details' link.
+     * Toggles the visibility of the review meta data row.
+     *
+     * @since 1.0.0
+     */
     $(".view-details-link").on("click", function (e) {
       e.preventDefault();
       console.log("View Details link clicked");
@@ -49,6 +31,57 @@
 
       // Toggle the corresponding meta row
       $("#meta-" + reviewId).toggle();
+    });
+
+    /**
+     * Click event handler for the 'Approve' and 'Reject' buttons.
+     * Sends an AJAX request to the server to approve or reject a review.
+     *
+     * @since 1.0.0
+     */
+    $(".approve_reject").on("click", function (e) {
+      e.preventDefault();
+
+      // Determine the action (approve or reject) based on the button text
+      var action = $(this).text().toLowerCase(); // 'approve' or 'reject'
+      var reviewId = $(this).data("review-id");
+
+      console.log(
+        action.charAt(0).toUpperCase() +
+          action.slice(1) +
+          " button clicked for Review ID:",
+        reviewId
+      );
+
+      console.log("action", action + "__review");
+
+      // AJAX request to approve or reject the review
+      $.ajax({
+        url: myPluginAjax.ajax_url,
+        type: "POST",
+        data: {
+          action: action + "_review",
+          review_id: reviewId,
+          security: myPluginAjax.nonce,
+        },
+        success: function (response) {
+          if (response.success) {
+            alert(response.data.message);
+            console.log(
+              "Review ID " + reviewId + " " + action + "d successfully."
+            );
+            location.reload(); // Refresh the page to reflect changes
+          } else {
+            alert(response.data.message);
+            console.log(
+              "[ERROR] Failed to " + action + " Review ID " + reviewId + "."
+            );
+          }
+        },
+        error: function (xhr, status, error) {
+          console.log("[ERROR] AJAX request failed: " + error);
+        },
+      });
     });
   });
 })(jQuery);

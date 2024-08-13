@@ -4,6 +4,8 @@ namespace Tarikul\PersonsStore\Inc\Admin;
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
+//use Tarikul\ReviewStore\Inc\AjaxHandler\AjaxHandler;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -37,6 +39,9 @@ class Admin
         add_action('admin_post_add_user_with_review', [$this, 'handle_add_user_form_submission']);
         add_action('admin_post_update_person_profile', [$this, 'handle_update_user_form_submission']);
 
+        // Initialize AJAX handling
+        new AjaxHandler();
+
         // Register form submission handler
         //   add_action('admin_post_handle_add_user_form', array($this, 'handle_add_user_form_submission'));
 
@@ -55,15 +60,6 @@ class Admin
             array($this, 'urs_user_list_page'),
             'dashicons-admin-generic',
             6
-        );
-
-        add_submenu_page(
-            $this->plugin_name,
-            __('Edit Person', $this->plugin_text_domain),
-            __('', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-edit-person',
-            array($this, 'urs_edit_user_page')
         );
 
         add_submenu_page(
@@ -125,11 +121,6 @@ class Admin
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-persons-list-display.php';
     }
 
-    public function urs_edit_user_page()
-    {
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-edit-person-display.php';
-    }
-
     public function urs_add_user_page()
     {
         // Check if this is an edit form  edit-person&profile_id
@@ -173,42 +164,26 @@ class Admin
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-view-reviews-display.php';
     }
 
+    /**
+     * Handles the form submission for adding a new user with an associated review.
+     *
+     * This method processes the form data for adding a new user and their review,
+     * validates and sanitizes the inputs, inserts the user's information and review into the database,
+     * and handles the success or failure of the operation with appropriate logging and user feedback.
+     *
+     * The function:
+     * - Verifies the nonce for security.
+     * - Sanitizes and validates all input data.
+     * - Inserts the new user's data into the appropriate database tables.
+     * - Inserts the associated review data, if applicable.
+     * - Provides success or failure messages and redirects the user as needed.
+     *
+     * @return void
+     */
     public function handle_add_user_form_submission()
     {
         // Check nonce for security
         check_admin_referer('add_user_with_review_nonce');
-
-        /**
-         * Array
-(
-    [_wpnonce] => 3249128e39
-    [_wp_http_referer] => /wp-admin/admin.php?page=review-store-add-person
-    [action] => add_user_with_review
-    [first_name] => Raju
-    [last_name] => Islam
-    [title] => Professional Title
-    [email] => rajufresh00@gmail.com
-    [phone] => 01752134658
-    [address] => 53,Shabek Sharafathgonj Lane (Bobitar Goli), Distrilary Road, Gandaria
-    [zip_code] => 1204
-    [city] => Dhaka
-    [salary] => 5000
-    [employee_type] => Type of Employee
-    [region] => Dhaka
-    [state] => Dhaka
-    [country] => Bangladesh
-    [municipality] => Municipality
-    [department] => Department
-    [fair] => 2
-    [professional] => 5
-    [response] => 2
-    [communication] => 1
-    [decisions] => 2
-    [recommend] => 3
-    [comments] => Say something about Sven Nilsson
-    [createperson] => Add Person Now
-)
-         */
 
         // Sanitize and validate input
         $user_data = [
@@ -239,107 +214,94 @@ class Admin
             'comments' => sanitize_textarea_field($_POST['comments'])
         ];
 
-        // TODO: Snaitize data here 
+        // Log sanitized user and review data
+        error_log('User Data: ' . print_r($user_data, true));
+        error_log('Review Data: ' . print_r($review_data, true));
 
-        // TODO: Rating calculation
-
-        $average_rating = Helper::calculate_rating($review_data); // Use the calculate_rating function
-
-        // TODO: Review content process 
-
-        $review_content = Helper::content_process($review_data, $average_rating);
-
-        // TODO: Generate pdf url by review data 
-
-        $genearte_pdf_url = Helper::generate_pdf_url($user_data['first_name'], $review_content);
-
-        // TODO: Create downloadable product in WooCommerce with the PDF URL
-
-        $product_Id = Helper::create_or_update_downloadable_product($user_data['first_name'], $genearte_pdf_url);
-
-
-        // TODO: Person add in Database 
-
-        // Insert person and review into database
-        $external_external_profile_id = $this->db->insert_user($user_data, $product_Id);
-
-        // TODO: Review add in Database 
-        if ($external_external_profile_id) {
-            $review_id = $this->db->insert_review($external_external_profile_id, $average_rating);
+        // Calculate rating
+        $average_rating = Helper::calculate_rating($review_data);
+        if (!$average_rating) {
+            error_log('Failed to calculate rating');
         }
 
-        if ($review_id) {
-            // Insert each review meta
-            foreach ($review_data as $meta_key => $meta_value) {
-                $this->db->insert_review_meta($review_id, $meta_key, $meta_value);
+        // Process review content
+        $review_content = Helper::content_process($review_data, $average_rating);
+        if (!$review_content) {
+            error_log('Failed to process review content');
+        }
+
+        // Generate PDF URL
+        $generate_pdf_url = Helper::generate_pdf_url($user_data['first_name'], $review_content);
+        if (!$generate_pdf_url) {
+            error_log('Failed to generate PDF URL');
+        }
+
+        // Create downloadable product
+        $product_id = Helper::create_or_update_downloadable_product($user_data['first_name'], $generate_pdf_url);
+        if (!$product_id) {
+            error_log('Failed to create or update product');
+        }
+
+        // Insert person into database
+        $profile_id = $this->db->insert_user($user_data, $product_id);
+        if (!$profile_id) {
+            error_log('Failed to insert user');
+        }
+
+        // Insert review into database
+        if ($profile_id) {
+            $review_id = $this->db->insert_review($profile_id, $average_rating);
+            if (!$review_id) {
+                error_log('Failed to insert review');
             }
         }
 
-        // TODO: Email Sending 
-        // Email sending for person 
-        // Define email details
-        $subject = 'Hurrah! A Review is live!';
-        $message = 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.';
+        // Insert review meta
+        if ($review_id) {
+            foreach ($review_data as $meta_key => $meta_value) {
+                $insert_meta = $this->db->insert_review_meta($review_id, $meta_key, $meta_value);
+                if (!$insert_meta) {
+                    error_log("Failed to insert review meta: $meta_key");
+                }
+            }
+        }
 
-        // Get the singleton instance of the Email class
+        // Send email
         $email = Email::getInstance();
-
-        // Set email details
-        $email->setEmailDetails($user_data['email'], $subject, $message);
-
-        // Send the email
+        $email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.');
         $result = $email->send();
+        if (!$result) {
+            error_log('Failed to send email');
+        }
 
-        // Check if the email was sent successfully
-        // if ($result) {
-        //     echo 'Email sent successfully!';
-        //     wp_redirect(admin_url('admin.php?page=review-store&success=1'));
-        // } else {
-        //     echo 'Failed to send email.';
-        //     wp_redirect(admin_url('admin.php?page=review-store&fail=1'));
-        // }
-
-        // Define a custom message based on the result
-        // $message = $result ? 'Email sent successfully!' : 'Failed to send email.';
-        $message = $result ? 'Successfully Added Person!' : 'Something worng!.';
-
-        // Use the static method to handle the redirection with a success or fail message
+        // Handle form submission result
+        $message = $result ? 'Successfully Added Person!' : 'Something went wrong!.';
         Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
-
-        //    // echo "<pre>";
-        //     print_r($result);
-        //     die();
-
-        /**
-         * 1. All data process with sanitize 
-         * 2. pdf url = Generate pdf and store pdf url 
-         * 3. Product id = Create a product / update 
-         * 1. person id = Person data add 
-         * 2. Email Sending instant 
-         */
-
-        // TODO: Notice showing 
-
-        // Redirect back to the form page
 
         exit;
     }
 
-
+    /**
+     * Handles the form submission for updating a user's profile.
+     *
+     * This method processes the form data for updating a user's profile,
+     * validates and sanitizes the inputs, updates the user's information in the database,
+     * and handles the success or failure of the operation with appropriate logging.
+     *
+     * @return void
+     */
     public function handle_update_user_form_submission()
     {
         // Determine the expected nonce action
-        $nonce_action = isset($_POST['action']) && $_POST['action'] === 'update_person_profile'
-            ? 'update_user_with_review_nonce'
-            : 'add_user_with_review_nonce';
-
-     //   echo "<pre>";
-      //  print_r($_POST);
-        
+        $nonce_action = 'update_user_with_review_nonce';
 
         // Verify the nonce
-        check_admin_referer($nonce_action);
-      //  die();
+        if (!check_admin_referer($nonce_action)) {
+            error_log('Nonce verification failed.');
+            wp_die(__('Nonce verification failed', 'text-domain'));
+        } else {
+            error_log('Nonce verification passed.');
+        }
 
         // Sanitize and validate data
         $profile_id = intval($_POST['profile_id']);
@@ -358,6 +320,8 @@ class Admin
         $country = sanitize_text_field($_POST['country']);
         $municipality = sanitize_text_field($_POST['municipality']);
         $department = sanitize_text_field($_POST['department']);
+
+        error_log('Data sanitized and validated.');
 
         // Prepare data array
         $data = [
@@ -378,21 +342,23 @@ class Admin
             'department' => $department,
         ];
 
+        error_log('Data array prepared: ' . print_r($data, true));
+
         // Call the database update method
         $result = $this->db->update_person($profile_id, $data);
-        // print_r($result);
-
-        // die();
 
         if ($result !== false) {
-            // Success
-            wp_redirect(admin_url('admin.php?page=persons-store&message=updated'));
-            exit;
+            error_log('Successfully updated person with profile_id: ' . $profile_id);
         } else {
-            // Failure
-            wp_redirect(admin_url('admin.php?page=persons-store&message=error'));
-            exit;
+            error_log('Failed to update person with profile_id: ' . $profile_id);
         }
+
+        $message = $result ? 'Successfully Updated Person!' : 'Something went wrong.';
+
+        // Use the static method to handle the redirection with a success or fail message
+        Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
+
+        error_log('Redirection handled with message: ' . $message);
     }
 
 
@@ -403,6 +369,11 @@ class Admin
 
     public function enqueue_scripts()
     {
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/review-store-admin.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/review-store-admin.js', array('jquery'), $this->version, true);
+        // Localize script with AJAX data
+        wp_localize_script($this->plugin_name, 'myPluginAjax', [
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('approve_reject_review_nonce'),
+        ]);
     }
 }

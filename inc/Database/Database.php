@@ -50,6 +50,7 @@ class Database
                 profile_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 first_name VARCHAR(255) NOT NULL,
                 last_name VARCHAR(255) NOT NULL,
+                title VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 phone VARCHAR(20),
                 address VARCHAR(255),
@@ -130,12 +131,13 @@ class Database
             array(
                 'first_name' => $user_data['first_name'],
                 'last_name' => $user_data['last_name'],
+                'title' => $user_data['title'],
                 'email' => $user_data['email'],
                 'phone' => $user_data['phone'],
                 'address' => $user_data['address'],
                 'zip_code' => $user_data['zip_code'],
                 'city' => $user_data['city'],
-                'salary_per_month' => $user_data['salary_per_month'], // Corrected field name
+                'salary_per_month' => $user_data['salary_per_month'],
                 'employee_type' => $user_data['employee_type'],
                 'region' => $user_data['region'],
                 'state' => $user_data['state'],
@@ -149,6 +151,7 @@ class Database
             array(
                 '%s', // first_name
                 '%s', // last_name
+                '%s', // title
                 '%s', // email
                 '%s', // phone
                 '%s', // address
@@ -167,8 +170,14 @@ class Database
             )
         );
 
+        if ($this->wpdb->last_error) {
+            error_log('Database error: ' . $this->wpdb->last_error);
+            return false;
+        }
+
         return $this->wpdb->insert_id;
     }
+
 
 
     /**
@@ -328,6 +337,7 @@ class Database
             u.profile_id, 
             u.first_name, 
             u.last_name, 
+            u.title, 
             u.email, 
             u.phone, 
             u.state, 
@@ -476,7 +486,7 @@ class Database
         $data = [
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
-            // 'title' => $data['title'],
+            'title' => $data['title'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'address' => $data['address'],
@@ -493,6 +503,37 @@ class Database
 
         // Perform the update
         return $wpdb->update($table, $data, $where, $format);
+    }
+
+    /**
+     * Update the status of a review.
+     *
+     * @param int $review_id The ID of the review to update.
+     * @param string $status The new status for the review.
+     * @return bool True on success, false on failure.
+     */
+    public function update_review_status($review_id, $status)
+    {
+        // Define the table name
+        $table = $this->wpdb->prefix . 'ps_reviews';
+
+        // Update the review status
+        $result = $this->wpdb->update(
+            $table,                         // Table name
+            ['status' => $status],          // Data to update
+            ['review_id' => $review_id],    // Where clause
+            ['%s'],                         // Data format for status
+            ['%d']                          // Data format for review_id
+        );
+
+        // Check if the update was successful
+        if ($result === false) {
+            // Log the error if the update fails
+            error_log("Failed to update review status for review ID: $review_id to status: $status. WPDB Error: " . $wpdb->last_error);
+            return false;
+        }
+
+        return true;
     }
 
 

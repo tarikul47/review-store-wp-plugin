@@ -10,7 +10,6 @@
  *
  * @author    Your Name or Your Company
  */
-
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -63,47 +62,53 @@
             </thead>
 
             <tbody id="the-list">
-                <?php foreach ($users as $user): ?>
-                    <tr id="post-id-<?php echo esc_attr($user->profile_id); ?>">
-                        <th scope="row" class="check-column">
-                            <input id="cb-select-<?php echo esc_attr($user->profile_id); ?>" type="checkbox"
-                                name="profile_ids[]" value="<?php echo esc_attr($user->profile_id); ?>">
-                        </th>
-                        <td class="column-first-name" data-colname="First Name"><?php echo esc_html($user->first_name); ?>
-                        </td>
-                        <td class="column-last-name" data-colname="Last Name"><?php echo esc_html($user->last_name); ?></td>
-                        <td class="column-email" data-colname="Email"><?php echo esc_html($user->email); ?></td>
-                        <td class="column-phone" data-colname="Phone"><?php echo esc_html($user->phone); ?></td>
-                        <td class="column-state" data-colname="State"><?php echo esc_html($user->state); ?></td>
-                        <td class="column-department" data-colname="Department"><?php echo esc_html($user->department); ?>
-                        </td>
-                        <td class="column-rating" data-colname="Average Rating">
-                            <?php echo esc_html(number_format($user->average_rating, 2)); ?>
-                        </td>
-                        <td class="column-total-reviews" data-colname="Total Reviews">
-                            <?php echo esc_html($user->total_reviews); ?>
-                        </td>
-                        <td class="column-approved-reviews" data-colname="Approved Reviews">
-                            <?php echo esc_html($user->approved_reviews); ?>
-                        </td>
-                        <td class="column-pending-reviews" data-colname="Pending Reviews">
-                            <?php echo esc_html($user->pending_reviews); ?>
-                        </td>
-                        <td class="column-view-reviews" data-colname="View Reviews">
-                            <a class="table-btn"
-                                href="<?php echo esc_url(admin_url('admin.php?page=persons-store-view-reviews&profile_id=' . esc_attr($user->profile_id))); ?>">View
-                                Reviews</a>
-                        </td>
-                        <td class="column-actions" data-colname="Actions">
-                            <a class="table-btn"
-                                href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
+                <?php if (!empty($users)): ?>
+                    <?php foreach ($users as $user): ?>
+                        <tr id="post-id-<?php echo esc_attr($user->profile_id); ?>">
+                            <th scope="row" class="check-column">
+                                <input id="cb-select-<?php echo esc_attr($user->profile_id); ?>" type="checkbox"
+                                    name="profile_ids[]" value="<?php echo esc_attr($user->profile_id); ?>">
+                            </th>
+                            <td class="column-first-name" data-colname="First Name"><?php echo esc_html($user->first_name); ?>
+                            </td>
+                            <td class="column-last-name" data-colname="Last Name"><?php echo esc_html($user->last_name); ?></td>
+                            <td class="column-email" data-colname="Email"><?php echo esc_html($user->email); ?></td>
+                            <td class="column-phone" data-colname="Phone"><?php echo esc_html($user->phone); ?></td>
+                            <td class="column-state" data-colname="State"><?php echo esc_html($user->title); ?></td>
+                            <td class="column-department" data-colname="Department"><?php echo esc_html($user->department); ?>
+                            </td>
+                            <td class="column-rating" data-colname="Average Rating">
+                                <?php echo esc_html(number_format($user->average_rating, 2)); ?>
+                            </td>
+                            <td class="column-total-reviews" data-colname="Total Reviews">
+                                <?php echo esc_html($user->total_reviews); ?>
+                            </td>
+                            <td class="column-approved-reviews" data-colname="Approved Reviews">
+                                <?php echo esc_html($user->approved_reviews); ?>
+                            </td>
+                            <td class="column-pending-reviews" data-colname="Pending Reviews">
+                                <?php echo esc_html($user->pending_reviews); ?>
+                            </td>
+                            <td class="column-view-reviews" data-colname="View Reviews">
+                                <a class="table-btn"
+                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store-view-reviews&profile_id=' . esc_attr($user->profile_id))); ?>">View
+                                    Reviews</a>
+                            </td>
+                            <td class="column-actions" data-colname="Actions">
+                                <a class="table-btn"
+                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
 
-                            <a class="table-btn"
-                                href="<?php echo esc_url(admin_url('admin.php?page=user-reviews-plugin&action=delete&profile_id=' . esc_attr($user->profile_id))); ?>"
-                                onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
-                        </td>
+                                <a class="table-btn"
+                                    href="<?php echo esc_url(admin_url('admin.php?page=user-reviews-plugin&action=delete&profile_id=' . esc_attr($user->profile_id))); ?>"
+                                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="10"><?php _e('No person found.', 'text-domain'); ?></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
 
             <tfoot>

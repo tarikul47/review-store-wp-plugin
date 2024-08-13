@@ -88,7 +88,7 @@
                         <th scope="row"><label for="zip_code">Zip Code</label></th>
                         <td>
                             <input name="zip_code" type="text" id="zip_code"
-                                value="<?php echo ($person_data !== null) ? esc_html($person_data->zip_code) : '01752134658' ?>"
+                                value="<?php echo ($person_data !== null) ? esc_html($person_data->zip_code) : '1204' ?>"
                                 autocapitalize="none" autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>

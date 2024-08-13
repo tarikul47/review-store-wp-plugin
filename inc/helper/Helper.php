@@ -90,12 +90,12 @@ class Helper
 
             // Check if the PDF file was created successfully
             if (!file_exists($pdf_file) || filesize($pdf_file) == 0) {
-                throw new Exception('PDF file creation failed or the file is empty.');
+                throw new \Exception('PDF file creation failed or the file is empty.');
             }
 
             // Return the URL of the generated PDF
             return $upload_dir['url'] . '/user_' . sanitize_title($user_name) . '_review.pdf';
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log any errors encountered during PDF generation
             error_log('Error generating PDF: ' . $e->getMessage());
             return false;
