@@ -537,4 +537,94 @@ class Database
     }
 
 
+    /**
+     * Get a single column value from a table based on a WHERE condition.
+     *
+     * @param string $table The name of the table (without prefix).
+     * @param string $column The column to retrieve.
+     * @param array $where The WHERE condition as an associative array.
+     * @return mixed The value of the column, or false if not found.
+     */
+    public function get_column_value(string $table, string $column, array $where)
+    {
+        // Use the existing `get` method to fetch the row
+        $result = $this->get($table, $where);
+
+        // Return the specific column value if the row exists, otherwise return false
+        return $result ? $result->{$column} : false;
+    }
+
+
+    public function delete_profile_and_related_data($profile_id)
+    {
+        global $wpdb;
+
+        try {
+            // Start by getting the product ID
+            $product_id = $this->get_column_value('ps_profile', 'product_id', ['profile_id' => $profile_id]);
+
+            // Optional: Begin a pseudo-transaction
+            $wpdb->query('START TRANSACTION');
+
+            // 1. Delete the WooCommerce product directly from the database if it exists
+            if ($product_id) {
+                $product_deleted = $wpdb->delete($wpdb->prefix . 'posts', ['ID' => $product_id, 'post_type' => 'product']);
+                if ($product_deleted === false) {
+                    throw new \Exception('Failed to delete WooCommerce product for profile ID: ' . $profile_id);
+                }
+
+                // You should also delete related product metadata
+                $meta_deleted = $wpdb->delete($wpdb->prefix . 'postmeta', ['post_id' => $product_id]);
+                if ($meta_deleted === false) {
+                    throw new \Exception('Failed to delete WooCommerce product metadata for product ID: ' . $product_id);
+                }
+
+                // Optionally, delete related term relationships
+                $term_relationships_deleted = $wpdb->delete($wpdb->prefix . 'term_relationships', ['object_id' => $product_id]);
+                if ($term_relationships_deleted === false) {
+                    throw new \Exception('Failed to delete WooCommerce product term relationships for product ID: ' . $product_id);
+                }
+            }
+
+            // Start by getting the product ID
+            $review_id = $this->get_column_value('ps_reviews', 'review_id', ['profile_id' => $profile_id]);
+
+            // 2. Delete reviews associated with the profile
+            $reviews_deleted = $this->delete('ps_reviews', ['profile_id' => $profile_id]);
+            if ($reviews_deleted === false) {
+                throw new \Exception('Failed to delete reviews for profile ID: ' . $profile_id);
+            }
+
+            // 3. Delete review meta data associated with the profile's reviews
+            $review_meta_deleted = $this->delete('ps_review_meta', ['review_id' => $review_id]);
+            if ($review_meta_deleted === false) {
+                throw new \Exception('Failed to delete review meta data for profile ID: ' . $profile_id);
+            }
+
+            // 4. Delete the profile itself
+            $profile_deleted = $this->delete('ps_profile', ['profile_id' => $profile_id]);
+            if ($profile_deleted === false) {
+                throw new \Exception('Failed to delete profile ID: ' . $profile_id);
+            }
+
+            // If everything is successful, commit the pseudo-transaction
+            $wpdb->query('COMMIT');
+
+            // Return success
+            return true;
+
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+
+            // Rollback all operations if any step fails
+            $wpdb->query('ROLLBACK');
+
+            // Optionally, you can manually reinsert any data that was deleted before the error occurred
+
+            return false;
+        }
+    }
+
+
+
 }

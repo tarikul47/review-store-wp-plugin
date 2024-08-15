@@ -23,6 +23,9 @@ class AjaxHandler
 
             add_action('wp_ajax_urp_handle_file_upload_async', [$this, 'ps_handle_file_upload']);
             add_action('wp_ajax_urp_process_chunks_async', [$this, 'ps_process_chunks_async']);
+
+
+            add_action('wp_ajax_delete_profile', [$this, 'handle_delete_profile']);
         }
 
 
@@ -111,6 +114,24 @@ class AjaxHandler
             wp_send_json_error(['message' => 'Failed to reject review.']);
         }
     }
+
+    function handle_delete_profile()
+    {
+        if (isset($_POST['action']) && $_POST['action'] == 'delete_profile' && isset($_POST['profile_id'])) {
+            $profile_id = intval($_POST['profile_id']);
+
+            // Assuming `delete_profile_and_related_data()` is a method within a class.
+            $deleted = $this->db->delete_profile_and_related_data($profile_id);
+
+            // If successful, return a JSON response
+            if ($deleted) {
+                wp_send_json_success(array('message' => 'Profile deleted successfully.', 'profile_id' => $profile_id));
+            } else {
+                wp_send_json_error(array('message' => 'Profile deletion failed.'));
+            }
+        }
+    }
+
 
     /**
      * Log errors for debugging purposes.

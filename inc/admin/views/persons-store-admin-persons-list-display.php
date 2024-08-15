@@ -98,9 +98,9 @@
                                 <a class="table-btn"
                                     href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
 
-                                <a class="table-btn"
-                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store&action=delete&profile_id=' . esc_attr($user->profile_id))); ?>"
-                                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                                <a class="table-btn delete-profile-btn" href="#"
+                                    data-profile-id="<?php echo esc_attr($user->profile_id); ?>">Delete</a>
+
                             </td>
                         </tr>
                     <?php endforeach; ?>

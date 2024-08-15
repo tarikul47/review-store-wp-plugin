@@ -10,3 +10,21 @@
 .striped .alternate {
     background-color: white !important;
 }
+
+@keyframes blink {
+    0% {
+        background-color: #ffcccc;
+    }
+
+    50% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: #ffcccc;
+    }
+}
+
+.blink {
+    animation: blink 1s steps(5, start) infinite;
+}
