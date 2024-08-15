@@ -152,7 +152,89 @@ class BulkUploadHandler
 
                 foreach ($chunk as $row) {
                     error_log("data upload here in database");
-                }
+                    //  error_log(print_r($row, true));
+
+                    $data = [
+                        'first_name' => $row[0],
+                        'last_name' => $row[1],
+                        'title' => $row[2],
+                        'email' => $row[3],
+                        'phone' => $row[4],
+                        'address' => $row[5],
+                        'zip_code' => $row[6],
+                        'city' => $row[7],
+                        'salary_per_month' => $row[8],
+                        'employee_type' => $row[9],
+                        'region' => $row[10],
+                        'state' => $row[11],
+                        'country' => $row[12],
+                        'municipality' => $row[13],
+                        'department' => $row[14],
+                        'fair' => $row[15],
+                        'professional' => $row[16],
+                        'response' => $row[17],
+                        'communication' => $row[18],
+                        'decisions' => $row[19],
+                        'recommend' => $row[20],
+                        'comments' => $row[21]
+                    ];
+
+                    // Sanitize and validate input
+                    $user_data = Helper::sanitize_user_data($data);
+                    $review_data = Helper::sanitize_review_data($data);
+
+                    // Log sanitized user and review data
+                    //   error_log('User Data: ' . print_r($user_data, true));
+                    //   error_log('Review Data: ' . print_r($review_data, true));
+
+                    // Calculate rating
+                    $average_rating = Helper::calculate_rating($review_data);
+                    if (!$average_rating) {
+                        error_log('Failed to calculate rating');
+                    }
+
+                    // Process review content
+                    $review_content = Helper::content_process($review_data, $average_rating);
+                    if (!$review_content) {
+                        error_log('Failed to process review content');
+                    }
+
+                    // Generate PDF URL
+                    $generate_pdf_url = Helper::generate_pdf_url($user_data['first_name'], $review_content);
+                    if (!$generate_pdf_url) {
+                        error_log('Failed to generate PDF URL');
+                    }
+
+                    // Create downloadable product
+                    $product_id = Helper::create_or_update_downloadable_product($user_data['first_name'], $generate_pdf_url);
+                    if (!$product_id) {
+                        error_log('Failed to create or update product');
+                    }
+
+                    // Insert person into database
+                    $profile_id = $this->db->insert_user($user_data, $product_id);
+                    if (!$profile_id) {
+                        error_log('Failed to insert user');
+                    }
+
+                    // Insert review into database
+                    if ($profile_id) {
+                        $review_id = $this->db->insert_review($profile_id, $average_rating);
+                        if (!$review_id) {
+                            error_log('Failed to insert review');
+                        }
+                    }
+
+                    // Insert review meta
+                    if ($review_id) {
+                        foreach ($review_data as $meta_key => $meta_value) {
+                            $insert_meta = $this->db->insert_review_meta($review_id, $meta_key, $meta_value);
+                            if (!$insert_meta) {
+                                error_log("Failed to insert review meta: $meta_key");
+                            }
+                        }
+                    }
+                } // foreach end 
 
                 update_option('urp_import_queue', $queue);
 
