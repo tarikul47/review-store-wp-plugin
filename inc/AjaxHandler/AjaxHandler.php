@@ -2,6 +2,7 @@
 namespace Tarikul\PersonsStore\Inc\AjaxHandler;
 
 use Tarikul\PersonsStore\Inc\Database\Database;
+use Tarikul\PersonsStore\Inc\BulkUploadHandler\BulkUploadHandler;
 
 class AjaxHandler
 {
@@ -11,10 +12,43 @@ class AjaxHandler
      */
     public function __construct()
     {
-        add_action('wp_ajax_approve_review', [$this, 'approve_review']);
-        add_action('wp_ajax_reject_review', [$this, 'reject_review']);
+        if (is_admin()) {
+            add_action('wp_ajax_approve_review', [$this, 'approve_review']);
+            add_action('wp_ajax_reject_review', [$this, 'reject_review']);
+
+            // add_action('wp_ajax_urp_handle_file_upload', array($this, 'handle_file_upload'));
+            // add_action('wp_ajax_urp_process_chunks_async', array($this, 'process_chunks_async'));
+
+            // Ensure this file is only loaded in the admin area if it's an admin-specific action
+
+            add_action('wp_ajax_urp_handle_file_upload_async', [$this, 'ps_handle_file_upload']);
+            add_action('wp_ajax_urp_process_chunks_async', [$this, 'ps_process_chunks_async']);
+        }
+
 
         $this->db = Database::getInstance();
+    }
+
+    /**
+     * Handles the file upload request.
+     *
+     * @return void
+     */
+    public function ps_handle_file_upload()
+    {
+        $bulkUploadHandler = BulkUploadHandler::getInstance();
+        $bulkUploadHandler->handle_file_upload();
+    }
+
+    /**
+     * Handles the chunk processing request.
+     *
+     * @return void
+     */
+    public function ps_process_chunks_async()
+    {
+        $bulkUploadHandler = BulkUploadHandler::getInstance();
+        $bulkUploadHandler->process_chunks_async();
     }
 
     /**

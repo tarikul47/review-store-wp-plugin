@@ -5,6 +5,7 @@ use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
 use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
+
 //use Tarikul\ReviewStore\Inc\AjaxHandler\AjaxHandler;
 
 /**
@@ -95,6 +96,14 @@ class Admin
             $this->plugin_name . '-view-reviews',
             array($this, 'urs_view_reviews_page')
         );
+        add_submenu_page(
+            $this->plugin_name,
+            __('Bulk Upload', $this->plugin_text_domain),
+            __('Bulk Upload', $this->plugin_text_domain),
+            'manage_options',
+            $this->plugin_name . '-bulk-upload',
+            array($this, 'urs_bulk_upload')
+        );
 
     }
 
@@ -124,10 +133,9 @@ class Admin
     public function urs_add_user_page()
     {
         // Check if this is an edit form  edit-person&profile_id
-        $profile_id = isset($_GET['edit-person']) && $_GET['profile_id'] && !empty($_GET['profile_id']) ? $_GET['profile_id'] : false;
+        $profile_id = isset($_GET['action']) && $_GET['action'] === 'edit-person' && !empty($_GET['profile_id']) ? $_GET['profile_id'] : false;
+
         $person_data = $this->db->get_person_by_id($profile_id);
-        // echo "<pre>";
-        // print_r($person_data);
 
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-add-person-display.php';
     }
@@ -152,16 +160,15 @@ class Admin
         // Fetch reviews for the selected external profile
         $reviews = $this->db->get_reviews_by_external_profile_id($profile_id);
 
-        // $reviews_with_meta = []; // Initialize a new array to hold reviews with meta data
-
-        // foreach ($reviews as $review) {
-        //     // Fetch meta data for each review and store it in a new array
-        //     $review['meta'] = $this->db->get_review_meta_by_review_id($review['review_id']);
-        //     $reviews_with_meta[] = $review; // Add the modified review to the new array
-        // }
-
         // Include the view file to display the reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-view-reviews-display.php';
+    }
+
+
+    public function urs_bulk_upload()
+    {
+        // Include the view file to display the reviews
+        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-person-bulk-upload.php';
     }
 
     /**
@@ -182,37 +189,18 @@ class Admin
      */
     public function handle_add_user_form_submission()
     {
+        
+        // Define your nonce action dynamically
+        $nonce_action = 'add_user_with_review_nonce';
+
         // Check nonce for security
-        check_admin_referer('add_user_with_review_nonce');
+        if (!Helper::verify_nonce($nonce_action)) {
+            wp_die('Security check failed');
+        }
 
         // Sanitize and validate input
-        $user_data = [
-            'first_name' => sanitize_text_field($_POST['first_name']),
-            'last_name' => sanitize_text_field($_POST['last_name']),
-            'title' => sanitize_text_field($_POST['title']),
-            'email' => sanitize_email($_POST['email']),
-            'phone' => sanitize_text_field($_POST['phone']),
-            'address' => sanitize_text_field($_POST['address']),
-            'zip_code' => sanitize_text_field($_POST['zip_code']),
-            'city' => sanitize_text_field($_POST['city']),
-            'salary_per_month' => sanitize_text_field($_POST['salary_per_month']),
-            'employee_type' => sanitize_text_field($_POST['employee_type']),
-            'region' => sanitize_text_field($_POST['region']),
-            'state' => sanitize_text_field($_POST['state']),
-            'country' => sanitize_text_field($_POST['country']),
-            'municipality' => sanitize_text_field($_POST['municipality']),
-            'department' => sanitize_text_field($_POST['department']),
-        ];
-
-        $review_data = [
-            'fair' => intval($_POST['fair']),
-            'professional' => intval($_POST['professional']),
-            'response' => intval($_POST['response']),
-            'communication' => intval($_POST['communication']),
-            'decisions' => intval($_POST['decisions']),
-            'recommend' => intval($_POST['recommend']),
-            'comments' => sanitize_textarea_field($_POST['comments'])
-        ];
+        $user_data = Helper::sanitize_user_data($_POST);
+        $review_data = Helper::sanitize_review_data($_POST);
 
         // Log sanitized user and review data
         error_log('User Data: ' . print_r($user_data, true));
@@ -374,6 +362,7 @@ class Admin
         wp_localize_script($this->plugin_name, 'myPluginAjax', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('approve_reject_review_nonce'),
+            'import_nonce' => wp_create_nonce('urp_import_nonce') // Add this line for import actions
         ]);
     }
 }

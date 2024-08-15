@@ -96,10 +96,10 @@
                             </td>
                             <td class="column-actions" data-colname="Actions">
                                 <a class="table-btn"
-                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
+                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
 
                                 <a class="table-btn"
-                                    href="<?php echo esc_url(admin_url('admin.php?page=user-reviews-plugin&action=delete&profile_id=' . esc_attr($user->profile_id))); ?>"
+                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store&action=delete&profile_id=' . esc_attr($user->profile_id))); ?>"
                                     onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
                             </td>
                         </tr>

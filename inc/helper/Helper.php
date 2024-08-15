@@ -10,6 +10,50 @@ class Helper
     //     $this->wpdb = $wpdb;
     // }
 
+    public static function verify_nonce($action)
+    {
+        // This will check the nonce and die if it's invalid
+        if (!check_admin_referer($action)) {
+            error_log('Nonce verification failed for action: ' . $action);
+            return false;
+        }
+        return true;
+    }
+
+    public static function sanitize_user_data($data)
+    {
+        return [
+            'first_name' => sanitize_text_field($data['first_name']),
+            'last_name' => sanitize_text_field($data['last_name']),
+            'title' => sanitize_text_field($data['title']),
+            'email' => sanitize_email($data['email']),
+            'phone' => sanitize_text_field($data['phone']),
+            'address' => sanitize_text_field($data['address']),
+            'zip_code' => sanitize_text_field($data['zip_code']),
+            'city' => sanitize_text_field($data['city']),
+            'salary_per_month' => sanitize_text_field($data['salary_per_month']),
+            'employee_type' => sanitize_text_field($data['employee_type']),
+            'region' => sanitize_text_field($data['region']),
+            'state' => sanitize_text_field($data['state']),
+            'country' => sanitize_text_field($data['country']),
+            'municipality' => sanitize_text_field($data['municipality']),
+            'department' => sanitize_text_field($data['department']),
+        ];
+    }
+
+    public static function sanitize_review_data($data)
+    {
+        return [
+            'fair' => intval($data['fair']),
+            'professional' => intval($data['professional']),
+            'response' => intval($data['response']),
+            'communication' => intval($data['communication']),
+            'decisions' => intval($data['decisions']),
+            'recommend' => intval($data['recommend']),
+            'comments' => sanitize_textarea_field($data['comments'])
+        ];
+    }
+
     /**
      * Calculate the average rating based on review data.
      *
