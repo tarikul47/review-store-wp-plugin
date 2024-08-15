@@ -24,7 +24,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
             <input type="search" id="post-search-input" name="s" value="">
             <input type="submit" id="search-submit" class="button" value="Search Pages">
         </p>
-        <div class="tablenav top">
+        <!-- <div class="tablenav top">
             <div class="alignleft actions bulkactions">
                 <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
                 <select name="action" id="bulk-action-selector-top">
@@ -37,13 +37,13 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
             <div class="tablenav-pages one-page"><span class="displaying-num"><?php echo count($approved_reviews); ?>
                     items</span></div>
             <br class="clear">
-        </div>
+        </div> -->
         <table class="wp-list-table widefat fixed striped table-view-list pages">
             <thead>
                 <tr>
-                    <td id="cb" class="manage-column column-cb check-column">
+                    <!-- <td id="cb" class="manage-column column-cb check-column">
                         <input id="cb-select-all-1" type="checkbox">
-                    </td>
+                    </td> -->
                     <th scope="col" class="manage-column">Person</th>
                     <th scope="col" class="manage-column">Fair & Impartial</th>
                     <th scope="col" class="manage-column">Professional</th>
@@ -59,10 +59,10 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                 <?php if (!empty($approved_reviews)): ?>
                     <?php foreach ($approved_reviews as $review): ?>
                         <tr id="post-id-<?php echo esc_attr($review['review_id']); ?>">
-                            <th scope="row" class="check-column">
+                            <!-- <th scope="row" class="check-column">
                                 <input id="cb-select-<?php echo esc_attr($review['review_id']); ?>" type="checkbox"
-                                    value="<?php echo esc_attr($review['review_id']); ?>">
-                            </th>
+                                    value="<?php // echo esc_attr($review['review_id']); ?>">
+                            </th> -->
                             <td class="column-first-name" data-colname="Name">
                                 <?php echo $this->db->get_person_name_by_id($review['profile_id']); ?>
                             </td>
@@ -100,9 +100,9 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
             </tbody>
             <tfoot>
                 <tr>
-                    <td id="cb" class="manage-column column-cb check-column">
+                    <!-- <td id="cb" class="manage-column column-cb check-column">
                         <input id="cb-select-all-2" type="checkbox">
-                    </td>
+                    </td> -->
                     <th scope="col" class="manage-column">Name</th>
                     <th scope="col" class="manage-column">Fair & Impartial</th>
                     <th scope="col" class="manage-column">Professional</th>
@@ -115,7 +115,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                 </tr>
             </tfoot>
         </table>
-        <div class="tablenav bottom">
+        <!-- <div class="tablenav bottom">
             <div class="alignleft actions bulkactions">
                 <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
                 <select name="action2" id="bulk-action-selector-bottom">
@@ -128,6 +128,6 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
             <div class="tablenav-pages one-page"><span class="displaying-num"><?php echo count($approved_reviews); ?>
                     items</span></div>
             <br class="clear">
-        </div>
+        </div> -->
     </form>
 </div>
