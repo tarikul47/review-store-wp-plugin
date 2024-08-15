@@ -16,7 +16,7 @@
 <div class="wrap">
     <h2>User List - <?php echo count($users); ?></h2>
 
-    <form id="posts-filter" method="get">
+    <form id="bulk-action-form" method="post">
         <p class="search-box">
             <label class="screen-reader-text" for="post-search-input">Search Users:</label>
             <input type="search" id="post-search-input" name="s" value="">
@@ -28,8 +28,8 @@
                 <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
                 <select name="action" id="bulk-action-selector-top">
                     <option value="-1">Bulk actions</option>
-                    <option value="edit" class="hide-if-no-js">Edit</option>
-                    <option value="trash">Move to Trash</option>
+                    <!-- <option value="edit" class="hide-if-no-js">Edit</option> -->
+                    <option value="delete">Move to Delete</option>
                 </select>
                 <input type="submit" id="doaction" class="button action" value="Apply">
             </div>
@@ -137,8 +137,8 @@
                 <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
                 <select name="action2" id="bulk-action-selector-bottom">
                     <option value="-1">Bulk actions</option>
-                    <option value="edit" class="hide-if-no-js">Edit</option>
-                    <option value="trash">Move to Trash</option>
+                    <!-- <option value="edit" class="hide-if-no-js">Edit</option> -->
+                    <option value="delete">Move to Delete</option>
                 </select>
                 <input type="submit" id="doaction2" class="button action" value="Apply">
             </div>

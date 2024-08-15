@@ -362,7 +362,8 @@ class Admin
         wp_localize_script($this->plugin_name, 'myPluginAjax', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('approve_reject_review_nonce'),
-            'import_nonce' => wp_create_nonce('urp_import_nonce') // Add this line for import actions
+            'import_nonce' => wp_create_nonce('urp_import_nonce'), // Add this line for import actions
+            'bulk_delete_nonce' => wp_create_nonce('bulk_delete_nonce') // Add this line for import actions
         ]);
     }
 }

@@ -26,6 +26,9 @@ class AjaxHandler
 
 
             add_action('wp_ajax_delete_profile', [$this, 'handle_delete_profile']);
+
+            add_action('wp_ajax_urp_bulk_delete_profiles', [$this, 'urp_bulk_delete_profiles']);
+
         }
 
 
@@ -131,6 +134,39 @@ class AjaxHandler
             }
         }
     }
+
+    function urp_bulk_delete_profiles()
+    {
+        check_ajax_referer('bulk_delete_nonce', 'security');
+
+        if (!isset($_POST['profile_ids']) || !is_array($_POST['profile_ids'])) {
+            wp_send_json_error(['message' => 'Invalid request.']);
+        }
+
+        $profile_ids = array_map('intval', $_POST['profile_ids']);
+
+        $deleted_profiles = 0;
+        $failed_profiles = [];
+
+        foreach ($profile_ids as $profile_id) {
+            $deleted = $this->db->delete_profile_and_related_data($profile_id);
+            if ($deleted) {
+                $deleted_profiles++;
+            } else {
+                $failed_profiles[] = $profile_id;
+            }
+        }
+
+        if ($deleted_profiles > 0) {
+            wp_send_json_success([
+                'deleted' => $deleted_profiles,
+                'failed' => $failed_profiles
+            ]);
+        } else {
+            wp_send_json_error(['message' => 'No profiles were deleted.']);
+        }
+    }
+
 
 
     /**

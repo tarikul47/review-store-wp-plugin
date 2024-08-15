@@ -219,5 +219,53 @@
         },
       });
     });
+
+    /**
+     * Bulk Person delete
+     */
+    $("#bulk-action-form").on("submit", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      var action = $("#bulk-action-selector-top").val();
+      if (action === "delete") {
+        // Collect selected profile IDs
+        var selectedIds = $('input[name="profile_ids[]"]:checked')
+          .map(function () {
+            return $(this).val();
+          })
+          .get();
+
+        if (selectedIds.length === 0) {
+          alert("Please select at least one profile to delete.");
+          return;
+        }
+
+        if (confirm("Are you sure you want to delete the selected profiles?")) {
+          $.ajax({
+            url: myPluginAjax.ajax_url,
+            type: "POST",
+            data: {
+              action: "urp_bulk_delete_profiles",
+              security: myPluginAjax.bulk_delete_nonce,
+              profile_ids: selectedIds,
+            },
+            success: function (response) {
+              if (response.success) {
+                // Reload the page to reflect changes
+                location.reload();
+              } else {
+                alert(response.data.message);
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("AJAX Error:", status, error);
+              alert("An error occurred while processing your request.");
+            },
+          });
+        }
+      } else {
+        alert("Invalid action selected.");
+      }
+    });
   }); // document read function
 })(jQuery);
