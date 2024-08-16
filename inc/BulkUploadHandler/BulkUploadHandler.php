@@ -3,6 +3,8 @@
 namespace Tarikul\PersonsStore\Inc\BulkUploadHandler;
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\PersonsStore\Inc\Email\Email;
+
 
 class BulkUploadHandler
 {
@@ -233,6 +235,31 @@ class BulkUploadHandler
                                 error_log("Failed to insert review meta: $meta_key");
                             }
                         }
+                    }
+
+
+                    // Queue email notification for the user
+                    $email = $user_data['email'];
+                    $subject = 'Hurrah! A Review is live!';
+                    $message = 'Hello ' . $user_data['first_name'] . ',<br>One of your reviews is now live. You can check it.';
+
+                    error_log(print_r($email, true));
+                    error_log(print_r($subject, true));
+                    error_log(print_r($message, true));
+
+                    // Enqueue the email after inserting user data
+                    $email = Email::getInstance();
+                    $email->setEmailDetails(
+                        $user_data['email'], // recipient email
+                        $subject, // subject
+                        $message, // message
+                        [], // headers, optional
+                        []  // attachments, optional
+                    );
+                    $email_queued = $email->enqueue();
+
+                    if (!$email_queued) {
+                        error_log("Failed to enqueue email for: " . print_r($email, true));
                     }
                 } // foreach end 
 
