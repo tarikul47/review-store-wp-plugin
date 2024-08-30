@@ -5,7 +5,7 @@
  */
 
 /* Import specific page/module CSS files */
-@import url('parts/add_edit-form.css');
+@import url('Parts/add_edit-form.css');
 
 .striped .alternate {
     background-color: white !important;

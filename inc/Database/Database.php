@@ -342,7 +342,7 @@ class Database
             u.phone, 
             u.state, 
             u.department,
-            IFNULL(AVG(r.rating), 0) as average_rating,
+            IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0) as average_rating,
             COUNT(r.review_id) as total_reviews,
             SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
             SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
@@ -625,6 +625,22 @@ class Database
         }
     }
 
+    public function get_profiles_with_ratings()
+    {
+        global $wpdb;
+        $profiles_table = $wpdb->prefix . 'ps_profile';
+        $ratings_table = $wpdb->prefix . 'ps_reviews';
+
+        $results = $wpdb->get_results("
+            SELECT p.id, p.first_name, p.last_name, p.professional_title, p.department, p.municipality, 
+                   COALESCE(AVG(r.rating), 0) AS average_rating
+            FROM $profiles_table p
+            LEFT JOIN $ratings_table r ON p.id = r.person_id
+            GROUP BY p.id
+        ");
+
+        return $results;
+    }
 
 
 }

@@ -53,8 +53,11 @@ define('PLUGIN_TEXT_DOMAIN', 'persons-store');
 
 
 // New constants for admin directories
-define('PLUGIN_ADMIN_DIR', PLUGIN_NAME_DIR . 'inc/admin/');
+define('PLUGIN_ADMIN_DIR', PLUGIN_NAME_DIR . 'inc/Admin/');
 define('PLUGIN_ADMIN_VIEWS_DIR', PLUGIN_ADMIN_DIR . 'views/');
+
+define('PLUGIN_FRONTEND_DIR', PLUGIN_NAME_DIR . 'inc/Frontend/');
+define('PLUGIN_FRONTEND_VIEWS_DIR', PLUGIN_FRONTEND_DIR . 'views/');
 
 
 /**
@@ -68,6 +71,13 @@ register_activation_hook(__FILE__, array(Activate::class, 'activate'));
  * This action is documented in includes/Core/class-deactivator.php
  */
 register_deactivation_hook(__FILE__, array(Deactivate::class, 'deactivate'));
+
+
+/**
+ * Add custom cron schedule
+ */
+add_filter('cron_schedules', [Activate::class, 'ps_add_cron_schedule']);
+
 
 /**
  * Plugin Singleton Container

@@ -10,3 +10,10 @@
                 -  
     - Admin
     - Frontend 
+
+
+    #TODO: 
+    1. User delete but email can't delete 
+    1. Email table need to modify 
+        - we can add user id [by the id we can delete email record]
+        - We can remove subjct and message field. 

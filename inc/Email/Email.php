@@ -51,7 +51,9 @@ class Email
         global $wpdb;
         $this->wpdb = $wpdb;
 
-        add_action('urp_process_email_queue_event', [$this, 'processQueue']);
+        // Register hooks within the constructor
+        add_action('ps_process_email_queue_event', [$this, 'processQueue']);
+        error_log('Email class constructor called.');
     }
 
     /**
@@ -63,9 +65,13 @@ class Email
     {
         if (self::$instance === null) {
             self::$instance = new self();
+            //    error_log('Email instance created'); // Log instance creation
+        } else {
+            // error_log('Email instance reused'); // Log instance reuse
         }
         return self::$instance;
     }
+
 
     /**
      * Set the email details including the recipient, subject, message, headers, and attachments.
@@ -129,6 +135,8 @@ class Email
      */
     public function processQueue()
     {
+        error_log(print_r('Email class - processQueue run', true));
+
         $table_name = $this->wpdb->prefix . 'ps_email_queue';
         $batch_size = 3;
 
@@ -139,6 +147,9 @@ class Email
             // Create an instance for sending each email
             $this->setEmailDetails($email->to_email, $email->subject, $email->message);
             $sent = $this->send();
+
+            error_log(print_r('Email $sent', true));
+            error_log(print_r($sent, true));
 
             // Update email status based on send result
             $status = $sent ? 'sent' : 'failed';
@@ -155,38 +166,27 @@ class Email
         $pending_emails_count = $this->wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE status = 'pending'");
 
         if ($pending_emails_count > 0) {
-            if (!wp_next_scheduled('urp_process_email_queue_event')) {
-                wp_schedule_single_event(time() + 300, 'urp_process_email_queue_event');
+            if (!wp_next_scheduled('ps_process_email_queue_event')) {
+                wp_schedule_single_event(time() + 300, 'ps_process_email_queue_event');
             }
+        } else {
+            // Optionally, clean up cron job if queue is empty
+            $this->cleanup_cron_job();
         }
     }
 
     /**
-     * Schedule email queue processing to run every 5 minutes.
-     * If no scheduled event exists, create one.
+     * Cleanup cron job if there are no pending emails.
      */
-    public static function scheduleProcessing()
+    private function cleanup_cron_job()
     {
-        if (!wp_next_scheduled('urp_process_email_queue_event')) {
-            wp_schedule_event(time(), 'five_minutes', 'urp_process_email_queue_event');
+        // Remove cron job if there are no pending emails
+        $timestamp = wp_next_scheduled('ps_process_email_queue_event');
+        if ($timestamp) {
+            wp_unschedule_event($timestamp, 'ps_process_email_queue_event');
         }
     }
 
-    /**
-     * Define a custom interval for the cron schedule.
-     * Adds a 'five_minutes' interval to the existing cron schedules.
-     *
-     * @param array $schedules Existing cron schedules.
-     * @return array Modified cron schedules with the custom 'five_minutes' interval.
-     */
-    public static function addCustomCronSchedule($schedules)
-    {
-        $schedules['five_minutes'] = array(
-            'interval' => 300, // 5 minutes in seconds
-            'display' => __('Every Five Minutes')
-        );
-        return $schedules;
-    }
 }
 
 // Hook functions for WP Cron (Uncomment and use as needed)
@@ -205,3 +205,10 @@ add_filter('cron_schedules', function ($schedules) {
     return Email::addCustomCronSchedule($schedules);
 });
 */
+
+// Ensure class is instantiated
+// add_action('plugins_loaded', function () {
+//     $email_instance = Email::getInstance();
+//     var_dump($email_instance); // Check if the instance is created
+//     die(); // Stop execution to see the output
+// });

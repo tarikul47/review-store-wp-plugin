@@ -36,5 +36,34 @@ class Activate
 
         // Create required tables for the plugin.
         Database\Database::create_tables();
+
+        /**
+         * Schedule email queue processing to run every 5 minutes.
+         * If no scheduled event exists, create one.
+         */
+
+        if (!wp_next_scheduled('ps_process_email_queue_event')) {
+            wp_schedule_event(time(), 'ps_five_minutes', 'ps_process_email_queue_event');
+            error_log(print_r('Activate class - wp_schedule_event', true)); // Log the schedules to ensure yours is added
+        }
+
+    }
+    /**
+     * Define a custom interval for the cron schedule.
+     * Adds a 'five_minutes' interval to the existing cron schedules.
+     *
+     * @param array $schedules Existing cron schedules.
+     * @return array Modified cron schedules with the custom 'five_minutes' interval.
+     */
+
+    public static function ps_add_cron_schedule($schedules)
+    {
+        $schedules['ps_five_minutes'] = array(
+            'interval' => 60, // 5 minutes in seconds
+            'display' => __('Every Five Minutes')
+        );
+      //  error_log(print_r('Activate class - $schedules', true)); // Log the schedules to ensure yours is added
+        error_log(print_r('$schedules set', true)); // Log the schedules to ensure yours is added
+        return $schedules;
     }
 }

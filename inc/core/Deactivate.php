@@ -12,7 +12,8 @@ namespace Tarikul\PersonsStore\Inc\Core;
  *
  * @author     Your Name or Your Company
  **/
-class Deactivate {
+class Deactivate
+{
 
 	/**
 	 * Short Description.
@@ -21,8 +22,12 @@ class Deactivate {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
-
+	public static function deactivate()
+	{
+		$timestamp = wp_next_scheduled('ps_process_email_queue_event');
+		if ($timestamp) {
+			wp_unschedule_event($timestamp, 'ps_process_email_queue_event');
+		}
 	}
 
 }

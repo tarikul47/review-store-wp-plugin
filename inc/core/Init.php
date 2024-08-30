@@ -2,6 +2,7 @@
 namespace Tarikul\PersonsStore\Inc\Core;
 
 use Tarikul\PersonsStore\Inc\Admin as Admin;
+use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Frontend as Frontend;
 
 /**
@@ -90,6 +91,12 @@ class Init
     private function load_dependencies()
     {
         $this->loader = new Loader();
+
+        // Email Initaite 
+        $email = Email::getInstance();
+
+        // template controller class 
+        $template = new Frontend\TemplateController();
 
     }
 

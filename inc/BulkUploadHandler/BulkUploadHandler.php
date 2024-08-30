@@ -243,9 +243,9 @@ class BulkUploadHandler
                     $subject = 'Hurrah! A Review is live!';
                     $message = 'Hello ' . $user_data['first_name'] . ',<br>One of your reviews is now live. You can check it.';
 
-                    error_log(print_r($email, true));
-                    error_log(print_r($subject, true));
-                    error_log(print_r($message, true));
+                    //  error_log(print_r($email, true));
+                    //  error_log(print_r($subject, true));
+                    //  error_log(print_r($message, true));
 
                     // Enqueue the email after inserting user data
                     $email = Email::getInstance();
