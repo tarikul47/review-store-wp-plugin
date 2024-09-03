@@ -12,13 +12,23 @@ class Helper
 
     public static function verify_nonce($action)
     {
-        // This will check the nonce and die if it's invalid
-        if (!check_admin_referer($action)) {
-            error_log('Nonce verification failed for action: ' . $action);
-            return false;
+        // Check if we are in an admin or frontend context
+        if (is_admin()) {
+            // For admin requests, use check_admin_referer
+            if (!check_admin_referer($action)) {
+                error_log('Nonce verification failed for action: ' . $action);
+                return false;
+            }
+        } else {
+            // For frontend requests, use check_ajax_referer
+            if (!check_ajax_referer($action)) {
+                error_log('Nonce verification failed for action: ' . $action);
+                return false;
+            }
         }
         return true;
     }
+
 
     public static function sanitize_user_data($data)
     {
@@ -83,14 +93,21 @@ class Helper
             'communication' => 'Do you feel that the official has good communication, good response time (from 1 to 5)',
             'decisions' => 'Do you feel that the official makes fair decisions (from 1 to 5)',
             'recommend' => 'Do you recommend this official employee? (from 1 to 5)',
+            'comments' => 'Review Message',
         ];
 
         $review_content = '';
 
         foreach (array_keys($static_content) as $key) {
-            $score = isset($review_data[$key]) ? intval($review_data[$key]) : 0;
-            $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($score) . '</p>';
+            if ($key !== 'comments') {
+                $score = isset($review_data[$key]) ? intval($review_data[$key]) : 0;
+                $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($score) . '</p>';
+            }
+            $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($review_data[$key]) . '</p>';
+
         }
+
+
 
         // Create the review content
         $content = '<h1>Reviews for Official</h1>';

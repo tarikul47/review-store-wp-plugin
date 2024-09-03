@@ -104,11 +104,6 @@
     console.log($importProgressBar);
     console.log($importProgressText);
 
-    var $importForm = $("#urp-import-form");
-    var $importResults = $("#import-progress-container");
-    var $importProgressBar = $("#import-progress-bar");
-    var $importProgressText = $("#import-progress-text");
-
     $importForm.on("submit", function (e) {
       e.preventDefault();
 

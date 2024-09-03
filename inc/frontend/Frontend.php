@@ -1,6 +1,7 @@
 <?php
 
 namespace Tarikul\PersonsStore\Inc\Frontend;
+use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
 
 /**
  * The public-facing functionality of the plugin.
@@ -13,7 +14,8 @@ namespace Tarikul\PersonsStore\Inc\Frontend;
  *
  * @author    Your Name or Your Company
  */
-class Frontend {
+class Frontend
+{
 
 	/**
 	 * The ID of this plugin.
@@ -50,14 +52,15 @@ class Frontend {
 	 * @param       string $version            The version of this plugin.
 	 * @param       string $plugin_text_domain The text domain of this plugin.
 	 */
-	public function __construct( $plugin_name, $version, $plugin_text_domain ) {
+	public function __construct($plugin_name, $version, $plugin_text_domain)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->plugin_text_domain = $plugin_text_domain;
 
-		
-
+		// Initialize AJAX handling
+		new AjaxHandler();
 	}
 
 	/**
@@ -65,7 +68,8 @@ class Frontend {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -79,7 +83,7 @@ class Frontend {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-plugin-name-frontend.css', array(), $this->version, 'all' );
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/wp-plugin-name-frontend.css', array(), $this->version, 'all');
 
 	}
 
@@ -88,7 +92,8 @@ class Frontend {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -102,8 +107,11 @@ class Frontend {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-plugin-name-frontend.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script($this->plugin_name, PLUGIN_NAME_URL . 'inc/Frontend/js/review-store-frontend.js', array('jquery'), $this->version, false);
+		// Localize script with AJAX data
+		wp_localize_script($this->plugin_name, 'myPluginAjax', [
+			'ajax_url' => admin_url('admin-ajax.php'),
+		]);
 	}
 
 }

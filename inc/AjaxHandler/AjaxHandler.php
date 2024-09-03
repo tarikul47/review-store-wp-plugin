@@ -3,6 +3,7 @@ namespace Tarikul\PersonsStore\Inc\AjaxHandler;
 
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\BulkUploadHandler\BulkUploadHandler;
+use Tarikul\PersonsStore\Inc\Helper\Helper;
 
 class AjaxHandler
 {
@@ -31,8 +32,56 @@ class AjaxHandler
 
         }
 
-
         $this->db = Database::getInstance();
+
+        $this->define_frontend_action();
+    }
+
+    /**
+     * Define frontend-related actions
+     */
+    public function define_frontend_action()
+    {
+        // AJAX action for logged-in users
+        add_action('wp_ajax_add_review', [$this, 'handle_frontend_add_review']);
+    }
+
+    /**
+     * Handle frontend review submission
+     */
+    public function handle_frontend_add_review()
+    {
+        // Define your nonce action dynamically
+        $nonce_action = 'public_add_review_nonce';
+
+        // Check nonce for security
+        if (!Helper::verify_nonce($nonce_action)) {
+            wp_die('Security check failed');
+        }
+
+        // Sanitize and validate input
+        $review_data = Helper::sanitize_review_data($_POST);
+
+        // Calculate rating
+        $average_rating = Helper::calculate_rating($review_data);
+        if (!$average_rating) {
+            error_log('Failed to calculate rating');
+        }
+
+        // Process review content
+        $review_content = Helper::content_process($review_data, $average_rating);
+        if (!$review_content) {
+            error_log('Failed to process review content');
+        }
+
+
+
+
+        echo "<pre>";
+        print_r($review_content);
+
+
+        wp_die(); // Ensure proper termination of the AJAX request
     }
 
     /**
