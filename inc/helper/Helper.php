@@ -53,7 +53,7 @@ class Helper
 
     public static function sanitize_review_data($data)
     {
-        return [
+        $sanitized_data = [
             'fair' => intval($data['fair']),
             'professional' => intval($data['professional']),
             'response' => intval($data['response']),
@@ -62,6 +62,13 @@ class Helper
             'recommend' => intval($data['recommend']),
             'comments' => sanitize_textarea_field($data['comments'])
         ];
+
+        // Check if profile_id exists, sanitize and include it
+        if (!empty($data['profile_id'])) {
+            $sanitized_data['profile_id'] = intval($data['profile_id']);
+        }
+
+        return $sanitized_data;
     }
 
     /**
@@ -239,7 +246,7 @@ class Helper
             }
 
             return [
-                'profile_id' => $current_user->ID,
+                'id' => $current_user->ID,
                 'roles' => $current_user->roles,
                 'name' => $name
             ];

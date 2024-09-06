@@ -15,6 +15,7 @@ use Tarikul\PersonsStore\Inc\Database\Database;
 $profile_id = (isset($_GET['profile_id']) && !empty($_GET['profile_id'])) ? $_GET['profile_id'] : false;
 $db = Database::getInstance();
 $person_data = $db->get_person_by_id($profile_id);
+$is_review_exist = $db->get_existing_review($profile_id);
 
 //echo "<pre>";
 
@@ -247,10 +248,20 @@ get_header();
 
                 </tbody>
             </table>
-            <p class="submit"><input type="submit" name="singleperson" id="singlereview" class="button button-primary"
-                    value="Submit Review"></p>
-        </form>
+
+            <?php if ($is_review_exist): ?>
+                <p>You have already reviewed this profile</p>
+            <?php else: ?>
+                <p class="submit"><input type="submit" name="singleperson" id="singlereview" class="button button-primary"
+                        value="Submit Review"></p>
+            <?php endif; ?>
+
+            <div id="user-review-form" style="display:none;">
+                <p id="review-message"></p>
+            </div>
     </div>
+    </form>
+</div>
 </div>
 <?php
 get_footer();

@@ -178,29 +178,70 @@ class Database
         return $this->wpdb->insert_id;
     }
 
+    /**
+     * Final 
+     * Insert a new user into the custom profile table.
+     *
+     * @param array $profile_id The perosn id .
+     * @param int $reviewer_user_id The ID of the curren user id.
+     * @return boolean|\WP_Error  The ID of the newly inserted user.
+     */
+    public function get_existing_review($profile_id)
+    {
+        $user_info = Helper::get_current_user_id_and_roles();
 
+        if (!$user_info) {
+            return new WP_Error('unauthorized', 'Unauthorized access.');
+        }
+
+        // Get reviewer ID and check if user is an administrator
+        $reviewer_user_id = $user_info['id'];
+        $is_admin = in_array('administrator', $user_info['roles']);
+
+        // Restrict regular users to one review per profile
+        if (!$is_admin) {
+            // Check if the user has already submitted a review for this profile
+            $existing_review = $this->wpdb->get_var(
+                $this->wpdb->prepare(
+                    "SELECT review_id FROM {$this->wpdb->prefix}ps_reviews WHERE profile_id = %d AND reviewer_user_id = %d",
+                    $profile_id,
+                    $reviewer_user_id
+                )
+            );
+
+            // If a review already exists, return an error or a message
+            if ($existing_review) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Insert a new review into the reviews table.
      *
-     * @param int $profile_id The ID of the external profile being reviewed.
-     * @param int $reviewer_external_profile_id The ID of the user who is reviewing.
+     * @param int $profile_id The ID of the profile being reviewed.
+     * @param int $reviewer_user_id The ID of the user who is reviewing.
      * @param float $rating The rating given by the reviewer.
      * @param string $status The status of the review ('pending', 'approved', 'rejected').
-     * @return int The ID of the newly inserted review.
+     * @return mixed|\WP_Error The ID of the newly inserted review, or a WP_Error object on failure.
      */
+
     public function insert_review($profile_id, $average_rating, $status = 'pending')
     {
         // TODO: current user id = $reviewer_external_profile_id
         // TODO: current user if admin then status will be approve 
         $user_info = Helper::get_current_user_id_and_roles();
 
-        if ($user_info) {
-            $reviewer_user_id = $user_info['profile_id'];
-            $status = in_array('administrator', $user_info['roles']) ? 'approved' : $status;
-        } else {
+        if (!$user_info) {
             die('Cheating');
         }
+
+        // Get reviewer ID and check if user is an administrator
+        $reviewer_user_id = $user_info['id'];
+        $is_admin = in_array('administrator', $user_info['roles']);
+        $status = $is_admin ? 'approved' : $status;
 
         $this->wpdb->insert(
             "{$this->wpdb->prefix}ps_reviews",

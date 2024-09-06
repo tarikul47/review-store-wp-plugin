@@ -8,6 +8,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
 class AjaxHandler
 {
 
+    private $db;
     /**
      * Constructor to add AJAX actions.
      */
@@ -51,38 +52,63 @@ class AjaxHandler
      */
     public function handle_frontend_add_review()
     {
-        // Define your nonce action dynamically
+        // Define nonce action
         $nonce_action = 'public_add_review_nonce';
 
         // Check nonce for security
         if (!Helper::verify_nonce($nonce_action)) {
-            wp_die('Security check failed');
+            wp_send_json_error(['message' => 'Security check failed']);
         }
 
         // Sanitize and validate input
         $review_data = Helper::sanitize_review_data($_POST);
 
+        // Ensure profile_id exists in the review data
+        if (empty($review_data['profile_id'])) {
+            wp_send_json_error(['message' => 'Profile ID is missing']);
+        }
+
         // Calculate rating
         $average_rating = Helper::calculate_rating($review_data);
         if (!$average_rating) {
-            error_log('Failed to calculate rating');
+            wp_send_json_error(['message' => 'Failed to calculate rating']);
         }
 
-        // Process review content
-        $review_content = Helper::content_process($review_data, $average_rating);
-        if (!$review_content) {
-            error_log('Failed to process review content');
+        // Check if the user has already submitted a review for this profile
+        $existing_review = $this->db->get_existing_review($review_data['profile_id']);
+        if ($existing_review) {
+            wp_send_json_error(['message' => 'You have already reviewed this profile']);
         }
 
+        // Insert the review into the database
+        $review_id = $this->db->insert_review($review_data['profile_id'], $average_rating);
+        if (!$review_id) {
+            wp_send_json_error(['message' => 'Failed to insert review']);
+        }
 
+        // Insert review meta data
+        foreach ($review_data as $meta_key => $meta_value) {
+            if ($meta_key !== 'profile_id') {  // Avoid inserting profile_id as meta
+                $insert_meta = $this->db->insert_review_meta($review_id, $meta_key, $meta_value);
+                if (!$insert_meta) {
+                    wp_send_json_error(['message' => "Failed to insert review meta: $meta_key"]);
+                }
+            }
+        }
 
+        // Determine the message based on the review status
+        $user_info = Helper::get_current_user_id_and_roles();
+        $is_admin = in_array('administrator', $user_info['roles']);
+        $message = $is_admin
+            ? 'Your review has been published successfully.'
+            : 'Your review is pending and will be published after approval. You will receive an email notification.';
 
-        echo "<pre>";
-        print_r($review_content);
-
-
+        // Send success message
+        wp_send_json_success(['message' => $message]);
+        
         wp_die(); // Ensure proper termination of the AJAX request
     }
+
 
     /**
      * Handles the file upload request.
