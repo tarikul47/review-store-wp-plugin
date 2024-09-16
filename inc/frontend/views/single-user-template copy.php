@@ -18,7 +18,6 @@ $person_data = $db->get_person_by_id($profile_id);
 $is_review_exist = $db->get_existing_review($profile_id);
 
 //echo "<pre>";
-
 //print_r($person_data);
 get_header();
 

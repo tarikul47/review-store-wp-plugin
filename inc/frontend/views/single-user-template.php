@@ -17,9 +17,9 @@ $db = Database::getInstance();
 $person_data = $db->get_person_by_id($profile_id);
 $is_review_exist = $db->get_existing_review($profile_id);
 
-//echo "<pre>";
+// echo "<pre>";
 
-//print_r($person_data);
+// print_r($person_data);
 get_header();
 
 ?>
@@ -36,7 +36,7 @@ get_header();
                     </div>
                     <!-- Person Name Here -->
                     <div class="person-title">
-                        <h3>What do others think of <span>sven nilsson</span> ? </h3>
+                        <h3>What do others think of <span><?php echo ($person_data !== null) ? esc_html($person_data->first_name) : '' ?></span> ? </h3>
                     </div>
                     <!-- Person Info Here -->
                     <div class="person-rating-wrpper">
@@ -90,7 +90,7 @@ get_header();
                             <p>First name:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Sven" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->first_name) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
@@ -98,7 +98,7 @@ get_header();
                             <p>Last Name:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Nilsson" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->last_name) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
@@ -106,23 +106,23 @@ get_header();
                             <p>Title:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Social Secretary" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->title) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Organization:</p>
+                            <p>Department:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Kommun" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->department) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Administration:</p>
+                            <p>Type of Employee:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Social services" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->employee_type) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
@@ -130,7 +130,7 @@ get_header();
                             <p>Municipality:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Göteborg" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->municipality) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
@@ -138,7 +138,7 @@ get_header();
                             <p>Telephone:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="07382929732" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->phone) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
@@ -146,7 +146,7 @@ get_header();
                             <p>E-post:</p>
                         </div>
                         <div class="detail-content-box">
-                            <input type="text" value="Sven.nilsson@bastad.com" readonly>
+                            <input type="text" value="<?php echo ($person_data !== null) ? esc_html($person_data->email) : '' ?>" readonly>
                         </div>
                     </div>
                     <div class="single-details-wrpper">
@@ -156,7 +156,7 @@ get_header();
                         <div class="detail-content-box">
                             <ul class="detail-rating">
                                 <li>
-                                    <p>26 Reviews</p>
+                                    <p><?php echo ($person_data !== null) ? esc_html($person_data->average_rating) : '' ?> Reviews</p>
                                 </li>
                                 <li><img class="single-total-reivew" src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/single-total-reivew-3.svg"
                                         alt=""></li>
