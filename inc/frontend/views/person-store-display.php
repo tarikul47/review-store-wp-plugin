@@ -14,6 +14,8 @@ use Tarikul\PersonsStore\Inc\Database\Database;
 get_header();
 $db = Database::getInstance();
 $users = $db->get_users_with_review_data();
+//echo "<pre>";
+//print_r($users);
 ?>
 <div class="tjmk-search-result-wrpper">
     <!-- search result area -->
@@ -34,28 +36,40 @@ $users = $db->get_users_with_review_data();
                         <th>First Name</th>
                         <th> Last Name</th>
                         <th>Title</th>
-                        <th>Organisation</th>
-                        <th>Administration</th>
+                        <th>Type of Employee</th>
+                        <th>Department</th>
                         <th>Municipality</th>
                         <th>Rating</th>
                         <th>Buy report</th>
+                        <th>View</th>
                     </tr>
-                    <tr>
-                        <?php if (!empty($users)): ?>
-                            <?php foreach ($users as $user): ?>
-                                <td>Sven</td>
-                                <td>Nilsson</td>
-                                <td>Social secretary</td>
-                                <td>Kommun</td>
-                                <td>Social services</td>
-                                <td>Göteborg</td>
+
+                    <?php if (!empty($users)): ?>
+                        <?php foreach ($users as $user): ?>
+                            <tr id="post-id-<?php echo esc_attr($user->profile_id); ?>">
+                                <td><?php echo esc_html($user->first_name); ?></td>
+                                <td><?php echo esc_html($user->last_name); ?></td>
+                                <td><?php echo esc_html($user->title); ?></td>
+                                <td><?php echo esc_html($user->employee_type); ?></td>
+                                <td><?php echo esc_html($user->department); ?></td>
+                                <td><?php echo esc_html($user->municipality); ?></td>
                                 <td>
-                                    <img class="review-score-icon"
+                                    <img class="review-score-icon" date-rating="<?php echo esc_html($user->average_rating); ?>"
                                         src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/review-icon-4.svg" alt="">
                                 </td>
-                                <td><a class="buy-review" href=""><img src="images/icons/card-icon.svg" alt=""></a></td>
-                            <?php endforeach; ?>
-                        <?php else: ?>
+                                <td>
+                                    <a id="<?php echo esc_attr($user->profile_id); ?>" class="buy-review" href="">
+                                        <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/card-icon.svg" alt="">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a target="_blank" id="<?php echo esc_attr($user->profile_id); ?>" class=""
+                                        href="<?php echo esc_url(get_permalink() . '?profile_id=' . $user->profile_id); ?>">Click
+                                        Here</a>
+                                </td>
+                            <tr></tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
                         <tr>
                             <td colspan="8">
                                 <p class="no-person-found"><?php _e('No matching data found.', 'text-domain'); ?> <a
@@ -63,19 +77,6 @@ $users = $db->get_users_with_review_data();
                             </td>
                         </tr>
                     <?php endif; ?>
-                    </tr>
-
-                    <tr>
-                        <td>Sven</td>
-                        <td>Nilsson</td>
-                        <td>Social secretary</td>
-                        <td>Kommun</td>
-                        <td>Social services</td>
-                        <td>Göteborg</td>
-                        <td>
-                            <img class="review-score-icon" src="images/icons/review-icon-2.svg" alt="">
-                        </td>
-                        <td><a class="buy-review" href=""><img src="images/icons/card-icon.svg" alt=""></a></td>
                     </tr>
                 </table>
                 <div class="pagination">
