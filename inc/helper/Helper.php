@@ -79,6 +79,7 @@ class Helper
      */
     public static function calculate_rating($review_data)
     {
+      //  print_r($review_data);
         $keys = ['fair', 'professional', 'response', 'communication', 'decisions', 'recommend'];
         $total_score = 0;
 

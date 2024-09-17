@@ -33,43 +33,118 @@
   $(document).ready(function () {
     console.log("DOM ready");
 
-    var $reviefrom = $("#reviewform"); // Updated to match your form ID
+    /**
+     * Review Form start marking and store value in hidden input
+     */
+    $(".single-review").each(function () {
+      var $review = $(this);
 
-    $reviefrom.on("submit", function (e) {
+      // Handle click event on star items
+      $review.find(".review-icon .star").on("click", function () {
+        var $stars = $review.find(".review-icon .star");
+        var selectedValue = $(this).data("value");
+
+        // Remove 'selected' class from all stars
+        $stars.removeClass("selected");
+
+        // Add 'selected' class to the clicked star and all stars before it
+        $stars.each(function () {
+          if ($(this).data("value") <= selectedValue) {
+            $(this).addClass("selected");
+          }
+        });
+
+        // Update the hidden input field with the selected value
+        $review.find('input[type="hidden"]').val(selectedValue);
+      });
+    });
+
+    /**
+     * Here Frontend Review Adding
+     * Action and other neecessary thigs already set on form page
+     */
+    var $reviewform = $("#reviewform"); // Correct form ID
+    $reviewform.on("submit", function (e) {
       e.preventDefault();
 
+      // Collect all rating inputs
+      var ratingInputs = [
+        { name: "fair", input: $(this).find('input[name="fair"]').val() },
+        {
+          name: "professional",
+          input: $(this).find('input[name="professional"]').val(),
+        },
+        {
+          name: "response",
+          input: $(this).find('input[name="response"]').val(),
+        },
+        {
+          name: "communication",
+          input: $(this).find('input[name="communication"]').val(),
+        },
+        {
+          name: "decisions",
+          input: $(this).find('input[name="decisions"]').val(),
+        },
+        {
+          name: "recommend",
+          input: $(this).find('input[name="recommend"]').val(),
+        },
+      ];
+
+      // Check if any rating is missing
+      var isValid = true;
+      var missingFields = [];
+
+      ratingInputs.forEach(function (rating) {
+        if (!rating.input || rating.input === "") {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+      });
+
+      // If validation fails, show an error message and prevent submission
+      if (!isValid) {
+        var errorMessage =
+          "Please select a rating for the following fields: " +
+          missingFields.join(", ");
+        $("#review-message").text(errorMessage).show(); // Show error message
+        console.log("Validation failed. Missing fields: ", missingFields); // Log missing fields for debugging
+        return false; // Prevent form submission
+      }
+
+      // Validation passed, proceed with AJAX
       var formData = new FormData(this);
 
+      // Debugging form data (optional)
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+
       $.ajax({
-        url: myPluginAjax.ajax_url,
+        url: myPluginAjax.ajax_url, // Ensure this is set to the correct AJAX URL
         method: "POST",
         data: formData,
         processData: false,
         contentType: false,
         beforeSend: function () {
-          //   $importResults.show(); // Show progress container
-          //  $importResults.html("Uploading file...");
-          //  $importProgressBar.css("width", "0%").attr("aria-valuenow", 0);
-          //  $importProgressText.text("Starting upload...");
+          // Optional: Add preloader or progress bar actions here
         },
         success: function (response) {
           console.log("AJAX Response:", response); // Log the response for debugging
 
           if (response.success) {
-            $("#review-message").text(response.data.message);
-            $("#user-review-form").show(); // Show the message element
-            $("#singlereview").hide(); // Hide the submit button
+            $("#review-message").text(response.data.message).show(); // Show success message
+            $("#singlereview").hide(); // Hide the submit form or button
           } else {
-            $("#review-message").text(response.data.message);
-            $("#user-review-form").show(); // Show the message element
+            $("#review-message").text(response.data.message).show(); // Show error message from server
           }
-
-          // Optional: Refresh the page or update the UI
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.error("AJAX Error:", textStatus, errorThrown); // Log AJAX errors
-          $('#review-message').text('An error occurred while submitting your review.');
-          $('#user-review-form').show(); // Show the message element
+          $("#review-message")
+            .text("An error occurred while submitting your review.")
+            .show(); // Show error message
         },
       });
     });

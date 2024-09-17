@@ -668,6 +668,7 @@ class Database
         }
     }
 
+    // TODO: The function still not use 
     public function get_profiles_with_ratings()
     {
         global $wpdb;
@@ -684,6 +685,30 @@ class Database
 
         return $results;
     }
+    /**
+     * We get single profile avarage rating 
+     * @param mixed $profile_id
+     * @return mixed
+     */
+    public function get_profile_average_rating($profile_id)
+    {
+        $profile_id = absint($profile_id);
 
+        if (!$profile_id) {
+            return false; // Return false if the profile ID is invalid
+        }
 
+        $query = "
+        SELECT 
+            IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0) as average_rating
+        FROM {$this->wpdb->prefix}ps_reviews r
+        WHERE r.profile_id = %d
+    ";
+
+        // Run the query and return just the average rating
+        $average_rating = $this->wpdb->get_var($this->wpdb->prepare($query, $profile_id));
+
+        // Format the average rating to 2 decimal places
+        return number_format((float) $average_rating, 2, '.', '');
+    }
 }
