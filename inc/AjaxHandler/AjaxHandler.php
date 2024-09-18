@@ -64,6 +64,11 @@ class AjaxHandler
         $review_data = Helper::sanitize_review_data($_POST);
 
         // Ensure profile_id exists in the review data
+        if (empty($review_data)) {
+            wp_send_json_error(['message' => 'Profile ID is missing']);
+        }
+
+        // Ensure profile_id exists in the review data
         if (empty($review_data['profile_id'])) {
             wp_send_json_error(['message' => 'Profile ID is missing']);
         }

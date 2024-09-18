@@ -367,7 +367,7 @@ get_header();
                         value="Submit Review"></p>
             <?php endif; ?>
 
-            <div id="user-review-form" style="display:none;">
+            <div id="user-review-form" style="">
                 <p id="review-message"></p>
             </div>
         </div>
