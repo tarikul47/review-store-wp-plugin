@@ -67,6 +67,10 @@ class Helper
         if (!empty($data['profile_id'])) {
             $sanitized_data['profile_id'] = intval($data['profile_id']);
         }
+        
+        if (!empty($data['review_id'])) {
+            $sanitized_data['review_id'] = intval($data['review_id']);
+        }
 
         return $sanitized_data;
     }

@@ -52,6 +52,7 @@
       // Determine the action (approve or reject) based on the button text
       var action = $(this).text().toLowerCase(); // 'approve' or 'reject'
       var reviewId = $(this).data("review-id");
+      var profileId = $(this).data("profile-id");
 
       // Confirm action
       var confirmationMessage =
@@ -67,6 +68,7 @@
           data: {
             action: action + "_review",
             review_id: reviewId,
+            profile_Id: profileId,
             security: myPluginAjax.nonce,
           },
           success: function (response) {

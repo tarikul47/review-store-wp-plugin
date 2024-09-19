@@ -651,6 +651,12 @@ Comment Box CSS
 }
 
 
+/*
+* Tempo css 
+*/
+.person-rating-wrpper h3 {
+    font-size: 2rem;
+}
 
 
 @media screen and (max-width: 778px) { 
@@ -750,3 +756,6 @@ Comment Box CSS
 Single person page css End
 ====================================
 */
+
+
+

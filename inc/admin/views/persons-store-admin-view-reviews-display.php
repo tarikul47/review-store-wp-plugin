@@ -46,10 +46,10 @@ if ($reviews) { ?>
                         <?php } elseif ($review['status'] === "rejected") { ?>
                             <a href="#">Rejected</a>
                         <?php } else { // status is "pending" or other values ?>
-                            <a class="table-btn approve_reject" data-review-id="<?php echo esc_attr($review['review_id']); ?>"
-                                href="#">Approve</a>
-                            <a class="table-btn approve_reject" data-review-id="<?php echo esc_attr($review['review_id']); ?>"
-                                href="#">Reject</a>
+                            <a class="table-btn approve_reject" data-profile-id="<?php echo esc_html($profile_id); ?>"
+                                data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
+                            <a class="table-btn approve_reject" data-profile-id="<?php echo esc_html($profile_id); ?>"
+                                data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Reject</a>
                         <?php } ?>
                     </td>
 
