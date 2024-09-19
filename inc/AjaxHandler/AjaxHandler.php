@@ -150,12 +150,15 @@ class AjaxHandler
         // Sanitize and validate input
         $review_data = Helper::sanitize_review_data($_POST);
 
+        error_log(print_r($review_data, true));
+
+
         if (!$review_data['review_id']) {
             $this->log_error('Review ID is missing');
             wp_send_json_error(['message' => 'Review ID is missing.']);
             return;
         }
-        if (!$review_data['profile_Id']) {
+        if (!$review_data['profile_id']) {
             $this->log_error('Profile ID is missing');
             wp_send_json_error(['message' => 'Profile ID is missing.']);
             return;
@@ -173,7 +176,11 @@ class AjaxHandler
             error_log('Failed to process review content');
         }
 
-        error_log(print_r($_POST, true));
+
+        // TODO: Product ID 
+        $product_id = $this->db->get_product_id_by_profile($review_data['profile_id']);
+
+        error_log(print_r($product_id, true));
 
         die();
 

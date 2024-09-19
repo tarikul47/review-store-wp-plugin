@@ -711,4 +711,17 @@ class Database
         // Format the average rating to 2 decimal places
         return number_format((float) $average_rating, 2, '.', '');
     }
+
+    /**
+     * 
+     
+     * @param mixed $profile_id
+     * @return int 
+     */
+    public function get_product_id_by_profile($profile_id): int
+    {
+        // Start by getting the product ID
+        $product_id = $this->get_column_value('ps_profile', 'product_id', ['profile_id' => $profile_id]);
+        return $product_id;
+    }
 }

@@ -68,7 +68,7 @@
           data: {
             action: action + "_review",
             review_id: reviewId,
-            profile_Id: profileId,
+            profile_id: profileId,
             security: myPluginAjax.nonce,
           },
           success: function (response) {
