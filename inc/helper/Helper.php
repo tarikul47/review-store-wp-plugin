@@ -53,21 +53,27 @@ class Helper
 
     public static function sanitize_review_data($data)
     {
-        $sanitized_data = [
-            'fair' => intval($data['fair']),
-            'professional' => intval($data['professional']),
-            'response' => intval($data['response']),
-            'communication' => intval($data['communication']),
-            'decisions' => intval($data['decisions']),
-            'recommend' => intval($data['recommend']),
-            'comments' => sanitize_textarea_field($data['comments'])
-        ];
+        if (isset($data['action']) && $data['action'] !== 'approve_review') {
+            $sanitized_data = [
+                'fair' => intval($data['fair']),
+                'professional' => intval($data['professional']),
+                'response' => intval($data['response']),
+                'communication' => intval($data['communication']),
+                'decisions' => intval($data['decisions']),
+                'recommend' => intval($data['recommend']),
+                'comments' => sanitize_textarea_field($data['comments'])
+            ];
+        }
+
+        if (isset($data['action']) && $data['action'] === 'approve_review') {
+            $sanitized_data['action'] = sanitize_text_field($data['action']);
+        }
 
         // Check if profile_id exists, sanitize and include it
         if (!empty($data['profile_id'])) {
             $sanitized_data['profile_id'] = intval($data['profile_id']);
         }
-        
+
         if (!empty($data['review_id'])) {
             $sanitized_data['review_id'] = intval($data['review_id']);
         }
@@ -83,7 +89,7 @@ class Helper
      */
     public static function calculate_rating($review_data)
     {
-      //  print_r($review_data);
+        //  print_r($review_data);
         $keys = ['fair', 'professional', 'response', 'communication', 'decisions', 'recommend'];
         $total_score = 0;
 
@@ -191,40 +197,93 @@ class Helper
             return false;
         }
 
-        // Check if product ID is provided and fetch the existing product
         if ($product_id) {
+            // If product ID is provided, update the existing product
             $product = wc_get_product($product_id);
             if (!$product) {
                 error_log('Product with ID ' . $product_id . ' not found.');
                 return false;
             }
+
+            // Only update the downloadable file
+            $download_id = wp_generate_uuid4();
+            $downloads = [
+                $download_id => [
+                    'name' => 'Review PDF',
+                    'file' => $pdf_url
+                ]
+            ];
+            $product->set_downloads($downloads);
+            $product->save();
+
         } else {
-            // Create a new product if no product ID is provided
-            $product = new \WC_Product();
+            // If no product ID is provided, create a new product
+            $product = new WC_Product();
+            $product->set_name('Review for ' . $user_name);
+            $product->set_status('publish');
+            $product->set_catalog_visibility('visible');
+            $product->set_description('Review PDF for ' . $user_name);
+            $product->set_regular_price(10);
+            $product->set_downloadable(true);
+            $product->set_virtual(true);
+
+            // Attach the PDF as a downloadable file
+            $download_id = wp_generate_uuid4();
+            $downloads = [
+                $download_id => [
+                    'name' => 'Review PDF',
+                    'file' => $pdf_url
+                ]
+            ];
+            $product->set_downloads($downloads);
+            $product->save();
         }
-
-        // Set product details
-        $product->set_name('Review for ' . $user_name);
-        $product->set_status('publish');
-        $product->set_catalog_visibility('visible');
-        $product->set_description('Review PDF for ' . $user_name);
-        $product->set_regular_price(10);
-        $product->set_downloadable(true);
-        $product->set_virtual(true);
-
-        // Attach the PDF as a downloadable file
-        $download_id = wp_generate_uuid4();
-        $downloads = [
-            $download_id => [
-                'name' => 'Review PDF',
-                'file' => $pdf_url
-            ]
-        ];
-        $product->set_downloads($downloads);
-        $product->save();
 
         return $product->get_id();
     }
+
+
+    // public static function create_or_update_downloadable_product($user_name, $pdf_url, $product_id = null)
+    // {
+    //     if (!$pdf_url) {
+    //         error_log('Failed to generate PDF for ' . $user_name);
+    //         return false;
+    //     }
+
+    //     // Check if product ID is provided and fetch the existing product
+    //     if ($product_id) {
+    //         $product = wc_get_product($product_id);
+    //         if (!$product) {
+    //             error_log('Product with ID ' . $product_id . ' not found.');
+    //             return false;
+    //         }
+    //     } else {
+    //         // Create a new product if no product ID is provided
+    //         $product = new \WC_Product();
+    //     }
+
+    //     // Set product details
+    //     $product->set_name('Review for ' . $user_name);
+    //     $product->set_status('publish');
+    //     $product->set_catalog_visibility('visible');
+    //     $product->set_description('Review PDF for ' . $user_name);
+    //     $product->set_regular_price(10);
+    //     $product->set_downloadable(true);
+    //     $product->set_virtual(true);
+
+    //     // Attach the PDF as a downloadable file
+    //     $download_id = wp_generate_uuid4();
+    //     $downloads = [
+    //         $download_id => [
+    //             'name' => 'Review PDF',
+    //             'file' => $pdf_url
+    //         ]
+    //     ];
+    //     $product->set_downloads($downloads);
+    //     $product->save();
+
+    //     return $product->get_id();
+    // }
 
     /**
      * Retrieve the current user's ID, roles, and name.

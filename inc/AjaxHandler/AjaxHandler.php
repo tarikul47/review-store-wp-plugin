@@ -148,21 +148,46 @@ class AjaxHandler
         check_ajax_referer('approve_reject_review_nonce', 'security');
 
         // Sanitize and validate input
-        $review_data = Helper::sanitize_review_data($_POST);
+        $data = Helper::sanitize_review_data($_POST);
 
-        error_log(print_r($review_data, true));
-
-
-        if (!$review_data['review_id']) {
+        if (!$data['review_id']) {
             $this->log_error('Review ID is missing');
             wp_send_json_error(['message' => 'Review ID is missing.']);
             return;
         }
-        if (!$review_data['profile_id']) {
+        if (!$data['profile_id']) {
             $this->log_error('Profile ID is missing');
             wp_send_json_error(['message' => 'Profile ID is missing.']);
             return;
         }
+
+        // Review featch by review id 
+        $review_data = $this->db->get_review_by_review_id($data['review_id']);
+
+        error_log(print_r('$review_data', true));
+        error_log(print_r($review_data, true));
+        die();
+
+        if ($review) {
+            // Process the approval
+        //    $result = $this->db->update_review_status($review_id, 'approved');
+        }
+
+        // Review apprve status update 
+
+        // fetch user name and product id 
+
+        // fethc all approve review 
+
+        // Review content process by forloop 
+
+        // generate pdf URL by 
+
+        // product update with pdf url 
+
+        // then email send to profile and reviewr 
+
+
 
         // Calculate rating
         $average_rating = Helper::calculate_rating($review_data);
@@ -180,9 +205,11 @@ class AjaxHandler
         // TODO: Product ID 
         $product_id = $this->db->get_product_id_by_profile($review_data['profile_id']);
 
+
+
         error_log(print_r($product_id, true));
 
-        die();
+
 
         /**-------- 
 
@@ -241,11 +268,6 @@ class AjaxHandler
          *  - We need product id = by profle id 
          * 
          */
-
-
-
-        // Process the approval
-        $result = $this->db->update_review_status($review_id, 'approved');
 
         error_log(print_r($result, true));
 

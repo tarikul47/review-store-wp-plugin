@@ -366,6 +366,16 @@ class Database
         }
         return implode(' AND ', $clauses);
     }
+
+    /**
+     * we get review data by review id 
+     */
+    public function get_review_by_review_id($review_id)
+    {
+        return $this->get('ps_reviews', ['review_id' => $review_id]);
+
+    }
+
     /**
      * Get users along with their associated review data.
      *
@@ -724,4 +734,6 @@ class Database
         $product_id = $this->get_column_value('ps_profile', 'product_id', ['profile_id' => $profile_id]);
         return $product_id;
     }
+
+
 }
