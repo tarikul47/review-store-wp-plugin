@@ -142,13 +142,13 @@ class Admin
 
     public function urs_approve_reviews_page()
     {
-        $approved_reviews = $this->db->get_reviews_by_status('approved'); // Get approved reviews
+        $approved_reviews = $this->db->get_reviews('approved'); // Get approved reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-approve-reviews-display.php';
     }
 
     public function urs_pending_reviews_page()
     {
-        $pending_reviews = $this->db->get_reviews_by_status('pending'); // Get pending reviews
+        $pending_reviews = $this->db->get_reviews('pending'); // Get pending reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-pending-reviews-display.php';
     }
 

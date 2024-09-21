@@ -4,6 +4,7 @@ namespace Tarikul\PersonsStore\Inc\AjaxHandler;
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\BulkUploadHandler\BulkUploadHandler;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\PersonsStore\Inc\Email\Email;
 
 class AjaxHandler
 {
@@ -164,119 +165,84 @@ class AjaxHandler
         // Review featch by review id 
         $review_data = $this->db->get_review_by_review_id($data['review_id']);
 
-        error_log(print_r('$review_data', true));
-        error_log(print_r($review_data, true));
-        die();
+        if ($review_data) {
+            // Process the approval 
+            //    $result = $this->db->update_review_status($review_id, 'approved');
 
-        if ($review) {
-            // Process the approval
-        //    $result = $this->db->update_review_status($review_id, 'approved');
+            // Fetch Person data 
+            $person_data = $this->db->get_person_by_id($data['profile_id']);
+
+            // Fetch Person Full Name 
+            $person_name = Helper::get_person_name_process($person_data);
+
+            // fetch product id 
+            $peron_product_id = $person_data->product_id;
+
+            // fethc all approve review 
+            $get_approve_reviews = $this->db->get_reviews('approved', $data['profile_id']);
+
+            //TODO: Need to calculate rating 
+
+            $average_rating = 0;
+            // Process review content
+            $review_content = Helper::content_process($get_approve_reviews, $average_rating);
+
+            if (!$review_content) {
+                error_log('Failed to process review content');
+            }
+
+            // Make unique username for pdf URL 
+            $person_unique_name = "$person_data->first_name" . "_" . "$person_data->profile_id";
+
+            // Generate PDF URL
+            $generate_pdf_url = Helper::generate_pdf_url($person_unique_name, $review_content);
+            if (!$generate_pdf_url) {
+                error_log('Failed to generate PDF URL');
+            }
+
+            //  Product update with pdf url 
+            $product_id = Helper::create_or_update_downloadable_product($person_name, $generate_pdf_url, $peron_product_id);
+            if (!$product_id) {
+                error_log('Failed to create or update product');
+            }
+
+
+            // Send email
+            $email = Email::getInstance();
+            // First email for Profile person 
+       //     $email->setEmailDetails($person_data->email, 'Hurrah! A Review is live!', 'Hello ' . $person_name . ',<br>One of a review is now live. You can check it.');
+           
+            // Reviewer email for approve messave 
+       //     $email->setEmailDetails($person_data->email, 'Hurrah! Your Review is approved!', 'Hello ' . $person_name . ',<br>You can check it in your account.');
+
+        //    $result = $email->send();
+
+            // if (!$result) {
+            //     error_log('Failed to send email');
+            // }
+
+            // error_log(print_r('$product_id', true));
+            // error_log(print_r($product_id, true));
+            // print_r($product_id);
+            // die();
+
+            if ($result = true) {
+                wp_send_json_success(['message' => 'Review approved successfully.']);
+            } else {
+                $this->log_error('Failed to approve review with ID: ' . $review_id);
+                wp_send_json_error(['message' => 'Failed to approve review.']);
+            }
+
         }
-
-        // Review apprve status update 
-
-        // fetch user name and product id 
-
-        // fethc all approve review 
-
-        // Review content process by forloop 
-
-        // generate pdf URL by 
-
-        // product update with pdf url 
-
-        // then email send to profile and reviewr 
-
-
 
         // Calculate rating
-        $average_rating = Helper::calculate_rating($review_data);
-        if (!$average_rating) {
-            error_log('Failed to calculate rating');
-        }
+        // $average_rating = Helper::calculate_rating($review_data);
 
-        // Process review content
-        $review_content = Helper::content_process($review_data, $average_rating);
-        if (!$review_content) {
-            error_log('Failed to process review content');
-        }
+        // if (!$average_rating) {
+        //     error_log('Failed to calculate rating');
+        // }
 
 
-        // TODO: Product ID 
-        $product_id = $this->db->get_product_id_by_profile($review_data['profile_id']);
-
-
-
-        error_log(print_r($product_id, true));
-
-
-
-        /**-------- 
-
-        // Generate PDF URL
-        $generate_pdf_url = Helper::generate_pdf_url($user_data['first_name'], $review_content);
-        if (!$generate_pdf_url) {
-            error_log('Failed to generate PDF URL');
-        }
-
-        // Create downloadable product
-        $product_id = Helper::create_or_update_downloadable_product($user_data['first_name'], $generate_pdf_url);
-        if (!$product_id) {
-            error_log('Failed to create or update product');
-        }
-
-
-        // Insert review into database
-        if ($profile_id) {
-            $review_id = $this->db->insert_review($profile_id, $average_rating);
-            if (!$review_id) {
-                error_log('Failed to insert review');
-            }
-        }
-
-        // Insert review meta
-        if ($review_id) {
-            foreach ($review_data as $meta_key => $meta_value) {
-                $insert_meta = $this->db->insert_review_meta($review_id, $meta_key, $meta_value);
-                if (!$insert_meta) {
-                    error_log("Failed to insert review meta: $meta_key");
-                }
-            }
-        }
-
-        // Send email
-        $email = Email::getInstance();
-        $email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.');
-        $result = $email->send();
-        if (!$result) {
-            error_log('Failed to send email');
-        }
-
-        // Handle form submission result
-        $message = $result ? 'Successfully Added Person!' : 'Something went wrong!.';
-        Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
-
-    //    exit;
-
-      
-
-        //TODO: 1 = 
-
-        /**
-         *  * Review data need to process 
-         * We need profile id = 
-         *  - We need product id = by profle id 
-         * 
-         */
-
-        error_log(print_r($result, true));
-
-        if ($result) {
-            wp_send_json_success(['message' => 'Review approved successfully.']);
-        } else {
-            $this->log_error('Failed to approve review with ID: ' . $review_id);
-            wp_send_json_error(['message' => 'Failed to approve review.']);
-        }
     }
 
     /**

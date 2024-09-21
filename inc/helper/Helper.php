@@ -102,8 +102,10 @@ class Helper
         return $total_score / count($keys);
     }
 
+
     public static function content_process($review_data, $average_rating)
     {
+        // Static content that describes each review criteria
         $static_content = [
             'fair' => 'Do you experience the official as fair and impartial (from 1 to 5)',
             'professional' => 'Do you feel that the official has sufficient competence, is professional and qualified for his service (from 1 to 5)',
@@ -114,29 +116,89 @@ class Helper
             'comments' => 'Review Message',
         ];
 
-        $review_content = '';
+        // Initialize content variable
+        $content = '<h1>Reviews for Official</h1>';
 
+        // Check if $review_data is a single review or multiple reviews
+        if (isset($review_data['fair']) || isset($review_data['comments'])) {
+            // Single review scenario
+            $review_content = self::process_single_review($review_data, $static_content);
+            $content .= '<h2>Review by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
+            $content .= '<p>Review Content:</p>';
+            $content .= $review_content;
+            $content .= '<p>Average Rating: ' . esc_html($average_rating) . '</p>';
+            $content .= '<hr>';
+        } else {
+            // Multiple reviews scenario
+            foreach ($review_data as $review) {
+                $meta_data = $review['meta'];
+                $review_content = self::process_single_review($meta_data, $static_content);
+                $content .= '<h2>Review ID: ' . esc_html($review['review_id']) . ' by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
+                $content .= '<p>Rating: ' . esc_html($review['rating']) . '</p>';
+                $content .= $review_content;
+                $content .= '<hr>';
+            }
+        }
+
+        return $content;
+    }
+
+    // Helper function to process single review
+    private static function process_single_review($review_data, $static_content)
+    {
+        $review_content = '';
         foreach (array_keys($static_content) as $key) {
+            // Skip comments for now
             if ($key !== 'comments') {
                 $score = isset($review_data[$key]) ? intval($review_data[$key]) : 0;
                 $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($score) . '</p>';
             }
-            $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($review_data[$key]) . '</p>';
-
         }
 
+        // Append the comments (if available)
+        if (isset($review_data['comments'])) {
+            $review_content .= '<p>' . esc_html($static_content['comments']) . ': ' . esc_html($review_data['comments']) . '</p>';
+        }
 
-
-        // Create the review content
-        $content = '<h1>Reviews for Official</h1>';
-        $content .= '<h2>Review by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
-        $content .= '<p>Review Content:</p>';
-        $content .= $review_content;
-        $content .= '<p>Average Rating: ' . esc_html($average_rating) . '</p>';
-        $content .= '<hr>';
-
-        return $content;
+        return $review_content;
     }
+
+
+    // public static function content_process($review_data, $average_rating)
+    // {
+    //     $static_content = [
+    //         'fair' => 'Do you experience the official as fair and impartial (from 1 to 5)',
+    //         'professional' => 'Do you feel that the official has sufficient competence, is professional and qualified for his service (from 1 to 5)',
+    //         'response' => 'Do you feel that the official has a personal and good response (from 1 to 5)',
+    //         'communication' => 'Do you feel that the official has good communication, good response time (from 1 to 5)',
+    //         'decisions' => 'Do you feel that the official makes fair decisions (from 1 to 5)',
+    //         'recommend' => 'Do you recommend this official employee? (from 1 to 5)',
+    //         'comments' => 'Review Message',
+    //     ];
+
+    //     $review_content = '';
+
+    //     foreach (array_keys($static_content) as $key) {
+    //         if ($key !== 'comments') {
+    //             $score = isset($review_data[$key]) ? intval($review_data[$key]) : 0;
+    //             $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($score) . '</p>';
+    //         }
+    //         $review_content .= '<p>' . esc_html($static_content[$key]) . ': ' . esc_html($review_data[$key]) . '</p>';
+
+    //     }
+
+
+
+    //     // Create the review content
+    //     $content = '<h1>Reviews for Official</h1>';
+    //     $content .= '<h2>Review by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
+    //     $content .= '<p>Review Content:</p>';
+    //     $content .= $review_content;
+    //     $content .= '<p>Average Rating: ' . esc_html($average_rating) . '</p>';
+    //     $content .= '<hr>';
+
+    //     return $content;
+    // }
 
     /**
      * Generates a PDF from the provided review content and returns the PDF URL.
@@ -218,7 +280,7 @@ class Helper
 
         } else {
             // If no product ID is provided, create a new product
-            $product = new WC_Product();
+            $product = new \WC_Product();
             $product->set_name('Review for ' . $user_name);
             $product->set_status('publish');
             $product->set_catalog_visibility('visible');
@@ -319,6 +381,19 @@ class Helper
         return null; // or return an empty array, depending on your use case
     }
 
+    /**
+     * 
+     */
+    public static function get_person_name_process($peron)
+    {
+        // If the profile is found, concatenate first_name and last_name
+        if ($peron) {
+            return $peron->first_name . ' ' . $peron->last_name;
+        }
+
+        // Return null if the profile was not found
+        return null;
+    }
 
     /**
      * Handles the form submission result by redirecting to a specified URL with a success or failure message.

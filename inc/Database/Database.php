@@ -445,32 +445,42 @@ class Database
      * @param string $status The status of the reviews to retrieve (e.g., 'pending', 'approved').
      * @return array An array of reviews, each containing review details and associated meta data.
      */
-    public function get_reviews_by_status($status)
+
+    public function get_reviews($status, $profile_id = null)
     {
         global $wpdb;
 
-        // Query to get reviews based on status with grouped meta data
-        $results = $wpdb->get_results($wpdb->prepare("
-        SELECT 
-            r.review_id,
-            r.profile_id,
-            r.rating,
-            r.status,
-            r.created_at,
-            r.updated_at,
-            GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
-            GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
-        FROM 
-            {$wpdb->prefix}ps_reviews r
-        LEFT JOIN 
-            {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
-        WHERE 
-            r.status = %s
-        GROUP BY 
-            r.review_id
-        ORDER BY 
-            r.created_at DESC
-    ", $status), ARRAY_A);
+        // Base SQL query
+        $sql = "
+             SELECT 
+                 r.review_id,
+                 r.profile_id,
+                 r.rating,
+                 r.status,
+                 r.created_at,
+                 r.updated_at,
+                 GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
+                 GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
+             FROM 
+                 {$wpdb->prefix}ps_reviews r
+             LEFT JOIN 
+                 {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
+             WHERE 
+                 r.status = %s";
+
+        // If profile_id is provided, add it to the WHERE clause
+        if (!is_null($profile_id)) {
+            $sql .= " AND r.profile_id = %d";
+        }
+
+        $sql .= " GROUP BY r.review_id ORDER BY r.created_at DESC";
+
+        // Prepare the query based on whether profile_id is provided
+        if (!is_null($profile_id)) {
+            $results = $wpdb->get_results($wpdb->prepare($sql, $status, $profile_id), ARRAY_A);
+        } else {
+            $results = $wpdb->get_results($wpdb->prepare($sql, $status), ARRAY_A);
+        }
 
         // Process the results to convert meta data into an associative array
         $reviews = [];
@@ -494,6 +504,55 @@ class Database
     }
 
 
+    // public function get_reviews_by_status($status)
+    // {
+    //     global $wpdb;
+
+    //     // Query to get reviews based on status with grouped meta data
+    //     $results = $wpdb->get_results($wpdb->prepare("
+    //     SELECT 
+    //         r.review_id,
+    //         r.profile_id,
+    //         r.rating,
+    //         r.status,
+    //         r.created_at,
+    //         r.updated_at,
+    //         GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
+    //         GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
+    //     FROM 
+    //         {$wpdb->prefix}ps_reviews r
+    //     LEFT JOIN 
+    //         {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
+    //     WHERE 
+    //         r.status = %s
+    //     GROUP BY 
+    //         r.review_id
+    //     ORDER BY 
+    //         r.created_at DESC
+    // ", $status), ARRAY_A);
+
+    //     // Process the results to convert meta data into an associative array
+    //     $reviews = [];
+    //     foreach ($results as $row) {
+    //         $meta_keys = explode(',', $row['meta_keys']);
+    //         $meta_values = explode(',', $row['meta_values']);
+    //         $meta_data = array_combine($meta_keys, $meta_values);
+
+    //         $reviews[] = [
+    //             'review_id' => $row['review_id'],
+    //             'profile_id' => $row['profile_id'],
+    //             'rating' => $row['rating'],
+    //             'status' => $row['status'],
+    //             'created_at' => $row['created_at'],
+    //             'updated_at' => $row['updated_at'],
+    //             'meta' => $meta_data, // Converted meta data
+    //         ];
+    //     }
+
+    //     return $reviews;
+    // }
+
+
     /**
      * Retrieve the full name of a person by their profile ID.
      *
@@ -502,22 +561,36 @@ class Database
      */
     public function get_person_name_by_id($profile_id)
     {
-        global $wpdb;
+        // Fetch the entire profile using the existing get_person_by_id function
+        $profile = $this->get_person_by_id($profile_id);
 
-        // Prepare and execute the SQL query to retrieve the first and last name based on the profile ID
-        $result = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT CONCAT(first_name, ' ', last_name) AS full_name 
-             FROM {$wpdb->prefix}ps_profile 
-             WHERE profile_id = %d",
-                $profile_id
-            ),
-            ARRAY_A
-        );
+        // If the profile is found, concatenate first_name and last_name
+        if ($profile) {
+            return $profile->first_name . ' ' . $profile->last_name;
+        }
 
-        // Return the full name or null if the profile was not found
-        return $result ? $result['full_name'] : null;
+        // Return null if the profile was not found
+        return null;
     }
+
+    // public function get_person_name_by_id($profile_id)
+    // {
+    //     global $wpdb;
+
+    //     // Prepare and execute the SQL query to retrieve the first and last name based on the profile ID
+    //     $result = $wpdb->get_row(
+    //         $wpdb->prepare(
+    //             "SELECT CONCAT(first_name, ' ', last_name) AS full_name 
+    //          FROM {$wpdb->prefix}ps_profile 
+    //          WHERE profile_id = %d",
+    //             $profile_id
+    //         ),
+    //         ARRAY_A
+    //     );
+
+    //     // Return the full name or null if the profile was not found
+    //     return $result ? $result['full_name'] : null;
+    // }
 
 
 
