@@ -105,6 +105,8 @@ class Helper
 
     public static function content_process($review_data, $average_rating)
     {
+        // error_log(print_r('$review_data', true));
+        // error_log(print_r($review_data, true));
         // Static content that describes each review criteria
         $static_content = [
             'fair' => 'Do you experience the official as fair and impartial (from 1 to 5)',
@@ -123,7 +125,7 @@ class Helper
         if (isset($review_data['fair']) || isset($review_data['comments'])) {
             // Single review scenario
             $review_content = self::process_single_review($review_data, $static_content);
-            $content .= '<h2>Review by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
+            //   $content .= '<h2>Review by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
             $content .= '<p>Review Content:</p>';
             $content .= $review_content;
             $content .= '<p>Average Rating: ' . esc_html($average_rating) . '</p>';
@@ -133,9 +135,9 @@ class Helper
             foreach ($review_data as $review) {
                 $meta_data = $review['meta'];
                 $review_content = self::process_single_review($meta_data, $static_content);
-                $content .= '<h2>Review ID: ' . esc_html($review['review_id']) . ' by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
-                $content .= '<p>Rating: ' . esc_html($review['rating']) . '</p>';
+                //  $content .= '<h2>Review ID: ' . esc_html($review['review_id']) . ' by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
                 $content .= $review_content;
+                $content .= '<p>Rating: ' . esc_html($review['rating']) . '</p>';
                 $content .= '<hr>';
             }
         }
@@ -208,7 +210,8 @@ class Helper
      *
      * @return string|false       The URL of the generated PDF, or false on failure.
      */
-    public static function generate_pdf_url($user_name, $content)
+
+    public static function generate_pdf_url($user_name, $content, $profile_id = null)
     {
         try {
             // Initialize the PDF generator
@@ -217,13 +220,25 @@ class Helper
             // Write the content to the PDF
             $mpdf->WriteHTML($content);
 
-            // TODO: Maybe here we don't need to sanitize because we did first phase 
-
-            // Define the upload directory and the PDF file path
+            // Define the upload directory
             $upload_dir = wp_upload_dir();
-            $pdf_file = $upload_dir['path'] . '/user_' . sanitize_title($user_name) . '_review.pdf';
 
-            // Output the PDF to the specified file path
+            // Create the final PDF filename
+            $pdf_filename = 'user_' . sanitize_title($user_name) . (isset($profile_id) ? "_{$profile_id}" : '') . '_review.pdf';
+            $pdf_file = $upload_dir['path'] . '/' . $pdf_filename;
+
+            // Remove old PDF if it exists and we have a profile_id
+            if ($profile_id) {
+                $old_pdf_filename = 'user_' . sanitize_title($user_name) . '_review.pdf';
+                $old_pdf_file = $upload_dir['path'] . '/' . $old_pdf_filename;
+
+                // Delete the old file if it exists
+                if (file_exists($old_pdf_file)) {
+                    unlink($old_pdf_file);  // Remove the previous file
+                }
+            }
+
+            // Output the new PDF to the specified file path
             $mpdf->Output($pdf_file, 'F');
 
             // Set correct file permissions
@@ -235,13 +250,50 @@ class Helper
             }
 
             // Return the URL of the generated PDF
-            return $upload_dir['url'] . '/user_' . sanitize_title($user_name) . '_review.pdf';
+            return $upload_dir['url'] . '/' . $pdf_filename;
         } catch (\Exception $e) {
             // Log any errors encountered during PDF generation
             error_log('Error generating PDF: ' . $e->getMessage());
             return false;
         }
     }
+
+
+
+    // public static function generate_pdf_url($user_name, $content)
+    // {
+    //     try {
+    //         // Initialize the PDF generator
+    //         $mpdf = new \Mpdf\Mpdf();
+
+    //         // Write the content to the PDF
+    //         $mpdf->WriteHTML($content);
+
+    //         // TODO: Maybe here we don't need to sanitize because we did first phase 
+
+    //         // Define the upload directory and the PDF file path
+    //         $upload_dir = wp_upload_dir();
+    //         $pdf_file = $upload_dir['path'] . '/user_' . sanitize_title($user_name) . '_review.pdf';
+
+    //         // Output the PDF to the specified file path
+    //         $mpdf->Output($pdf_file, 'F');
+
+    //         // Set correct file permissions
+    //         chmod($pdf_file, 0644);
+
+    //         // Check if the PDF file was created successfully
+    //         if (!file_exists($pdf_file) || filesize($pdf_file) == 0) {
+    //             throw new \Exception('PDF file creation failed or the file is empty.');
+    //         }
+
+    //         // Return the URL of the generated PDF
+    //         return $upload_dir['url'] . '/user_' . sanitize_title($user_name) . '_review.pdf';
+    //     } catch (\Exception $e) {
+    //         // Log any errors encountered during PDF generation
+    //         error_log('Error generating PDF: ' . $e->getMessage());
+    //         return false;
+    //     }
+    // }
 
     /**
      * Creates or updates a downloadable WooCommerce product with an attached PDF.
@@ -382,13 +434,51 @@ class Helper
     }
 
     /**
+     * Get user's email, first name, last name, and username by user ID.
+     *
+     * @param int $user_id The ID of the user.
+     * @return array An associative array with 'email', 'full_name', and 'username' keys.
+     */
+    public static function get_user_info_by_id($user_id)
+    {
+        // Fetch user data using user ID
+        $user = get_userdata($user_id);
+
+        if (!$user) {
+            return null; // Return null if user not found
+        }
+
+        // Get user's email
+        $email = $user->user_email;
+
+        // Get first and last name from user meta
+        $first_name = get_user_meta($user_id, 'first_name', true);
+        $last_name = get_user_meta($user_id, 'last_name', true);
+
+        // If first name and last name are empty, fall back to the username
+        if (!empty($first_name) || !empty($last_name)) {
+            $full_name = trim($first_name . ' ' . $last_name);
+        } else {
+            // Fall back to username if no first/last name
+            $full_name = $user->user_login;
+        }
+
+        // Prepare the result array
+        return [
+            'email' => $email,
+            'full_name' => $full_name,
+            'username' => $user->user_login,
+        ];
+    }
+
+    /**
      * 
      */
     public static function get_person_name_process($peron)
     {
         // If the profile is found, concatenate first_name and last_name
         if ($peron) {
-            return $peron->first_name . ' ' . $peron->last_name;
+            return $peron->first_name;
         }
 
         // Return null if the profile was not found
