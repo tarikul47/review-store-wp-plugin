@@ -381,31 +381,63 @@ class Database
      *
      * @return array|object|null
      */
-    public function get_users_with_review_data()
+    public function get_users_with_review_data($search = '', $limit = 0, $offset = 0)
     {
         $query = "
-        SELECT 
-            u.profile_id, 
-            u.first_name, 
-            u.last_name, 
-            u.title, 
-            u.email, 
-            u.phone, 
-            u.employee_type, 
-            u.state, 
-            u.municipality, 
-            u.department,
-            IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0) as average_rating,
-            COUNT(r.review_id) as total_reviews,
-            SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
-            SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
-        FROM {$this->wpdb->prefix}ps_profile u
-        LEFT JOIN {$this->wpdb->prefix}ps_reviews r 
-            ON u.profile_id = r.profile_id
-        GROUP BY u.profile_id, u.first_name, u.last_name, u.email, u.phone, u.state, u.department
-    ";
+            SELECT 
+                u.profile_id, 
+                u.first_name, 
+                u.last_name, 
+                u.title, 
+                u.email, 
+                u.phone, 
+                u.employee_type, 
+                u.state, 
+                u.municipality, 
+                u.department,
+                IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0) as average_rating,
+                COUNT(r.review_id) as total_reviews,
+                SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
+                SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
+            FROM {$this->wpdb->prefix}ps_profile u
+            LEFT JOIN {$this->wpdb->prefix}ps_reviews r ON u.profile_id = r.profile_id
+            WHERE 1=1
+        ";
+
+        // Apply search filter if a search term is provided
+        if (!empty($search)) {
+            $search = '%' . $this->wpdb->esc_like($search) . '%';
+            $query .= " AND (u.first_name LIKE '$search' OR u.last_name LIKE '$search' OR u.email LIKE '$search')";
+        }
+
+        $query .= " GROUP BY u.profile_id, u.first_name, u.last_name, u.email, u.phone, u.state, u.department";
+
+        // Add limit and offset for pagination
+        if ($limit > 0) {
+            $query .= $this->wpdb->prepare(" LIMIT %d OFFSET %d", $limit, $offset);
+        }
+
         return $this->wpdb->get_results($query);
     }
+
+    public function get_total_profiles_count($search = '')
+    {
+        $query = "
+            SELECT COUNT(DISTINCT u.profile_id)
+            FROM {$this->wpdb->prefix}ps_profile u
+            LEFT JOIN {$this->wpdb->prefix}ps_reviews r ON u.profile_id = r.profile_id
+            WHERE 1=1
+        ";
+
+        // Apply search filter if a search term is provided
+        if (!empty($search)) {
+            $search = '%' . $this->wpdb->esc_like($search) . '%';
+            $query .= " AND (u.first_name LIKE '$search' OR u.last_name LIKE '$search' OR u.email LIKE '$search')";
+        }
+
+        return $this->wpdb->get_var($query);
+    }
+
 
     public function get_reviews_by_external_profile_id($profile_id)
     {

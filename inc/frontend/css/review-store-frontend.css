@@ -1,5 +1,3 @@
-
-
 /*
 ====================================
 Search person css Start
@@ -42,7 +40,7 @@ Search person css Start
     width: 312px;
     height: 68px;
     border-radius: 12px;
-    background:#5CC19F;
+    background: #5CC19F;
     color: #FFF;
     text-align: center;
     font-family: 'Have nothing to do with';
@@ -60,19 +58,22 @@ Search person css Start
 
 
 
-@media screen and (max-width: 778px) { 
+@media screen and (max-width: 778px) {
 
     .tjmk-search-person-content-box .content-title h2 {
         font-size: 22px;
     }
+
     .tjmk-search-person-content-box .name-button-box input {
         width: 95% !important;
         height: 60px;
         font-size: 20px;
     }
+
     .tjmk-search-person-content-box .name-button-box {
         margin-bottom: 20px;
     }
+
     .tjmk-search-person-content-box .search-button input {
         width: 80%;
         height: 50px;
@@ -144,7 +145,6 @@ Search Result table css Start
     align-items: center;
     border-radius: 8px;
     border: 1px solid #9E9E9E;
-    padding: 8.5px 9px;
 }
 
 .tjmk-search-result-wrpper .search-input-wrpper img {
@@ -168,8 +168,9 @@ Search Result table css Start
     text-align: left;
 }
 
-.tjmk-search-result-wrpper th:last-child, .tjmk-search-result-wrpper td:last-child {
-	text-align: center;
+.tjmk-search-result-wrpper th:last-child,
+.tjmk-search-result-wrpper td:last-child {
+    text-align: center;
 }
 
 
@@ -272,7 +273,7 @@ Search Result table css Start
 }
 
 .tjmk-search-result-wrpper .second-table table tr:last-child td a {
-    color:#5CC19F;
+    color: #5CC19F;
     font-family: 'roboto';
     font-size: 12px;
     font-weight: 700;
@@ -281,18 +282,38 @@ Search Result table css Start
 
 .tjmk-search-result-wrpper .no-person-found a {
     color: #5CC19F;
-  font-family: 'roboto';
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration-line: underline;
+    font-family: 'roboto';
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration-line: underline;
 }
 
+/*
+* Custom css 
+*/
+/* Style the disabled button to look inactive */
+.pagination a.disabled {
+    pointer-events: none;
+    /* This makes the element not clickable */
+    opacity: 0.5;
+    /* Visually indicates the button is disabled */
+    cursor: not-allowed;
+    /* Changes the cursor to 'not-allowed' */
+}
 
+button#search-button {
+    border-radius: 5px;
+    margin: 0px 10px 0px;
+}
 
+button#clear-button {
+    border-radius: 5px;
+}
 
-@media screen and (max-width: 778px) { 
+@media screen and (max-width: 778px) {
 
-    .tjmk-search-result-wrpper th, .tjmk-search-result-wrpper td {
+    .tjmk-search-result-wrpper th,
+    .tjmk-search-result-wrpper td {
         min-width: 110px;
     }
 
@@ -327,7 +348,7 @@ Single person page css start
 }
 
 .tjmk-person-content-wrpper .inner-wrpper {
-	width: 90%;
+    width: 90%;
     margin: auto;
 }
 
@@ -343,27 +364,27 @@ Single person page css start
 
 
 .tjmk-person-content-wrpper .details-left-wrpper {
-	width: 40%;
+    width: 40%;
 }
 
 .tjmk-person-content-wrpper .details-right-area {
-	width: 60%;
-	padding-left: 40px;
-	margin-top: 183px;
+    width: 60%;
+    padding-left: 40px;
+    margin-top: 183px;
 }
 
 .tjmk-person-content-wrpper .person-img-box {
-	text-align: center;
-	max-width: 135px;
-	margin-left: auto;
-	margin-right: auto;
+    text-align: center;
+    max-width: 135px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tjmk-person-content-wrpper .person-title h3 {
-	margin: 12px 0 10px 0;
-	color: #1A1919;
-	text-align: center;
-	font-family: 'Have nothing to do with';
+    margin: 12px 0 10px 0;
+    color: #1A1919;
+    text-align: center;
+    font-family: 'Have nothing to do with';
 }
 
 .tjmk-person-content-wrpper .person-title h3 span {
@@ -371,32 +392,32 @@ Single person page css start
 }
 
 .tjmk-person-content-wrpper .person-rating-wrpper {
-	border-radius: 12px;
-	background-color: #000105;
-	padding: 25px 5px;
+    border-radius: 12px;
+    background-color: #000105;
+    padding: 25px 5px;
 }
 
 .tjmk-person-content-wrpper .scale-wrpper {
-	margin-bottom: 20px;
-	border-bottom: 1px solid #a7a7a73b;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #a7a7a73b;
 }
 
 .tjmk-person-content-wrpper .scale-wrpper:nth-last-child(1) {
-	border-bottom: none;
-	margin-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
 .tjmk-person-content-wrpper .scale-wrpper:nth-last-child(1) h3 {
-	margin-bottom: unset;
+    margin-bottom: unset;
 }
 
 
 .tjmk-person-content-wrpper .scale-reviews {
-	max-width: 200px;
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	margin-bottom: 15px;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 15px;
 }
 
 .tjmk-person-content-wrpper .scale-wrpper h3 {
@@ -409,29 +430,29 @@ Single person page css start
 
 
 .tjmk-person-content-wrpper .person-profile h2 {
-	color: #000;
-	text-align: center;
-	font-family: 'Have nothing to do with';
-	font-size: 20px;
-	font-weight: 400;
-	margin-top: 8px;
-	margin-bottom: 17px;
+    color: #000;
+    text-align: center;
+    font-family: 'Have nothing to do with';
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 8px;
+    margin-bottom: 17px;
 }
 
 .tjmk-person-content-wrpper .clame-btn {
-	text-align: center;
+    text-align: center;
 }
 
 .tjmk-person-content-wrpper .clame-btn a {
-	padding: 13px 17px 12px 17px;
-	color: #FFF;
-	font-family: 'Have nothing to do with';
-	font-size: 20px;
-	font-weight: 400;
-	border-radius: 13px;
-	background: #C69367;
-	transition: 0.2s;
-	text-decoration: none;
+    padding: 13px 17px 12px 17px;
+    color: #FFF;
+    font-family: 'Have nothing to do with';
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 13px;
+    background: #C69367;
+    transition: 0.2s;
+    text-decoration: none;
 }
 
 .tjmk-person-content-wrpper .clame-btn a:hover {
@@ -447,36 +468,36 @@ Single person page css start
 }
 
 .tjmk-person-content-wrpper .tittle-box p {
-	color: #000;
-	font-family: 'Have nothing to do with';
-	font-size: 20px;
-	font-weight: 400;
-	margin: 4px;
+    color: #000;
+    font-family: 'Have nothing to do with';
+    font-size: 20px;
+    font-weight: 400;
+    margin: 4px;
 }
 
 .tjmk-person-content-wrpper .tittle-box {
     width: 200px;
 }
 
-.tjmk-person-content-wrpper .detail-content-box > input {
-	width: 100%;
-	height: 49px;
-	color: #FFF;
-	font-family: 'Have nothing to do with';
-	font-size: 20px;
-	font-weight: 400;
-	border-radius: 9px;
-	background: #5CC19F;
-	display: flex;
-	align-items: center;
-	padding-left: 15px;
-	border: none;
-	outline: none;
+.tjmk-person-content-wrpper .detail-content-box>input {
+    width: 100%;
+    height: 49px;
+    color: #FFF;
+    font-family: 'Have nothing to do with';
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 9px;
+    background: #5CC19F;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    border: none;
+    outline: none;
 }
 
 .tjmk-person-content-wrpper .detail-rating {
-	padding-left: 5px;
-	list-style: none;
+    padding-left: 5px;
+    list-style: none;
 }
 
 .tjmk-person-content-wrpper .detail-rating li:first-child p {
@@ -487,27 +508,25 @@ Single person page css start
 }
 
 .tjmk-person-content-wrpper .detail-rating li {
-	width: 210px;
+    width: 210px;
 }
 
-.tjmk-person-content-wrpper .detail-rating li .single-total-reivew {
-    
-}
+.tjmk-person-content-wrpper .detail-rating li .single-total-reivew {}
 
 
 
 
 .tjmk-person-content-wrpper .all-reviwe-btn a {
-	color: #FFF;
-	font-family: 'Have nothing to do with';
-	font-size: 20px;
-	font-weight: 400;
-	border-radius: 13px;
-	background: #C69367;
-	padding: 13px 17px;
-	margin-top: 22px;
-	transition: 0.2s;
-	text-decoration: none;
+    color: #FFF;
+    font-family: 'Have nothing to do with';
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 13px;
+    background: #C69367;
+    padding: 13px 17px;
+    margin-top: 22px;
+    transition: 0.2s;
+    text-decoration: none;
 }
 
 
@@ -532,32 +551,32 @@ Review Area CSS Here
 }
 
 .tjmk-person-content-wrpper .review-wrpper {
-	justify-content: space-between;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 20px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .tjmk-person-content-wrpper .single-review {
-	padding: 30px 20px;
-	border-radius: 30px;
-	background: #F3F3F3;
-	min-height: 248px;
-	justify-content: space-between;
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 calc(50% - 20px);
-	box-sizing: border-box;
+    padding: 30px 20px;
+    border-radius: 30px;
+    background: #F3F3F3;
+    min-height: 248px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 calc(50% - 20px);
+    box-sizing: border-box;
 }
 
 .tjmk-person-content-wrpper .single-review h2 {
-	color: #000;
-	text-align: center;
-	font-family: 'Have nothing to do with';
-	font-size: 22px;
-	font-weight: 400;
-	margin-top: 10px;
+    color: #000;
+    text-align: center;
+    font-family: 'Have nothing to do with';
+    font-size: 22px;
+    font-weight: 400;
+    margin-top: 10px;
 }
 
 .tjmk-person-content-wrpper .review-icon {
@@ -568,16 +587,16 @@ Review Area CSS Here
 }
 
 .tjmk-person-content-wrpper .review-icon li {
-	display: inline-block;
-	height: 35.707px;
-	width: 35.707px;
-	line-height: 35.707px;
-	text-align: center;
-	border-radius: 50%;
-	background-color: #4EBE27;
-	margin: 0 2px;
-	cursor: pointer;
-	opacity: 0.45;
+    display: inline-block;
+    height: 35.707px;
+    width: 35.707px;
+    line-height: 35.707px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #4EBE27;
+    margin: 0 2px;
+    cursor: pointer;
+    opacity: 0.45;
 }
 
 
@@ -614,20 +633,20 @@ Comment Box CSS
 }
 
 .tjmk-person-content-wrpper .comment-form form {
-	text-align: center;
+    text-align: center;
 }
 
 .tjmk-person-content-wrpper .comment-form form textarea {
-	width: 100%;
-	resize: none;
-	border-radius: 30px;
-	background: #F3F3F3;
-	border: none;
-	outline: none;
-	padding: 25px;
-	height: 96px;
-	font-family: 'roboto';
-	color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    resize: none;
+    border-radius: 30px;
+    background: #F3F3F3;
+    border: none;
+    outline: none;
+    padding: 25px;
+    height: 96px;
+    font-family: 'roboto';
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .tjmk-person-content-wrpper .comment-form form input {
@@ -639,7 +658,7 @@ Comment Box CSS
     font-size: 22px;
     font-weight: 400;
     border-radius: 20px;
-    background:#C69367;
+    background: #C69367;
     border: none;
     margin-top: 40px;
     cursor: pointer;
@@ -659,7 +678,7 @@ Comment Box CSS
 }
 
 
-@media screen and (max-width: 778px) { 
+@media screen and (max-width: 778px) {
 
     .tjmk-person-content-wrpper {
         padding-left: 10px;
@@ -669,7 +688,7 @@ Comment Box CSS
     .tjmk-person-content-wrpper .inner-wrpper {
         width: 100%;
     }
-    
+
     .tjmk-person-content-wrpper .details-left-wrpper {
         width: 100%;
     }
@@ -695,7 +714,7 @@ Comment Box CSS
 
     .tjmk-person-content-wrpper .detail-content-box {
         width: 100%;
-        
+
     }
 
     .tjmk-person-content-wrpper .detail-rating {
@@ -714,7 +733,7 @@ Comment Box CSS
         text-align: center;
     }
 
-    .tjmk-person-content-wrpper .detail-content-box > input {
+    .tjmk-person-content-wrpper .detail-content-box>input {
         padding-left: 5px;
     }
 
@@ -725,7 +744,7 @@ Comment Box CSS
 
     .tjmk-person-content-wrpper .comment-wrpper {
         margin-top: 50px;
-        
+
     }
 
     .tjmk-person-content-wrpper .inner-comment-wrpper {
@@ -756,6 +775,3 @@ Comment Box CSS
 Single person page css End
 ====================================
 */
-
-
-

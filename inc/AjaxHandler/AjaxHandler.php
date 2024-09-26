@@ -46,8 +46,192 @@ class AjaxHandler
     {
         // AJAX action for logged-in users
         add_action('wp_ajax_add_review', [$this, 'handle_frontend_add_review']);
+        add_action('wp_ajax_search_profiles', [$this, 'search_profiles_callback']);
+        add_action('wp_ajax_nopriv_search_profiles', [$this, 'search_profiles_callback']);
     }
 
+    function search_profiles_callback()
+    {
+        global $wpdb;
+        $search_term = isset($_POST['search_term']) ? sanitize_text_field($_POST['search_term']) : '';
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $profiles_per_page = 2; // Set the number of profiles per page
+
+        $offset = ($page - 1) * $profiles_per_page;
+
+        $profiles = $this->db->get_users_with_review_data($search_term, $profiles_per_page, $offset);
+
+        // Get total profiles count for pagination
+        $total_profiles = $this->db->get_total_profiles_count($search_term);
+        $total_pages = ceil($total_profiles / $profiles_per_page);
+
+        // Generate HTML for profiles
+        ob_start();
+        if (!empty($profiles)) {
+            foreach ($profiles as $profile) {
+                echo "<tr>";
+                echo "<td>" . esc_html($profile->first_name) . "</td>";
+                echo "<td>" . esc_html($profile->last_name) . "</td>";
+                echo "<td>" . esc_html($profile->title) . "</td>";
+                echo "<td>" . esc_html($profile->employee_type) . "</td>";
+                echo "<td>" . esc_html($profile->department) . "</td>";
+                echo "<td>" . esc_html($profile->municipality) . "</td>";
+                echo "<td>" . esc_html($profile->average_rating) . "</td>";
+                echo '<td><a href="#">Buy</a></td>';
+                echo '<td><a href="' . esc_url(get_permalink() . '?profile_id=' . $profile->profile_id) . '">View</a></td>';
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='9'>No profiles found.</td></tr>";
+        }
+        $profiles_html = ob_get_clean();
+
+        // Generate HTML for pagination
+        ob_start();
+        if ($total_pages > 1) {
+            echo '<ul>';
+
+            // "Previous" button (disabled if on the first page)
+            if ($page > 1) {
+                echo '<li><a href="#" data-page="' . ($page - 1) . '">Previous</a></li>';
+            } else {
+                echo '<li><a href="" class="disabled">Previous</a></li>';
+            }
+
+            // Page number links
+            for ($i = 1; $i <= $total_pages; $i++) {
+                $active_class = ($i == $page) ? 'id="active"' : '';
+                echo '<li><a ' . $active_class . ' href="#" data-page="' . $i . '">' . $i . '</a></li>';
+            }
+
+            // "Next" button (disabled if on the last page)
+            if ($page < $total_pages) {
+                echo '<li><a href="#" data-page="' . ($page + 1) . '">Next</a></li>';
+            } else {
+                echo '<li><a href="" class="disabled">Next</a></li>';
+            }
+
+            echo '</ul>';
+        }
+        $pagination_html = ob_get_clean();
+
+        // Return profiles and pagination
+        wp_send_json_success([
+            'profiles' => $profiles_html,
+            'pagination' => $pagination_html,
+        ]);
+
+        wp_die(); // WordPress requires this to properly end AJAX requests
+    }
+
+    // function search_profiles_callback()
+    // {
+    //     global $wpdb;
+    //     $search_term = isset($_POST['search_term']) ? sanitize_text_field($_POST['search_term']) : '';
+    //     $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    //     $profiles_per_page = 2; // Set the number of profiles per page
+
+    //     $offset = ($page - 1) * $profiles_per_page;
+
+    //     // Build the query to search/filter profiles
+    //     $query = "SELECT * FROM {$wpdb->prefix}ps_profile u
+    //               LEFT JOIN {$wpdb->prefix}ps_reviews r ON u.profile_id = r.profile_id
+    //               WHERE 1=1";
+
+    //     if (!empty($search_term)) {
+    //         // Add search conditions to the query
+    //         $query .= $wpdb->prepare(
+    //             " AND (u.first_name LIKE %s OR u.last_name LIKE %s OR u.title LIKE %s)",
+    //             '%' . $search_term . '%',
+    //             '%' . $search_term . '%',
+    //             '%' . $search_term . '%'
+    //         );
+    //     }
+
+    //     // Add pagination
+    //     $query .= " GROUP BY u.profile_id LIMIT %d OFFSET %d";
+    //     $prepared_query = $wpdb->prepare($query, $profiles_per_page, $offset);
+
+    //     // Fetch profiles from the database
+    //     $profiles = $wpdb->get_results($prepared_query);
+
+    //     // Get the total number of profiles for pagination
+    //     $total_profiles_query = "SELECT COUNT(DISTINCT u.profile_id) FROM {$wpdb->prefix}ps_profile u";
+
+    //     if (!empty($search_term)) {
+    //         $total_profiles_query .= $wpdb->prepare(
+    //             " WHERE (u.first_name LIKE %s OR u.last_name LIKE %s OR u.title LIKE %s)",
+    //             '%' . $search_term . '%',
+    //             '%' . $search_term . '%',
+    //             '%' . $search_term . '%'
+    //         );
+    //     }
+    //     $total_profiles = $wpdb->get_var($total_profiles_query);
+    //     $total_pages = ceil($total_profiles / $profiles_per_page);
+
+
+    //     // error_log(print_r('$total_profiles_query', true));
+    //     // error_log(print_r($total_profiles, true));
+    //     // error_log(print_r($total_pages, true));
+
+    //     // Generate HTML for profiles
+    //     ob_start();
+    //     if (!empty($profiles)) {
+    //         foreach ($profiles as $profile) {
+    //             echo "<tr>";
+    //             echo "<td>" . esc_html($profile->first_name) . "</td>";
+    //             echo "<td>" . esc_html($profile->last_name) . "</td>";
+    //             echo "<td>" . esc_html($profile->title) . "</td>";
+    //             echo "<td>" . esc_html($profile->employee_type) . "</td>";
+    //             echo "<td>" . esc_html($profile->department) . "</td>";
+    //             echo "<td>" . esc_html($profile->municipality) . "</td>";
+    //             echo "<td>" . esc_html($profile->average_rating) . "</td>";
+    //             echo '<td><a href="#">Buy</a></td>';
+    //             echo '<td><a href="#">View</a></td>';
+    //             echo "</tr>";
+    //         }
+    //     } else {
+    //         echo "<tr><td colspan='9'>No profiles found.</td></tr>";
+    //     }
+    //     $profiles_html = ob_get_clean();
+
+    //     // Generate HTML for pagination
+    //     ob_start();
+    //     if ($total_pages > 1) {
+    //         echo '<ul>';
+
+    //         // "Previous" button (disabled if on the first page)
+    //         if ($page > 1) {
+    //             echo '<li><a href="#" data-page="' . ($page - 1) . '">Previous</a></li>';
+    //         } else {
+    //             echo '<li><a href="" class="disabled">Previous</a></li>';
+    //         }
+
+    //         // Page number links
+    //         for ($i = 1; $i <= $total_pages; $i++) {
+    //             $active_class = ($i == $page) ? 'id="active"' : '';
+    //             echo '<li><a ' . $active_class . ' href="#" data-page="' . $i . '">' . $i . '</a></li>';
+    //         }
+
+    //         // "Next" button (disabled if on the last page)
+    //         if ($page < $total_pages) {
+    //             echo '<li><a href="#" data-page="' . ($page + 1) . '">Next</a></li>';
+    //         } else {
+    //             echo '<li><a href="" class="disabled">Next</a></li>';
+    //         }
+
+    //         echo '</ul>';
+    //     }
+    //     $pagination_html = ob_get_clean();
+
+    //     // Return profiles and pagination
+    //     wp_send_json_success([
+    //         'profiles' => $profiles_html,
+    //         'pagination' => $pagination_html,
+    //     ]);
+
+    //     wp_die(); // WordPress requires this to properly end AJAX requests
+    // }
     /**
      * Handle frontend review submission
      */
@@ -215,7 +399,7 @@ class AjaxHandler
             }
 
             // Generate a unique username for PDF URL
-        //    $person_unique_name = "{$person_data->first_name}_{$person_data->profile_id}";
+            //    $person_unique_name = "{$person_data->first_name}_{$person_data->profile_id}";
 
             // Generate PDF URL
             $pdf_url = Helper::generate_pdf_url($person_name, $review_content, $person_data->profile_id);

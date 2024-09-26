@@ -54,12 +54,12 @@ class Admin
     public function urs_admin_menu()
     {
         add_menu_page(
-            __('Persons Store', $this->plugin_text_domain),
-            __('Persons Store', $this->plugin_text_domain),
+            __('TJMK', $this->plugin_text_domain),
+            __('TJMK', $this->plugin_text_domain),
             'manage_options',
             $this->plugin_name,
             array($this, 'urs_user_list_page'),
-            'dashicons-admin-generic',
+         //   PLUGIN_NAME_ASSETS_URI . '/images/tjmk-logo.png', // Path to custom image,,
             6
         );
 
