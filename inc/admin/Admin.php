@@ -59,7 +59,8 @@ class Admin
             'manage_options',
             $this->plugin_name,
             array($this, 'urs_user_list_page'),
-         //   PLUGIN_NAME_ASSETS_URI . '/images/tjmk-logo.png', // Path to custom image,,
+            //   PLUGIN_NAME_ASSETS_URI . '/images/tjmk-logo.png', // Path to custom image,
+            'dashicons-admin-generic',
             6
         );
 
@@ -189,7 +190,7 @@ class Admin
      */
     public function handle_add_user_form_submission()
     {
-        
+
         // Define your nonce action dynamically
         $nonce_action = 'add_user_with_review_nonce';
 

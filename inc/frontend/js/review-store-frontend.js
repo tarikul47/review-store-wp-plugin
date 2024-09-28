@@ -188,6 +188,19 @@
 
     let currentPage = 1; // Track the current page
 
+    // Get search term from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search_term");
+    // Check if there is a search term in the URL
+    if (searchTerm) {
+      // Set the search input with the search term from the URL
+      document.getElementById("profile-search").value = searchTerm;
+      clearButton.show();
+
+      // Trigger the search functionality (assuming you already have a function that handles search)
+      performAjaxSearch(searchTerm);
+    }
+
     // Function to perform AJAX request (initial load, search, and pagination)
     function performAjaxSearch(searchTerm = "", page = 1) {
       $.ajax({
@@ -221,7 +234,7 @@
       const searchTerm = searchInput.val().trim();
       if (searchTerm === "") {
         searchButton.prop("disabled", true); // Disable button
-        console.log('searcg');
+        console.log("searcg");
         performAjaxSearch("", currentPage);
       } else {
         searchButton.prop("disabled", false); // Enable button

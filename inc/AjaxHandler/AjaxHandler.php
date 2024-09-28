@@ -121,7 +121,7 @@ class AjaxHandler
             'pagination' => $pagination_html,
         ]);
 
-        wp_die(); // WordPress requires this to properly end AJAX requests
+      //  wp_die(); // WordPress requires this to properly end AJAX requests
     }
 
     // function search_profiles_callback()

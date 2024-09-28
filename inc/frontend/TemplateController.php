@@ -18,7 +18,8 @@ class TemplateController
     public function __construct()
     {
         $this->templates = [
-            'person-store-display.php' => 'TJMK Template'
+            'person-store-home.php' => 'TJMK Home Template',
+            'person-store-display.php' => 'TJMK Profile Template'
         ];
 
         add_filter('theme_page_templates', [$this, 'custom_template']);
