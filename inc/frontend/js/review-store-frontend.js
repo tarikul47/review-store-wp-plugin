@@ -191,14 +191,22 @@
     // Get search term from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get("search_term");
+
     // Check if there is a search term in the URL
     if (searchTerm) {
       // Set the search input with the search term from the URL
       document.getElementById("profile-search").value = searchTerm;
       clearButton.show();
 
+      currentPage = 1; // Reset page to 1 on new search
+
+      console.log("search ", searchTerm);
+
       // Trigger the search functionality (assuming you already have a function that handles search)
-      performAjaxSearch(searchTerm);
+      performAjaxSearch(searchTerm, currentPage);
+    } else {
+      // If no search term exists, load profiles on page load
+      performAjaxSearch("", currentPage);
     }
 
     // Function to perform AJAX request (initial load, search, and pagination)
@@ -216,7 +224,6 @@
         },
         success: function (response) {
           console.log(response);
-
           // Response should include the table rows and pagination links
           profileList.html(response.data.profiles);
           pagination.html(response.data.pagination); // Pagination links
@@ -229,27 +236,9 @@
       });
     }
 
-    // Function to toggle the search button based on input value
-    function toggleSearchButton() {
-      const searchTerm = searchInput.val().trim();
-      if (searchTerm === "") {
-        searchButton.prop("disabled", true); // Disable button
-        console.log("searcg");
-        performAjaxSearch("", currentPage);
-      } else {
-        searchButton.prop("disabled", false); // Enable button
-      }
-    }
-
-    // Load profiles on page load
-    performAjaxSearch("", currentPage);
-
     // When the user types in the search box (use input event for real-time changes)
     searchInput.on("input", function () {
-      toggleSearchButton(); // Check whether to enable or disable the search button
-
       const searchTerm = $(this).val().trim();
-
       // Show the clear button if there's input
       if (searchTerm !== "") {
         clearButton.show();
@@ -258,16 +247,15 @@
       }
     });
 
-    // Initially disable the search button (since the input is empty on load)
-    toggleSearchButton();
-
     // When the search button is clicked
     searchButton.on("click", function () {
       const searchTerm = searchInput.val().trim();
 
-      // Perform search only if there is a search term
-      currentPage = 1; // Reset to page 1 when searching
-      performAjaxSearch(searchTerm, currentPage);
+      if (searchTerm !== "") {
+        // Perform search only if there is a search term
+        currentPage = 1; // Reset to page 1 when searching
+        performAjaxSearch(searchTerm, currentPage);
+      }
     });
 
     // When the clear button is clicked
@@ -280,6 +268,13 @@
 
       currentPage = 1; // Reset to page 1
       performAjaxSearch("", currentPage); // Reload all profiles (clear search)
+
+      // Remove the search_term query parameter from the URL
+      const url = new URL(window.location);
+      if (url.searchParams.has("search_term")) {
+        url.searchParams.delete("search_term"); // Remove 'search_term' from the URL
+        window.history.replaceState(null, null, url.toString()); // Update the URL without reloading the page
+      }
     });
 
     // Event delegation for pagination links
