@@ -28,12 +28,38 @@ class Database
      * @param string $table_name
      * @return bool
      */
-    public static function table_exists(string $table_name): bool
-    {
-        global $wpdb;
-        $query = $wpdb->prepare("SHOW TABLES LIKE %s", $wpdb->esc_like($wpdb->prefix . $table_name));
-        return $wpdb->get_var($query) === $wpdb->prefix . $table_name;
-    }
+    // public static function table_exists(string $table_name): bool
+    // {
+    //     global $wpdb;
+    //     $query = $wpdb->prepare("SHOW TABLES LIKE %s", $wpdb->esc_like($wpdb->prefix . $table_name));
+    //     return $wpdb->get_var($query) === $wpdb->prefix . $table_name;
+    // }
+
+    // Function to add missing columns dynamically
+    // private static function add_missing_columns(string $table_name): void
+    // {
+    //     global $wpdb;
+
+    //     // Define the columns you expect to be in the table
+    //     $expected_columns = [
+    //         'author_id' => "BIGINT(20) UNSIGNED NOT NULL",
+    //         'raju_id' => "BIGINT(20) UNSIGNED NOT NULL",
+    //         'status' => "ENUM('pending', 'approved', 'rejected') DEFAULT 'pending'"
+    //     ];
+
+    //     foreach ($expected_columns as $column => $definition) {
+    //         // Check if the column exists
+    //         $column_exists = $wpdb->get_results($wpdb->prepare(
+    //             "SHOW COLUMNS FROM {$table_name} LIKE %s",
+    //             $column
+    //         ));
+
+    //         // If the column doesn't exist, add it
+    //         if (empty($column_exists)) {
+    //             $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN {$column} {$definition}");
+    //         }
+    //     }
+    // }
 
     /**
      * Create required tables for the plugin.
@@ -46,7 +72,7 @@ class Database
         $charset_collate = $wpdb->get_charset_collate();
 
         $tables = [
-            "ps_profile" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}profile (
+            "ps_profile" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}profile (
                 profile_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 first_name VARCHAR(255) NOT NULL,
                 last_name VARCHAR(255) NOT NULL,
@@ -63,12 +89,14 @@ class Database
                 country VARCHAR(255),
                 municipality VARCHAR(255),
                 department VARCHAR(255),
+                status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+                author_id BIGINT(20) UNSIGNED NOT NULL, -- Add new field
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 product_id BIGINT(20) UNSIGNED
             ) $charset_collate;",
 
-            "ps_reviews" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}reviews (
+            "ps_reviews" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}reviews (
                 review_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 profile_id BIGINT(20) UNSIGNED NOT NULL,
                 reviewer_user_id BIGINT(20) UNSIGNED NOT NULL,
@@ -76,20 +104,20 @@ class Database
                 status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                INDEX (profile_id),
-                INDEX (reviewer_user_id)
+                KEY profile_id_idx (profile_id), -- Specify index name
+                KEY reviewer_user_id_idx (reviewer_user_id) -- Specify index name
             ) $charset_collate;",
 
-            "ps_review_meta" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}review_meta (
+            "ps_review_meta" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}review_meta (
                 meta_id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 review_id BIGINT(20) UNSIGNED NOT NULL,
                 meta_key VARCHAR(255),
                 meta_value TEXT,
-                INDEX (review_id),
-                INDEX (meta_key)
+                KEY review_id_idx (review_id), -- Specify index name
+                KEY meta_key_idx (meta_key) -- Specify index name
             ) $charset_collate;",
 
-            "ps_email_queue" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}email_queue (
+            "ps_email_queue" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}email_queue (
                 id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 to_email VARCHAR(255) NOT NULL,
                 subject VARCHAR(255) NOT NULL,
@@ -98,22 +126,31 @@ class Database
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) $charset_collate;",
 
-            "ps_notifications" => "CREATE TABLE {$wpdb->prefix}{$plugin_prefix}notifications (
+            "ps_notifications" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}notifications (
                 id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 profile_id BIGINT(20) UNSIGNED NOT NULL,
                 message TEXT NOT NULL,
                 status ENUM('unread', 'read') DEFAULT 'unread',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                INDEX (profile_id)
+                KEY profile_id_idx (profile_id) -- Specify index name
             ) $charset_collate;",
         ];
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         foreach ($tables as $name => $sql) {
-            if (!self::table_exists($name)) {
-                dbDelta($sql);
-            }
+            dbDelta($sql);
+
         }
+
+        /**
+         * Here we can add colum for any specific table 
+         * Check for missing columns and add them if necessary
+         */
+        //  self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
+
+        //   if (!self::table_exists($name)) {
+        //    dbDelta($sql);
+        //   }
     }
 
     /**
@@ -124,8 +161,21 @@ class Database
      * @param int $product_id The ID of the product associated with the user.
      * @return int The ID of the newly inserted user.
      */
-    public function insert_user($user_data, $product_id)
+    public function insert_user($user_data, $product_id, $status = 'pending')
     {
+        //error_log(print_r($user_data, true));
+
+        $author_info = Helper::get_current_user_id_and_roles();
+
+        if (!$author_info) {
+            return new \WP_Error('unauthorized', 'Unauthorized access.');
+        }
+
+        // Get reviewer ID and check if user is an administrator
+        $author_id = $author_info['id'];
+        $is_admin = in_array('administrator', $author_info['roles']);
+        $status = $is_admin ? 'approved' : $status;
+
         $this->wpdb->insert(
             "{$this->wpdb->prefix}ps_profile",
             array(
@@ -147,6 +197,8 @@ class Database
                 'created_at' => current_time('mysql'),
                 'updated_at' => current_time('mysql'),
                 'product_id' => $product_id,
+                'author_id' => $author_id,
+                'status' => $status,
             ),
             array(
                 '%s', // first_name
@@ -166,7 +218,9 @@ class Database
                 '%s', // department
                 '%s', // created_at
                 '%s', // updated_at
-                '%d'  // product_id
+                '%d',  // product_id
+                '%d', // author_id
+                '%s'  // status
             )
         );
 
