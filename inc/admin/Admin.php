@@ -190,7 +190,7 @@ class Admin
      */
     public function handle_add_user_form_submission()
     {
-
+        error_log('admin-----------------');
         // Define your nonce action dynamically
         $nonce_action = 'add_user_with_review_nonce';
 
@@ -204,8 +204,8 @@ class Admin
         $review_data = Helper::sanitize_review_data($_POST);
 
         // Log sanitized user and review data
-        error_log('User Data: ' . print_r($user_data, true));
-        error_log('Review Data: ' . print_r($review_data, true));
+        //    error_log('User Data: ' . print_r($user_data, true));
+        //   error_log('Review Data: ' . print_r($review_data, true));
 
         // Calculate rating
         $average_rating = Helper::calculate_rating($review_data);
@@ -255,7 +255,9 @@ class Admin
             }
         }
 
-        // Send email
+        //TODO: Need to email also for author 
+
+        // Send email 
         $email = Email::getInstance();
         $email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.');
         $result = $email->send();
@@ -263,9 +265,10 @@ class Admin
             error_log('Failed to send email');
         }
 
-        // Handle form submission result
-        $message = $result ? 'Successfully Added Person!' : 'Something went wrong!.';
-        Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
+        $current_user = Helper::get_current_user_id_and_roles();
+
+        // handeling message after submit 
+        $this->handle_redirect_after_submission($result, $current_user);
 
         exit;
     }
@@ -348,6 +351,23 @@ class Admin
         Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
 
         error_log('Redirection handled with message: ' . $message);
+    }
+
+    public function handle_redirect_after_submission($result, $current_user)
+    {
+
+        $is_admin = in_array('administrator', $current_user['roles']);
+
+        // Handle form submission result
+        $message = '';
+
+        if ($is_admin) {
+            $message = $result ? 'Successfully Added Person!' : 'Something went wrong!.';
+            Helper::handle_form_submission_result($result, admin_url('admin.php?page=persons-store'), $message);
+        } else {
+            $message = $result ? 'Successfully Added Person as a pending status. You will get email after approve!' : 'Something went wrong!.';
+            Helper::handle_form_submission_result($result, home_url('add-person'), $message);
+        }
     }
 
 

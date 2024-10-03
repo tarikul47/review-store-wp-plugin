@@ -63,7 +63,7 @@ class Activate
             'display' => __('Every Five Minutes')
         );
       //  error_log(print_r('Activate class - $schedules', true)); // Log the schedules to ensure yours is added
-        error_log(print_r('$schedules set', true)); // Log the schedules to ensure yours is added
+       // error_log(print_r('$schedules set', true)); // Log the schedules to ensure yours is added
         return $schedules;
     }
 }

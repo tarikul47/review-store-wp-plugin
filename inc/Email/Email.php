@@ -53,7 +53,7 @@ class Email
 
         // Register hooks within the constructor
         add_action('ps_process_email_queue_event', [$this, 'processQueue']);
-        error_log('Email class constructor called.');
+       // error_log('Email class constructor called.');
     }
 
     /**

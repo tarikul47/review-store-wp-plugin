@@ -33,21 +33,22 @@ class Helper
     public static function sanitize_user_data($data)
     {
         return [
-            'first_name' => sanitize_text_field($data['first_name']),
-            'last_name' => sanitize_text_field($data['last_name']),
-            'title' => sanitize_text_field($data['title']),
-            'email' => sanitize_email($data['email']),
-            'phone' => sanitize_text_field($data['phone']),
-            'address' => sanitize_text_field($data['address']),
-            'zip_code' => sanitize_text_field($data['zip_code']),
-            'city' => sanitize_text_field($data['city']),
-            'salary_per_month' => sanitize_text_field($data['salary_per_month']),
-            'employee_type' => sanitize_text_field($data['employee_type']),
-            'region' => sanitize_text_field($data['region']),
-            'state' => sanitize_text_field($data['state']),
-            'country' => sanitize_text_field($data['country']),
-            'municipality' => sanitize_text_field($data['municipality']),
-            'department' => sanitize_text_field($data['department']),
+         //   'author_id' => isset($data['author_id']) ? intval($data['author_id']) : 0,
+            'first_name' => isset($data['first_name']) ? sanitize_text_field($data['first_name']) : '',
+            'last_name' => isset($data['last_name']) ? sanitize_text_field($data['last_name']) : '',
+            'title' => isset($data['title']) ? sanitize_text_field($data['title']) : '',
+            'email' => isset($data['email']) ? sanitize_email($data['email']) : '',
+            'phone' => isset($data['phone']) ? sanitize_text_field($data['phone']) : '',
+            'address' => isset($data['address']) ? sanitize_text_field($data['address']) : '',
+            'zip_code' => isset($data['zip_code']) ? sanitize_text_field($data['zip_code']) : '',
+            'city' => isset($data['city']) ? sanitize_text_field($data['city']) : '',
+            'salary_per_month' => isset($data['salary_per_month']) ? sanitize_text_field($data['salary_per_month']) : '',
+            'employee_type' => isset($data['employee_type']) ? sanitize_text_field($data['employee_type']) : '',
+            'region' => isset($data['region']) ? sanitize_text_field($data['region']) : '',
+            'state' => isset($data['state']) ? sanitize_text_field($data['state']) : '',
+            'country' => isset($data['country']) ? sanitize_text_field($data['country']) : '',
+            'municipality' => isset($data['municipality']) ? sanitize_text_field($data['municipality']) : '',
+            'department' => isset($data['department']) ? sanitize_text_field($data['department']) : '',
         ];
     }
 
@@ -55,13 +56,13 @@ class Helper
     {
         if (isset($data['action']) && $data['action'] !== 'approve_review') {
             $sanitized_data = [
-                'fair' => intval($data['fair']),
-                'professional' => intval($data['professional']),
-                'response' => intval($data['response']),
-                'communication' => intval($data['communication']),
-                'decisions' => intval($data['decisions']),
-                'recommend' => intval($data['recommend']),
-                'comments' => sanitize_textarea_field($data['comments'])
+                'fair' => isset($data['fair']) ? intval($data['fair']) : 0,
+                'professional' => isset($data['professional']) ? intval($data['professional']) : 0,
+                'response' => isset($data['response']) ? intval($data['response']) : 0,
+                'communication' => isset($data['communication']) ? intval($data['communication']) : 0,
+                'decisions' => isset($data['decisions']) ? intval($data['decisions']) : 0,
+                'recommend' => isset($data['recommend']) ? intval($data['recommend']) : 0,
+                'comments' => isset($data['comments']) ? sanitize_textarea_field($data['comments']) : ''
             ];
         }
 

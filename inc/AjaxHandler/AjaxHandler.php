@@ -187,6 +187,8 @@ class AjaxHandler
             ? 'Your review has been published successfully.'
             : 'Your review is pending and will be published after approval. You will receive an email notification after approval.';
 
+        //TODO: Email Need to send Author and Admin 
+
         // Send success message
         wp_send_json_success(['message' => $message]);
 

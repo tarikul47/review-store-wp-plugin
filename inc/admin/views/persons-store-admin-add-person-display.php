@@ -28,6 +28,9 @@
                 value="<?php echo ($person_data !== null) ? 'update_person_profile' : 'add_user_with_review' ?>">
             <input name="profile_id" type="hidden"
                 value="<?php echo ($person_data !== null) ? esc_html($person_data->profile_id) : '' ?>">
+
+            <input name="author_id" type="hidden" value="<?php echo get_current_user_id(); ?>">
+
             <table class="form-table" role="presentation">
                 <tbody>
                     <tr class="form-field">
