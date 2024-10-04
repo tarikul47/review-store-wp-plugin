@@ -36,30 +36,29 @@ class Database
     // }
 
     // Function to add missing columns dynamically
-    // private static function add_missing_columns(string $table_name): void
-    // {
-    //     global $wpdb;
+    private static function add_missing_columns(string $table_name): void
+    {
+        global $wpdb;
 
-    //     // Define the columns you expect to be in the table
-    //     $expected_columns = [
-    //         'author_id' => "BIGINT(20) UNSIGNED NOT NULL",
-    //         'raju_id' => "BIGINT(20) UNSIGNED NOT NULL",
-    //         'status' => "ENUM('pending', 'approved', 'rejected') DEFAULT 'pending'"
-    //     ];
+        // Define the columns you expect to be in the table
+        $expected_columns = [
+            'author_id' => "BIGINT(20) UNSIGNED NOT NULL",
+            'status' => "ENUM('pending', 'approved', 'rejected') DEFAULT 'pending'"
+        ];
 
-    //     foreach ($expected_columns as $column => $definition) {
-    //         // Check if the column exists
-    //         $column_exists = $wpdb->get_results($wpdb->prepare(
-    //             "SHOW COLUMNS FROM {$table_name} LIKE %s",
-    //             $column
-    //         ));
+        foreach ($expected_columns as $column => $definition) {
+            // Check if the column exists
+            $column_exists = $wpdb->get_results($wpdb->prepare(
+                "SHOW COLUMNS FROM {$table_name} LIKE %s",
+                $column
+            ));
 
-    //         // If the column doesn't exist, add it
-    //         if (empty($column_exists)) {
-    //             $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN {$column} {$definition}");
-    //         }
-    //     }
-    // }
+            // If the column doesn't exist, add it
+            if (empty($column_exists)) {
+                $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN {$column} {$definition}");
+            }
+        }
+    }
 
     /**
      * Create required tables for the plugin.
@@ -146,7 +145,7 @@ class Database
          * Here we can add colum for any specific table 
          * Check for missing columns and add them if necessary
          */
-        //  self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
+          self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
 
         //   if (!self::table_exists($name)) {
         //    dbDelta($sql);
@@ -163,7 +162,26 @@ class Database
      */
     public function insert_user($user_data, $product_id, $status = 'pending')
     {
-        //error_log(print_r($user_data, true));
+        /**
+         * Array
+(
+    [first_name] => Tarikul
+    [last_name] => Islam
+    [title] => WordPress Developer
+    [email] => tarikul@gmail.com
+    [phone] => 01752134658
+    [address] => 01752134658
+    [zip_code] => 1204
+    [city] => Tongi
+    [salary_per_month] => 10000000
+    [employee_type] => Freelancerss
+    [region] => Region
+    [state] => Gazipurss
+    [country] => Bangladeshss
+    [municipality] => Municipalityss
+    [department] => Departmentss
+)
+         */
 
         $author_info = Helper::get_current_user_id_and_roles();
 
@@ -175,6 +193,10 @@ class Database
         $author_id = $author_info['id'];
         $is_admin = in_array('administrator', $author_info['roles']);
         $status = $is_admin ? 'approved' : $status;
+
+     //   error_log(print_r($author_info, true));
+      //  error_log(print_r($status, true));
+      //  die();
 
         $this->wpdb->insert(
             "{$this->wpdb->prefix}ps_profile",
@@ -435,7 +457,7 @@ class Database
      *
      * @return array|object|null
      */
-    public function get_users_with_review_data($search = '', $limit = 0, $offset = 0)
+    public function get_profiles_with_review_data($search = '', $limit = 0, $offset = 0)
     {
         $query = "
             SELECT 
@@ -449,6 +471,7 @@ class Database
                 u.state, 
                 u.municipality, 
                 u.department,
+                u.author_id,
                 IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0) as average_rating,
                 COUNT(r.review_id) as total_reviews,
                 SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
@@ -461,7 +484,7 @@ class Database
         // Apply search filter if a search term is provided
         if (!empty($search)) {
             $search = '%' . $this->wpdb->esc_like($search) . '%';
-            $query .= " AND (u.first_name LIKE '$search' OR u.last_name LIKE '$search' OR u.email LIKE '$search')";
+            $query .= " AND (u.first_name LIKE '$search' OR u.last_name LIKE '$search' OR u.email LIKE '$search' OR u.title LIKE '$search' OR u.municipality LIKE '$search' OR u.department LIKE '$search')";
         }
 
         $query .= " GROUP BY u.profile_id, u.first_name, u.last_name, u.email, u.phone, u.state, u.department";

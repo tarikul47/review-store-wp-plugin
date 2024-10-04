@@ -29,9 +29,9 @@ get_header();
         <form method="post" action="http://team.local/wp-admin/admin-post.php" name="createperson" id="createperson"
             class="validate" novalidate="novalidate">
 
-            <?php wp_nonce_field('add_user_with_review_nonce'); ?>
+            <?php wp_nonce_field('frontend_add_profile_with_review_nonce'); ?>
 
-            <input type="hidden" name="action" value="add_user_with_review">
+            <input type="hidden" name="action" value="frontend_add_profile_with_review">
 
             <input name="author_id" type="hidden" value="<?php echo get_current_user_id(); ?>">
 

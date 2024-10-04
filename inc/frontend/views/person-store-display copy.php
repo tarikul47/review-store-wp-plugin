@@ -13,7 +13,7 @@ use Tarikul\PersonsStore\Inc\Database\Database;
  */
 get_header();
 $db = Database::getInstance();
-$users = $db->get_users_with_review_data();
+$users = $db->get_profiles_with_review_data();
 //echo "<pre>";
 //print_r($users);
 ?>

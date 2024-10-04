@@ -50,12 +50,13 @@
                     <th scope="col" class="manage-column column-last-name">Last Name</th>
                     <th scope="col" class="manage-column column-email">Email</th>
                     <th scope="col" class="manage-column column-phone">Phone</th>
-                    <th scope="col" class="manage-column column-state">State</th>
+                    <th scope="col" class="manage-column column-state">Title</th>
                     <th scope="col" class="manage-column column-department">Department</th>
-                    <th scope="col" class="manage-column column-rating">Average Rating</th>
+                    <th scope="col" class="manage-column column-rating">A.Rating</th>
                     <th scope="col" class="manage-column column-total-reviews">Total Reviews</th>
                     <th scope="col" class="manage-column column-approved-reviews">Approved Reviews</th>
                     <th scope="col" class="manage-column column-pending-reviews">Pending Reviews</th>
+                    <th scope="col" class="manage-column column-actions">Author</th>
                     <th scope="col" class="manage-column column-view-reviews">View Reviews</th>
                     <th scope="col" class="manage-column column-actions">Actions</th>
                 </tr>
@@ -74,7 +75,7 @@
                             <td class="column-last-name" data-colname="Last Name"><?php echo esc_html($user->last_name); ?></td>
                             <td class="column-email" data-colname="Email"><?php echo esc_html($user->email); ?></td>
                             <td class="column-phone" data-colname="Phone"><?php echo esc_html($user->phone); ?></td>
-                            <td class="column-state" data-colname="State"><?php echo esc_html($user->title); ?></td>
+                            <td class="column-state" data-colname="title"><?php echo esc_html($user->title); ?></td>
                             <td class="column-department" data-colname="Department"><?php echo esc_html($user->department); ?>
                             </td>
                             <td class="column-rating" data-colname="Average Rating">
@@ -88,6 +89,9 @@
                             </td>
                             <td class="column-pending-reviews" data-colname="Pending Reviews">
                                 <?php echo esc_html($user->pending_reviews); ?>
+                            </td>
+                            <td class="column-pending-reviews" data-colname="Pending Reviews">
+                                <?php echo esc_html($user->author_id); ?>
                             </td>
                             <td class="column-view-reviews" data-colname="View Reviews">
                                 <a class="table-btn"

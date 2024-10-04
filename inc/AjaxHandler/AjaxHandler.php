@@ -59,7 +59,7 @@ class AjaxHandler
 
         $offset = ($page - 1) * $profiles_per_page;
 
-        $profiles = $this->db->get_users_with_review_data($search_term, $profiles_per_page, $offset);
+        $profiles = $this->db->get_profiles_with_review_data($search_term, $profiles_per_page, $offset);
 
         // Get total profiles count for pagination
         $total_profiles = $this->db->get_total_profiles_count($search_term);
@@ -84,7 +84,7 @@ class AjaxHandler
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No profiles found. <a href='/add-person'>Please add a profile</a></td></tr>";
+            echo "<tr><td colspan='9'>No profiles found. <a href='/add-profile'>Please add a profile</a></td></tr>";
         }
         $profiles_html = ob_get_clean();
 
