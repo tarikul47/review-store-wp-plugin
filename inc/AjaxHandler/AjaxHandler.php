@@ -265,7 +265,7 @@ class AjaxHandler
             }
 
             // Fetch Person data
-            $person_data = $this->db->get_person_by_id($data['profile_id']);
+            $person_data = $this->db->get_profile_by_id($data['profile_id']);
             if (!$person_data) {
                 throw new \Exception('Failed to fetch person data.');
             }
@@ -378,7 +378,7 @@ class AjaxHandler
     //         //    $result = $this->db->update_review_status($review_id, 'approved');
 
     //         // Fetch Person data 
-    //         $person_data = $this->db->get_person_by_id($data['profile_id']);
+    //         $person_data = $this->db->get_profile_by_id($data['profile_id']);
 
     //         // Fetch Person Full Name 
     //         $person_name = Helper::get_person_name_process($person_data);

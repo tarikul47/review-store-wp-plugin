@@ -55,7 +55,7 @@
                         <th scope="row"><label for="title">Professional Title</label></th>
                         <td>
                             <input name="title" type="text" id="title"
-                                value="<?php echo ($person_data !== null) ? esc_html($person_data->first_name) : 'WordPress Developer' ?>"
+                                value="<?php echo ($person_data !== null) ? esc_html($person_data->title) : 'WordPress Developer' ?>"
                                 autocapitalize="none" autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -145,7 +145,7 @@
                         <th scope="row"><label for="country">Country</label></th>
                         <td>
                             <input name="country" type="text" id="country"
-                                value="<?php echo ($person_data !== null) ? esc_html($person_data->state) : 'Bangladeshss' ?>"
+                                value="<?php echo ($person_data !== null) ? esc_html($person_data->country) : 'Bangladeshss' ?>"
                                 autocapitalize="none" autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>

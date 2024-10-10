@@ -151,7 +151,7 @@ class Admin
         // Check if this is an edit form  edit-person&profile_id
         $profile_id = isset($_GET['action']) && $_GET['action'] === 'edit-person' && !empty($_GET['profile_id']) ? $_GET['profile_id'] : false;
 
-        $person_data = $this->db->get_person_by_id($profile_id);
+        $person_data = $this->db->get_profile_by_id($profile_id);
 
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-add-person-display.php';
     }
@@ -171,10 +171,12 @@ class Admin
     public function urs_view_reviews_page()
     {
         // Get the external_profile_id from the URL parameter
-        $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : 0;
+        $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : false;
 
         // Fetch reviews for the selected external profile
         $reviews = $this->db->get_reviews_by_external_profile_id($profile_id);
+
+        $profile_data = $this->db->get_profile_by_id($profile_id);
 
         // Include the view file to display the reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-view-reviews-display.php';

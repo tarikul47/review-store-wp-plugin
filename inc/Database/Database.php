@@ -385,7 +385,7 @@ class Database
      * @param int $profile_id The ID of the profile to retrieve.
      * @return object|null The person data as an object, or null if no record is found.
      */
-    public function get_person_by_id(int $profile_id)
+    public function get_profile_by_id(int $profile_id)
     {
         return $this->get('ps_profile', ['profile_id' => $profile_id]);
     }
@@ -655,7 +655,7 @@ class Database
     public function get_person_name_by_id($profile_id)
     {
         // Fetch the entire profile using the existing get_person_by_id function
-        $profile = $this->get_person_by_id($profile_id);
+        $profile = $this->get_profile_by_id($profile_id);
 
         // If the profile is found, concatenate first_name and last_name
         if ($profile) {

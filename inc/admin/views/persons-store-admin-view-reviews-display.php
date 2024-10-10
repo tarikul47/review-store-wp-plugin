@@ -10,9 +10,126 @@
  * @author    Your Name or Your Company
  */
 
-if ($reviews) { ?>
-    <h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
-    </h2>
+if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
+    die('You are cheating!');
+}
+
+//echo "<pre>";
+//print_r($profile_data);
+
+?>
+<h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
+</h2>
+
+<?php if (isset($profile_data)): ?>
+    <div class="profile-information">
+        <div class="info1">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">First Name</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Last Name</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->last_name) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Professional Title</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->title) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Email</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->email) : 'Tarikul' ?></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="info2">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Phone Number</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->phone) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Zip Code</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->zip_code) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">City</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->city) : 'Tarikul' ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="info3">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Salary Per Month</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->salary_per_month) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Type of Employee</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->employee_type) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Region</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->region) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">State</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->state) : 'Tarikul' ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="info4">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Country</label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->country) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Municipality
+                </label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->municipality) : 'Tarikul' ?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Department
+                </label>
+                <div class="col-sm-10">
+                    <span><?php echo ($profile_data !== null) ? esc_html($profile_data->department) : 'Tarikul' ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-address">
+        <div class="form-group-address">
+            <label class="control-label col-sm-2" for="pwd">Address</label>
+            <div class="col-sm-10">
+                <span><?php echo ($profile_data !== null) ? esc_html($profile_data->address) : 'Tarikul' ?></span>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if ($reviews) { ?>
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
@@ -84,3 +201,29 @@ if ($reviews) { ?>
 <?php } else { ?>
     <p><?php _e('No reviews found for this external profile.', $this->plugin_text_domain); ?></p>
 <?php } ?>
+
+<style>
+    .profile-information {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 10px 0px;
+        width: 1100px;
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-content: center;
+        align-items: center;
+        padding: 15px 0px;
+    }
+
+    .profile-address {
+        padding: 20px 0px;
+    }
+
+    .profile-information label.control-label {
+        font-weight: 700;
+    }
+</style>

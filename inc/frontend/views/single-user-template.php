@@ -14,7 +14,7 @@ use Tarikul\PersonsStore\Inc\Database\Database;
 // Check if this is an edit form  edit-person&profile_id
 $profile_id = (isset($_GET['profile_id']) && !empty($_GET['profile_id'])) ? $_GET['profile_id'] : false;
 $db = Database::getInstance();
-$person_data = $db->get_person_by_id($profile_id);
+$person_data = $db->get_profile_by_id($profile_id);
 $is_review_exist = $db->get_existing_review($profile_id);
 
 // echo "<pre>";
