@@ -145,7 +145,7 @@ class Database
          * Here we can add colum for any specific table 
          * Check for missing columns and add them if necessary
          */
-          self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
+        self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
 
         //   if (!self::table_exists($name)) {
         //    dbDelta($sql);
@@ -162,27 +162,6 @@ class Database
      */
     public function insert_user($user_data, $product_id, $status = 'pending')
     {
-        /**
-         * Array
-(
-    [first_name] => Tarikul
-    [last_name] => Islam
-    [title] => WordPress Developer
-    [email] => tarikul@gmail.com
-    [phone] => 01752134658
-    [address] => 01752134658
-    [zip_code] => 1204
-    [city] => Tongi
-    [salary_per_month] => 10000000
-    [employee_type] => Freelancerss
-    [region] => Region
-    [state] => Gazipurss
-    [country] => Bangladeshss
-    [municipality] => Municipalityss
-    [department] => Departmentss
-)
-         */
-
         $author_info = Helper::get_current_user_id_and_roles();
 
         if (!$author_info) {
@@ -194,9 +173,9 @@ class Database
         $is_admin = in_array('administrator', $author_info['roles']);
         $status = $is_admin ? 'approved' : $status;
 
-     //   error_log(print_r($author_info, true));
-      //  error_log(print_r($status, true));
-      //  die();
+        //   error_log(print_r($author_info, true));
+        //  error_log(print_r($status, true));
+        //  die();
 
         $this->wpdb->insert(
             "{$this->wpdb->prefix}ps_profile",
@@ -457,7 +436,7 @@ class Database
      *
      * @return array|object|null
      */
-    public function get_profiles_with_review_data($search = '', $limit = 0, $offset = 0)
+    public function get_profiles_with_review_data($status = '', $search = '', $limit = 0, $offset = 0)
     {
         $query = "
             SELECT 
@@ -485,6 +464,11 @@ class Database
         if (!empty($search)) {
             $search = '%' . $this->wpdb->esc_like($search) . '%';
             $query .= " AND (u.first_name LIKE '$search' OR u.last_name LIKE '$search' OR u.email LIKE '$search' OR u.title LIKE '$search' OR u.municipality LIKE '$search' OR u.department LIKE '$search')";
+        }
+
+        // Apply status filter if a status is provided
+        if (!empty($status)) {
+            $query .= $this->wpdb->prepare(" AND u.status = %s", $status);
         }
 
         $query .= " GROUP BY u.profile_id, u.first_name, u.last_name, u.email, u.phone, u.state, u.department";

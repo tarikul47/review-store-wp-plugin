@@ -775,3 +775,7 @@ Comment Box CSS
 Single person page css End
 ====================================
 */
+#profile-form {
+    width: 70%;
+    margin: auto;
+}

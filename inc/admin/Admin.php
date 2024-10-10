@@ -66,6 +66,15 @@ class Admin
 
         add_submenu_page(
             $this->plugin_name,
+            __('Pending Profile', $this->plugin_text_domain),
+            __('Pending Profile', $this->plugin_text_domain),
+            'manage_options',
+            $this->plugin_name . '-pending-profiles',
+            array($this, 'urs_pending_profile_list_page'),
+        );
+
+        add_submenu_page(
+            $this->plugin_name,
             __('Add Person', $this->plugin_text_domain),
             __('Add Person', $this->plugin_text_domain),
             'manage_options',
@@ -126,9 +135,15 @@ class Admin
 
         //  var_dump($_GET);
 
-        $users = $this->db->get_profiles_with_review_data();
+        $users = $this->db->get_profiles_with_review_data('approved');
 
         include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-persons-list-display.php';
+    }
+
+    public function urs_pending_profile_list_page()
+    {
+        $users = $this->db->get_profiles_with_review_data('pending');
+        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-pending-profile-list-display.php';
     }
 
     public function urs_add_user_page()
@@ -190,7 +205,7 @@ class Admin
      */
     public function handle_add_user_form_submission()
     {
-        error_log('admin-----------------');
+        //error_log('admin-----------------');
         // Define your nonce action dynamically
         $nonce_action = 'add_user_with_review_nonce';
 

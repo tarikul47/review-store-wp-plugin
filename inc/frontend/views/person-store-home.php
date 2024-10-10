@@ -5,7 +5,7 @@ get_header();
     <div class="content-title">
         <h2>vem letar du efter?</h2>
     </div>
-    <form class="search-person-form" action="/tjmk-profile-template" method="get">
+    <form class="search-person-form" action="/profiles" method="get">
         <!-- Change action to your profile page URL -->
         <div class="name-button-box">
             <input type="text" name="search_term" placeholder="Enter name..." value="">

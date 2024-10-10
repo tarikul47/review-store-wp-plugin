@@ -33,7 +33,7 @@ class Helper
     public static function sanitize_user_data($data)
     {
         return [
-         //   'author_id' => isset($data['author_id']) ? intval($data['author_id']) : 0,
+            //   'author_id' => isset($data['author_id']) ? intval($data['author_id']) : 0,
             'first_name' => isset($data['first_name']) ? sanitize_text_field($data['first_name']) : '',
             'last_name' => isset($data['last_name']) ? sanitize_text_field($data['last_name']) : '',
             'title' => isset($data['title']) ? sanitize_text_field($data['title']) : '',
@@ -81,6 +81,45 @@ class Helper
 
         return $sanitized_data;
     }
+
+    public static function validate_user_data($data)
+    {
+        // Define required fields
+        $required_fields = [
+            'first_name' => 'First name',
+            'last_name' => 'Last name',
+            'title' => 'Professional Title',
+            'phone' => 'Phone Number',
+            'address' => 'Address',
+            'zip_code' => 'Zip Code	',
+            'city' => 'City',
+            'salary_per_month' => 'Salary Per Month	',
+            'employee_type' => 'Type of Employee',
+            'region' => 'Region',
+            'state' => 'State',
+            'country' => 'Country',
+            'municipality' => 'Municipality',
+            'department' => 'Department'
+        ];
+
+        // Check for empty required fields
+        foreach ($required_fields as $field_key => $field_label) {
+            if (empty($data[$field_key])) {
+                return "Error: The {$field_label} field is required.";
+            }
+        }
+
+        // Check for valid email
+        if (!is_email($data['email'])) {
+            return "Error: Please provide a valid email address.";
+        }
+
+        // Add other validation rules as needed (e.g., phone number format, zip code, etc.)
+
+        // If all validations pass, return true
+        return true;
+    }
+
 
     /**
      * Calculate the average rating based on review data.
