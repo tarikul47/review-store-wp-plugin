@@ -1,4 +1,5 @@
 <?php
+use Tarikul\PersonsStore\Inc\Helper\Helper;
 
 /**
  * Provide an admin area view for the plugin
@@ -14,7 +15,7 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
-    <h2>User List - <?php echo count($users); ?></h2>
+    <h2>All Active Profiles - <?php echo count($users); ?></h2>
 
     <form id="bulk-action-form" method="post">
         <p class="search-box">
@@ -46,8 +47,8 @@
                     <td id="cb" class="manage-column column-cb check-column">
                         <input id="select-all" type="checkbox">
                     </td>
-                    <th scope="col" class="manage-column column-first-name">First Name</th>
-                    <th scope="col" class="manage-column column-last-name">Last Name</th>
+                    <th scope="col" class="manage-column column-first-name">Name</th>
+                    <!-- <th scope="col" class="manage-column column-last-name">Last Name</th> -->
                     <th scope="col" class="manage-column column-email">Email</th>
                     <th scope="col" class="manage-column column-phone">Phone</th>
                     <th scope="col" class="manage-column column-state">Title</th>
@@ -70,9 +71,12 @@
                                 <input id="cb-select-<?php echo esc_attr($user->profile_id); ?>" type="checkbox"
                                     name="profile_ids[]" value="<?php echo esc_attr($user->profile_id); ?>">
                             </th>
-                            <td class="column-first-name" data-colname="First Name"><?php echo esc_html($user->first_name); ?>
+                            <td class="column-first-name" data-colname="First Name">
+                                <?php echo esc_html($user->first_name . ' ' . $user->last_name); ?>
                             </td>
-                            <td class="column-last-name" data-colname="Last Name"><?php echo esc_html($user->last_name); ?></td>
+                            <!-- <td class="column-last-name" data-colname="Last Name"><?php //echo esc_html($user->last_name); ?></td> -->
+
+
                             <td class="column-email" data-colname="Email"><?php echo esc_html($user->email); ?></td>
                             <td class="column-phone" data-colname="Phone"><?php echo esc_html($user->phone); ?></td>
                             <td class="column-state" data-colname="title"><?php echo esc_html($user->title); ?></td>
@@ -91,7 +95,7 @@
                                 <?php echo esc_html($user->pending_reviews); ?>
                             </td>
                             <td class="column-pending-reviews" data-colname="Pending Reviews">
-                                <?php echo esc_html($user->author_id); ?>
+                                <?php echo Helper::get_user_info_by_id($user->author_id)['username']; ?>
                             </td>
                             <td class="column-view-reviews" data-colname="View Reviews">
                                 <a class="table-btn"

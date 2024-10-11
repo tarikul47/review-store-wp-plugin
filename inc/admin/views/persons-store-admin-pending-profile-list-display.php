@@ -1,4 +1,5 @@
 <?php
+use Tarikul\PersonsStore\Inc\Helper\Helper;
 
 /**
  * Provide an admin area view for the plugin
@@ -14,7 +15,9 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
-    <h2>User List - <?php echo count($users); ?></h2>
+    <div class="profile-tab">
+        <h1>Pending Profile - <?php echo count($users); ?></h1>
+    </div>
 
     <form id="bulk-action-form" method="post">
         <p class="search-box">
@@ -46,16 +49,12 @@
                     <td id="cb" class="manage-column column-cb check-column">
                         <input id="select-all" type="checkbox">
                     </td>
-                    <th scope="col" class="manage-column column-first-name">First Name</th>
-                    <th scope="col" class="manage-column column-last-name">Last Name</th>
+                    <th scope="col" class="manage-column column-first-name">Name</th>
+                    <!-- <th scope="col" class="manage-column column-last-name">Last Name</th> -->
                     <th scope="col" class="manage-column column-email">Email</th>
                     <th scope="col" class="manage-column column-phone">Phone</th>
                     <th scope="col" class="manage-column column-state">Title</th>
                     <th scope="col" class="manage-column column-department">Department</th>
-                    <th scope="col" class="manage-column column-rating">A.Rating</th>
-                    <th scope="col" class="manage-column column-total-reviews">Total Reviews</th>
-                    <th scope="col" class="manage-column column-approved-reviews">Approved Reviews</th>
-                    <th scope="col" class="manage-column column-pending-reviews">Pending Reviews</th>
                     <th scope="col" class="manage-column column-actions">Author</th>
                     <th scope="col" class="manage-column column-view-reviews">View Reviews</th>
                     <th scope="col" class="manage-column column-actions">Actions</th>
@@ -70,28 +69,18 @@
                                 <input id="cb-select-<?php echo esc_attr($user->profile_id); ?>" type="checkbox"
                                     name="profile_ids[]" value="<?php echo esc_attr($user->profile_id); ?>">
                             </th>
-                            <td class="column-first-name" data-colname="First Name"><?php echo esc_html($user->first_name); ?>
+                            <td class="column-first-name" data-colname="First Name">
+                                <?php echo esc_html($user->first_name . ' ' . $user->last_name); ?>
                             </td>
-                            <td class="column-last-name" data-colname="Last Name"><?php echo esc_html($user->last_name); ?></td>
+                            <!-- <td class="column-last-name" data-colname="Last Name"><?php //echo esc_html($user->last_name); ?></td> -->
+
                             <td class="column-email" data-colname="Email"><?php echo esc_html($user->email); ?></td>
                             <td class="column-phone" data-colname="Phone"><?php echo esc_html($user->phone); ?></td>
                             <td class="column-state" data-colname="title"><?php echo esc_html($user->title); ?></td>
                             <td class="column-department" data-colname="Department"><?php echo esc_html($user->department); ?>
                             </td>
-                            <td class="column-rating" data-colname="Average Rating">
-                                <?php echo esc_html(number_format($user->average_rating, 2)); ?>
-                            </td>
-                            <td class="column-total-reviews" data-colname="Total Reviews">
-                                <?php echo esc_html($user->total_reviews); ?>
-                            </td>
-                            <td class="column-approved-reviews" data-colname="Approved Reviews">
-                                <?php echo esc_html($user->approved_reviews); ?>
-                            </td>
-                            <td class="column-pending-reviews" data-colname="Pending Reviews">
-                                <?php echo esc_html($user->pending_reviews); ?>
-                            </td>
-                            <td class="column-pending-reviews" data-colname="Pending Reviews">
-                                <?php echo esc_html($user->author_id); ?>
+                            <td class="column-pending-reviews" data-colname="author-name">
+                                <?php echo Helper::get_user_info_by_id($user->author_id)['username'] ?>
                             </td>
                             <td class="column-view-reviews" data-colname="View Reviews">
                                 <a class="table-btn"
@@ -101,9 +90,12 @@
                             <td class="column-actions" data-colname="Actions">
                                 <a class="table-btn"
                                     href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
-
+<!-- 
                                 <a class="table-btn delete-profile-btn" href="#"
-                                    data-profile-id="<?php echo esc_attr($user->profile_id); ?>">Delete</a>
+                                    data-profile-id="<?php //echo esc_attr($user->profile_id); ?>">Delete</a> -->
+
+                                <a class="table-btn approve-profile-btn" href="#"
+                                    data-profile-id="<?php echo esc_attr($user->profile_id); ?>">Approve</a>
 
                             </td>
                         </tr>
@@ -126,10 +118,6 @@
                     <th scope="col" class="manage-column column-phone">Phone</th>
                     <th scope="col" class="manage-column column-state">State</th>
                     <th scope="col" class="manage-column column-department">Department</th>
-                    <th scope="col" class="manage-column column-rating">Average Rating</th>
-                    <th scope="col" class="manage-column column-total-reviews">Total Reviews</th>
-                    <th scope="col" class="manage-column column-approved-reviews">Approved Reviews</th>
-                    <th scope="col" class="manage-column column-pending-reviews">Pending Reviews</th>
                     <th scope="col" class="manage-column column-view-reviews">View Reviews</th>
                     <th scope="col" class="manage-column column-actions">Actions</th>
                 </tr>

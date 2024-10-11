@@ -685,6 +685,115 @@ class Database
     //     return $result ? $result['full_name'] : null;
     // }
 
+    /*---------------------*
+     * Profle Related Operation
+     *----------------------*/
+
+    public function update_user($user_data, $product_id, $profile_id)
+    {
+        return $this->wpdb->update(
+            "{$this->wpdb->prefix}ps_profile",
+            array(
+                'first_name' => $user_data['first_name'],
+                'last_name' => $user_data['last_name'],
+                'title' => $user_data['title'],
+                'email' => $user_data['email'],
+                'phone' => $user_data['phone'],
+                'address' => $user_data['address'],
+                'zip_code' => $user_data['zip_code'],
+                'city' => $user_data['city'],
+                'salary_per_month' => $user_data['salary_per_month'],
+                'employee_type' => $user_data['employee_type'],
+                'region' => $user_data['region'],
+                'state' => $user_data['state'],
+                'country' => $user_data['country'],
+                'municipality' => $user_data['municipality'],
+                'department' => $user_data['department'],
+                'updated_at' => current_time('mysql'),
+                'product_id' => $product_id,
+            ),
+            array('profile_id' => $profile_id),
+            array(
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%f',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%d'
+            ),
+            array('%d')
+        );
+    }
+
+    public function update_review($profile_id, $average_rating)
+    {
+        // Update the review based on profile_id
+        $result = $this->wpdb->update(
+            "{$this->wpdb->prefix}ps_reviews",
+            array(
+                'rating' => $average_rating,
+                'updated_at' => current_time('mysql')
+            ),
+            array('profile_id' => $profile_id),
+            array('%f', '%s'),
+            array('%d')
+        );
+
+        // Check if the update was successful and get the review_id
+        if ($result !== false) {
+            return $this->wpdb->get_var($this->wpdb->prepare(
+                "SELECT review_id FROM {$this->wpdb->prefix}ps_reviews WHERE profile_id = %d",
+                $profile_id
+            ));
+        }
+
+        return false; // Return false if the update failed
+    }
+
+
+    public function update_review_meta($review_id, $meta_key, $meta_value)
+    {
+        // Log the inputs
+        Helper::log_error_data('$review_id', $review_id);
+        Helper::log_error_data('$meta_key', $meta_key);
+        Helper::log_error_data('$meta_value', $meta_value);
+
+        // Attempt to update existing meta
+        $update_result = $this->wpdb->update(
+            "{$this->wpdb->prefix}ps_review_meta",
+            array('meta_value' => maybe_serialize($meta_value)),
+            array(
+                'review_id' => $review_id,
+                'meta_key' => $meta_key
+            ),
+            array('%s'), // meta_value is a string (possibly serialized)
+            array('%d', '%s') // review_id is an integer, meta_key is a string
+        );
+
+        // Check if the update was successful
+        if ($update_result === false) {
+            // Log the error if the update fails
+            Helper::log_error_data('Failed to update review meta', $this->wpdb->last_error);
+            return false; // Indicate that the update did not succeed
+        }
+
+        // Return true if the update was successful
+        return true;
+    }
+
+
+
 
 
     /**
@@ -722,6 +831,37 @@ class Database
 
         // Perform the update
         return $wpdb->update($table, $data, $where, $format);
+    }
+
+    /**
+     * Update the status of a review.
+     *
+     * @param int $review_id The ID of the review to update.
+     * @param string $status The new status for the review.
+     * @return bool True on success, false on failure.
+     */
+    public function approve_profile($profile_id, $status)
+    {
+        // Define the table name
+        $table = $this->wpdb->prefix . 'ps_profile';
+
+        // Update the review status
+        $result = $this->wpdb->update(
+            $table,                         // Table name
+            ['status' => $status],          // Data to update
+            ['profile_id' => $profile_id],    // Where clause
+            ['%s'],                         // Data format for status
+            ['%d']                          // Data format for review_id
+        );
+
+        // Check if the update was successful
+        if ($result === false) {
+            // Log the error if the update fails
+            error_log("Failed to update profile ID: $profile_id to status: $status. WPDB Error: " . $wpdb->last_error);
+            return false;
+        }
+
+        return true;
     }
 
     /**

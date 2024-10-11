@@ -28,6 +28,8 @@ class AjaxHandler
             add_action('wp_ajax_urp_process_chunks_async', [$this, 'ps_process_chunks_async']);
 
 
+            add_action('wp_ajax_approve_profile', [$this, 'handle_approve_profile']);
+
             add_action('wp_ajax_delete_profile', [$this, 'handle_delete_profile']);
 
             add_action('wp_ajax_urp_bulk_delete_profiles', [$this, 'urp_bulk_delete_profiles']);
@@ -59,7 +61,7 @@ class AjaxHandler
 
         $offset = ($page - 1) * $profiles_per_page;
 
-        $profiles = $this->db->get_profiles_with_review_data($search_term, $profiles_per_page, $offset);
+        $profiles = $this->db->get_profiles_with_review_data('approved', $search_term, $profiles_per_page, $offset);
 
         // Get total profiles count for pagination
         $total_profiles = $this->db->get_total_profiles_count($search_term);
@@ -71,7 +73,7 @@ class AjaxHandler
         ob_start();
         if (!empty($profiles)) {
             foreach ($profiles as $profile) {
-                echo "<tr>";
+                echo '<tr class="clickable-row" onclick="window.location.href=\'' . esc_url(get_permalink() . '?profile_id=' . $profile->profile_id) . '\'">';
                 echo "<td>" . esc_html($profile->first_name) . "</td>";
                 echo "<td>" . esc_html($profile->last_name) . "</td>";
                 echo "<td>" . esc_html($profile->title) . "</td>";
@@ -79,7 +81,7 @@ class AjaxHandler
                 echo "<td>" . esc_html($profile->department) . "</td>";
                 echo "<td>" . esc_html($profile->municipality) . "</td>";
                 echo "<td>" . esc_html($profile->average_rating) . "</td>";
-                echo '<td><a href="'.wc_get_cart_url() . "?add-to-cart=" . $product_id . "&person_id=" . $profile->profile_id.'">Buy</a></td>';
+                echo '<td><a href="' . wc_get_cart_url() . "?add-to-cart=" . $product_id . "&person_id=" . $profile->profile_id . '">Buy</a></td>';
                 echo '<td><a href="' . esc_url(get_permalink() . '?profile_id=' . $profile->profile_id) . '">View</a></td>';
                 echo "</tr>";
             }
@@ -142,13 +144,21 @@ class AjaxHandler
         // Sanitize and validate input
         $review_data = Helper::sanitize_review_data($_POST);
 
+        $profile_id = isset($_POST['profile_id']) ? intval($_POST['profile_id']) : 0;
+
+        if (!$profile_id) {
+            wp_send_json_error(['message' => 'Profile ID is missing or invalid']);
+            exit;
+        }
+        
+
         // Ensure profile_id exists in the review data
         if (empty($review_data)) {
             wp_send_json_error(['message' => 'Profile ID is missing']);
         }
 
         // Ensure profile_id exists in the review data
-        if (empty($review_data['profile_id'])) {
+        if (empty($profile_id)) {
             wp_send_json_error(['message' => 'Profile ID is missing']);
         }
 
@@ -159,13 +169,13 @@ class AjaxHandler
         }
 
         // Check if the user has already submitted a review for this profile
-        $existing_review = $this->db->get_existing_review($review_data['profile_id']);
+        $existing_review = $this->db->get_existing_review($profile_id);
         if ($existing_review) {
             wp_send_json_error(['message' => 'You have already reviewed this profile']);
         }
 
         // Insert the review into the database
-        $review_id = $this->db->insert_review($review_data['profile_id'], $average_rating);
+        $review_id = $this->db->insert_review($profile_id, $average_rating);
         if (!$review_id) {
             wp_send_json_error(['message' => 'Failed to insert review']);
         }
@@ -216,6 +226,27 @@ class AjaxHandler
     {
         $bulkUploadHandler = BulkUploadHandler::getInstance();
         $bulkUploadHandler->process_chunks_async();
+    }
+
+    /**
+     * A profile approve function handle the ajax request
+     */
+
+    function handle_approve_profile()
+    {
+        if (isset($_POST['action']) && $_POST['action'] == 'approve_profile' && isset($_POST['profile_id'])) {
+            $profile_id = intval($_POST['profile_id']);
+
+            // approve operation.
+            $approve = $this->db->approve_profile($profile_id, 'approved');
+
+            // If successful, return a JSON response
+            if ($approve) {
+                wp_send_json_success(array('message' => 'Profile approved successfully.', 'profile_id' => $profile_id));
+            } else {
+                wp_send_json_error(array('message' => 'Profile approve failed.'));
+            }
+        }
     }
 
     /**

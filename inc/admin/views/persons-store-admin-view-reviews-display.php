@@ -16,10 +16,11 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
 
 //echo "<pre>";
 //print_r($profile_data);
-
 ?>
-<h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
-</h2>
+
+<div class="profile-tab">
+    <h2>All information of <b><?php esc_html_e($profile_data->first_name . ' ' . $profile_data->last_name) ?></b></h2>
+</div>
 
 <?php if (isset($profile_data)): ?>
     <div class="profile-information">
@@ -119,8 +120,8 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
             </div>
         </div>
     </div>
-    <div class="profile-address">
-        <div class="form-group-address">
+    <div class="profile-address" style="width:30%">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="pwd">Address</label>
             <div class="col-sm-10">
                 <span><?php echo ($profile_data !== null) ? esc_html($profile_data->address) : 'Tarikul' ?></span>
@@ -130,6 +131,8 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
 <?php endif; ?>
 
 <?php if ($reviews) { ?>
+    <h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
+    </h2>
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
@@ -163,9 +166,11 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                         <?php } elseif ($review['status'] === "rejected") { ?>
                             <a href="#">Rejected</a>
                         <?php } else { // status is "pending" or other values ?>
-                            <a class="table-btn approve_reject" data-profile-id="<?php echo esc_html($profile_id); ?>"
+                            <a class="table-btn <?php echo ($profile_data->status === 'pending') ? 'unclickable' : 'approve_reject'; ?>"
+                                data-profile-id="<?php echo esc_html($profile_id); ?>"
                                 data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
-                            <a class="table-btn approve_reject" data-profile-id="<?php echo esc_html($profile_id); ?>"
+                            <a class="table-btn <?php echo ($profile_data->status === 'pending') ? 'unclickable' : 'approve_reject'; ?>"
+                                data-profile-id="<?php echo esc_html($profile_id); ?>"
                                 data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Reject</a>
                         <?php } ?>
                     </td>
@@ -203,11 +208,17 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
 <?php } ?>
 
 <style>
-    .profile-information {
+    .profile-information,
+    .profile-addres {
         display: flex;
         justify-content: space-between;
-        padding: 30px 10px 0px;
+        padding: 30px 0px 0px;
         width: 1100px;
+    }
+
+    .profile-address {
+        width: 30%;
+        padding-bottom: 20px;
     }
 
     .form-group {
@@ -219,11 +230,18 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
         padding: 15px 0px;
     }
 
-    .profile-address {
+    /* .profile-address {
         padding: 20px 0px;
+    } */
+
+    .profile-information .control-label,
+    .profile-address .control-label {
+        font-weight: 700;
     }
 
-    .profile-information label.control-label {
-        font-weight: 700;
+    .profile-tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

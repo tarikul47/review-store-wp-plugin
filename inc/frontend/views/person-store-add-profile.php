@@ -28,7 +28,7 @@ get_header();
 
     ?>
 
-    <h3>Add New Person</h3>
+    <h3>Add New Profile</h3>
     <div class="edit-options">
         <form method="post" name="createperson" id="frontend-profile-add" class="validate" novalidate="novalidate">
 

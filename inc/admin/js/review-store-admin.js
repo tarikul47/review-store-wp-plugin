@@ -182,6 +182,43 @@
     }
 
     /**
+     * A profile approve functionality
+     */
+
+    $(".approve-profile-btn").on("click", function (e) {
+      e.preventDefault();
+
+      if (!confirm("Are you sure you want to approve this profile?")) {
+        return;
+      }
+
+      var profileId = $(this).data("profile-id");
+      var row = $(this).closest("tr");
+
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: {
+          action: "approve_profile",
+          profile_id: profileId,
+        },
+        success: function (response) {
+          if (response.success) {
+            row.css("background-color", "red").fadeOut(500, function () {
+              $(this).remove();
+            });
+            alert(response.data.message);
+          } else {
+            alert(response.data.message);
+          }
+        },
+        error: function () {
+          alert("An error occurred while deleting the profile.");
+        },
+      });
+    });
+
+    /**
      * Profile delete
      */
     $(".delete-profile-btn").on("click", function (e) {

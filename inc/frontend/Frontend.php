@@ -169,7 +169,7 @@ class Frontend
 			$wpdb->query('ROLLBACK');
 
 			// Log the error (if you have a logging mechanism)
-			$this->log_error('Error during profile submission: ' . $e->getMessage());
+			Helper::log_error('Error during profile submission: ' . $e->getMessage());
 
 			// Return error response
 			wp_send_json_error(['message' => 'There were errors in the submission.', 'errors' => [$e->getMessage()]]);

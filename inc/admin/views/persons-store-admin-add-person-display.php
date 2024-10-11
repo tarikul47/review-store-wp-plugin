@@ -20,7 +20,7 @@
             class="validate" novalidate="novalidate">
 
             <?php
-            $nonce = ($person_data !== null) ? 'update_user_with_review_nonce' : 'add_user_with_review_nonce';
+            $nonce = ($person_data !== null) ? 'update_profile_with_review_nonce' : 'add_profile_with_review_nonce';
             wp_nonce_field($nonce);
             ?>
 
@@ -169,79 +169,79 @@
                     </tr>
                     <?php
                     // Conditional rendering for the "Give reviews" section
-                    if (empty($profile_id)): ?>
-                        <!-- Review Section -->
-                        <tr class="form-field give-review">
-                            <th scope="row" colspan="2">
-                                <h4>Give reviews to Sven Nilsson?</h4>
-                            </th>
-                        </tr>
+                    //if (empty($profile_id)): ?>
+                    <!-- Review Section -->
+                    <tr class="form-field give-review">
+                        <th scope="row" colspan="2">
+                            <h4>Give reviews to Sven Nilsson?</h4>
+                        </th>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you experience the official as fair and impartial (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="fair" id="fair" value="2">
-                            </td>
-                        </tr>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Do you experience the official as fair and impartial (from 1 to 5)</p>
+                        </td>
+                        <td>
+                            <input type="number" name="fair" id="fair" value="2">
+                        </td>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official has sufficient competence, is professional and qualified
-                                    for his service (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="professional" id="professional" value="3">
-                            </td>
-                        </tr>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Do you feel that the official has sufficient competence, is professional and qualified
+                                for his service (from 1 to 5)</p>
+                        </td>
+                        <td>
+                            <input type="number" name="professional" id="professional" value="3">
+                        </td>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official has a personal and good response (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="response" id="response" value="4">
-                            </td>
-                        </tr>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Do you feel that the official has a personal and good response (from 1 to 5)</p>
+                        </td>
+                        <td>
+                            <input type="number" name="response" id="response" value="4">
+                        </td>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official has good communication, good response time (from 1 to 5)
-                                </p>
-                            </td>
-                            <td>
-                                <input type="number" name="communication" id="communication" value="2">
-                            </td>
-                        </tr>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Do you feel that the official has good communication, good response time (from 1 to 5)
+                            </p>
+                        </td>
+                        <td>
+                            <input type="number" name="communication" id="communication" value="2">
+                        </td>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official makes fair decisions (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="decisions" id="decisions" value="5">
-                            </td>
-                        </tr>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Do you feel that the official makes fair decisions (from 1 to 5)</p>
+                        </td>
+                        <td>
+                            <input type="number" name="decisions" id="decisions" value="5">
+                        </td>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you recommend this official employee? (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="recommend" id="recommend" value="5">
-                            </td>
-                        </tr>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Do you recommend this official employee? (from 1 to 5)</p>
+                        </td>
+                        <td>
+                            <input type="number" name="recommend" id="recommend" value="5">
+                        </td>
+                    </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Say something about Sven Nilsson</p>
-                            </td>
-                            <td>
-                                <textarea name="comments" id="comments" cols="20" rows="4"></textarea>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                    <tr class="form-field give-review">
+                        <td>
+                            <p>Say something about Sven Nilsson</p>
+                        </td>
+                        <td>
+                            <textarea name="comments" id="comments" cols="20" rows="4"></textarea>
+                        </td>
+                    </tr>
+                    <?php //endif; ?>
                 </tbody>
             </table>
 

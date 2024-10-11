@@ -71,9 +71,9 @@ class Helper
         }
 
         // Check if profile_id exists, sanitize and include it
-        if (!empty($data['profile_id'])) {
-            $sanitized_data['profile_id'] = intval($data['profile_id']);
-        }
+        // if (!empty($data['profile_id'])) {
+        //     $sanitized_data['profile_id'] = intval($data['profile_id']);
+        // }
 
         if (!empty($data['review_id'])) {
             $sanitized_data['review_id'] = intval($data['review_id']);
@@ -548,6 +548,19 @@ class Helper
 
         // Ensure that no further code is executed after the redirect
         exit;
+    }
+
+    public static function log_error($message)
+    {
+        if (\WP_DEBUG === true) {
+            error_log('Profile Submission Error: ' . $message);
+        }
+    }
+    public static function log_error_data($message, $data)
+    {
+        if (\WP_DEBUG === true) {
+            error_log("Error Log - $message: " . print_r($data, true));
+        }
     }
 
 }
