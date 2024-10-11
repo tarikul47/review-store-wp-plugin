@@ -150,7 +150,7 @@ class AjaxHandler
             wp_send_json_error(['message' => 'Profile ID is missing or invalid']);
             exit;
         }
-        
+
 
         // Ensure profile_id exists in the review data
         if (empty($review_data)) {
@@ -264,16 +264,18 @@ class AjaxHandler
 
         // Sanitize and validate input
         $data = Helper::sanitize_review_data($_POST);
+        $profile_id = isset($_POST['profile_id']) ? intval($_POST['profile_id']) : 0;
 
         if (!$data['review_id']) {
             $this->log_error('Review ID is missing');
             wp_send_json_error(['message' => 'Review ID is missing.']);
             return;
         }
-        if (!$data['profile_id']) {
+
+        if (!$profile_id) {
             $this->log_error('Profile ID is missing');
-            wp_send_json_error(['message' => 'Profile ID is missing.']);
-            return;
+            wp_send_json_error(['message' => 'Profile ID is missing or invalid']);
+            exit;
         }
 
         // Start transaction
@@ -296,7 +298,7 @@ class AjaxHandler
             }
 
             // Fetch Person data
-            $person_data = $this->db->get_profile_by_id($data['profile_id']);
+            $person_data = $this->db->get_profile_by_id($profile_id);
             if (!$person_data) {
                 throw new \Exception('Failed to fetch person data.');
             }
@@ -311,7 +313,7 @@ class AjaxHandler
             $person_product_id = $person_data->product_id;
 
             // Fetch all approved reviews
-            $approved_reviews = $this->db->get_reviews('approved', $data['profile_id']);
+            $approved_reviews = $this->db->get_reviews('approved', $profile_id);
             if (!$approved_reviews) {
                 throw new \Exception('Failed to fetch approved reviews.');
             }

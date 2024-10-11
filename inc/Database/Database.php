@@ -857,7 +857,7 @@ class Database
         // Check if the update was successful
         if ($result === false) {
             // Log the error if the update fails
-            error_log("Failed to update profile ID: $profile_id to status: $status. WPDB Error: " . $wpdb->last_error);
+            error_log("Failed to update profile ID: $profile_id to status: $status. WPDB Error: " . $this->wpdb->last_error);
             return false;
         }
 
@@ -888,7 +888,7 @@ class Database
         // Check if the update was successful
         if ($result === false) {
             // Log the error if the update fails
-            error_log("Failed to update review status for review ID: $review_id to status: $status. WPDB Error: " . $wpdb->last_error);
+            error_log("Failed to update review status for review ID: $review_id to status: $status. WPDB Error: " . $this->wpdb->last_error);
             return false;
         }
 
