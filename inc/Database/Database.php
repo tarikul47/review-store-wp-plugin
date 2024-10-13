@@ -792,10 +792,6 @@ class Database
         return true;
     }
 
-
-
-
-
     /**
      * Update person data by profile ID.
      *
