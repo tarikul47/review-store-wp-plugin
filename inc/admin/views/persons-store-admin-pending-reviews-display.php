@@ -93,10 +93,10 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                             </td>
                             <td class="column-actions" data-colname="">
 
-                                <a class="table-btn approve_reject"
+                                <a class="custom-button button-approve approve_reject"
                                     data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
 
-                                <a class="table-btn approve_reject"
+                                <a class="custom-button button-reject approve_reject"
                                     data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Reject</a>
                             </td>
                         </tr>

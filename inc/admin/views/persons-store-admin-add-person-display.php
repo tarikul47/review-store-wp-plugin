@@ -175,9 +175,10 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                     </tbody>
                 </table>
 
-                <p class="submit"><input type="submit" name="createperson" id="createpersonsub"
-                        class="button button-primary"
-                        value="<?php echo ($person_data !== null) ? 'Update Person' : 'Add New Person' ?>"></p>
+                <p class="submit">
+                    <input type="submit" name="createperson" id="createpersonsub" class="submit-button button-edit"
+                        value="Update Person">
+                </p>
             </form>
         </div>
     </div>
@@ -497,9 +498,10 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                         </tbody>
                     </table>
 
-                    <p class="submit"><input type="submit" name="createperson" id="createpersonsub"
-                            class="button button-primary"
-                            value="<?php echo ($person_data !== null) ? 'Update Person' : 'Add New Person' ?>"></p>
+                    <p class="submit">
+                        <input class="submit-button button-edit" type="submit" name="createperson" id="createpersonsub"
+                            value="Add New Person">
+                    </p>
                 </form>
             </div>
         </div>

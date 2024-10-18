@@ -18,7 +18,7 @@
         <input type="file" name="user_file" required>
         <input type="hidden" name="security" value="<?php echo wp_create_nonce('urp_import_nonce'); ?>">
         <input type="hidden" name="total_chunks" id="total_chunks" value="">
-        <input type="submit" name="upload_file" class="button button-primary" value="Upload">
+        <input type="submit" name="upload_file" class="submit-button button-edit" value="Upload">
     </form>
     <div id="import-progress-container" style="display:none;">
         <h3>Import Progress</h3>

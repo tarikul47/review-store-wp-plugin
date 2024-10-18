@@ -160,7 +160,7 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                     <td><?php echo esc_html($review['status']); ?></td>
                     <td><?php echo esc_html($review['created_at']); ?></td>
                     <td>
-                        <a href="#" class="view-details-link table-btn"
+                        <a href="#" class="view-details-link custom-button"
                             data-review-id="<?php echo esc_attr($review['review_id']); ?>">
                             <?php _e('View Details', $this->plugin_text_domain); ?>
                         </a>
@@ -171,7 +171,7 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                         <?php } elseif ($review['status'] === "rejected") { ?>
                             <a href="#">Rejected</a>
                         <?php } else { // status is "pending" or other values ?>
-                            <a class="table-btn <?php echo ($profile_data->status === 'pending') ? 'unclickable' : ''; ?>"
+                            <a class="custom-button button-edit <?php echo ($profile_data->status === 'pending') ? 'unclickable' : ''; ?>"
                                 href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-person&profile_id=' . esc_attr($profile_id) . '&review_id=' . esc_attr($review['review_id']))); ?>"
                                 data-profile-id="<?php echo esc_html($profile_id); ?>"
                                 data-review-id="<?php echo esc_attr($review['review_id']); ?>">
@@ -179,11 +179,11 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                             </a>
 
 
-                            <a class="table-btn <?php echo ($profile_data->status === 'pending') ? 'unclickable' : 'approve_reject'; ?>"
+                            <a class="custom-button button-approve <?php echo ($profile_data->status === 'pending') ? 'unclickable' : 'approve_reject'; ?>"
                                 data-profile-id="<?php echo esc_html($profile_id); ?>"
                                 data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
 
-                            <a class="table-btn <?php echo ($profile_data->status === 'pending') ? 'unclickable' : 'approve_reject'; ?>"
+                            <a class="custom-button button-reject <?php echo ($profile_data->status === 'pending') ? 'unclickable' : 'approve_reject'; ?>"
                                 data-profile-id="<?php echo esc_html($profile_id); ?>"
                                 data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Reject</a>
                         <?php } ?>

@@ -98,15 +98,15 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                                 <?php echo Helper::get_user_info_by_id($user->author_id)['username']; ?>
                             </td>
                             <td class="column-view-reviews" data-colname="View Reviews">
-                                <a class="table-btn"
+                                <a class="custom-button"
                                     href="<?php echo esc_url(admin_url('admin.php?page=persons-store-view-reviews&profile_id=' . esc_attr($user->profile_id))); ?>">View
                                     Reviews</a>
                             </td>
                             <td class="column-actions" data-colname="Actions">
-                                <a class="table-btn"
+                                <a class="custom-button button-edit"
                                     href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
 
-                                <a class="table-btn delete-profile-btn" href="#"
+                                <a class="custom-button delete-profile-btn button-delete" href="#"
                                     data-profile-id="<?php echo esc_attr($user->profile_id); ?>">Delete</a>
 
                             </td>

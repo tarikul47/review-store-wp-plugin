@@ -4,7 +4,7 @@ ul.striped>:nth-child(odd) {
     background-color: #F1F9FF;
 }
 
-.table-btn {
+.custom-button {
     background: #000;
     color: #fff;
     padding: 2px 4px 6px 4px;
@@ -15,7 +15,7 @@ ul.striped>:nth-child(odd) {
     min-width: 40px;
 }
 
-.table-btn:hover {
+.custom-button:hover {
     background: #5FC19F;
     color: #fff;
 }
