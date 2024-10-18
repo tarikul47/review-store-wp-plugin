@@ -11,8 +11,11 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
  *
  * @author    Your Name or Your Company
  */
+<<<<<<< HEAD
  
  //var_dump($person_data);
+=======
+>>>>>>> 557aaee826af3947958820fb199ede498fc1be0e
 ?>
 
 <?php if (isset($_GET['profile_id']) && !isset($_GET['review_id'])) { ?>
@@ -32,7 +35,11 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                     value="<?php echo ($person_data !== null) ? 'update_person_profile' : 'add_user_with_review' ?>">
 
                 <input name="profile_id" type="hidden"
+<<<<<<< HEAD
                     value="<?php echo ($person_data !== null) ? esc_html($person_data->profile_id) : ''; ?>">
+=======
+                    value="<?php echo ($person_data !== null) ? esc_html($person_data->profile_id) : '' ?>">
+>>>>>>> 557aaee826af3947958820fb199ede498fc1be0e
 
                 <input name="author_id" type="hidden" value="<?php echo get_current_user_id(); ?>">
 
@@ -195,7 +202,11 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                         value="<?php echo ($person_data !== null) ? esc_html($_GET['profile_id']) : '' ?>">
 
                     <input name="review_id" type="hidden"
+<<<<<<< HEAD
                         value="<?php echo ($person_data !== null) ? esc_html($_GET['review_id']) : ''; ?>">
+=======
+                        value="<?php echo ($person_data !== null) ? esc_html($_GET['review_id']) : '' ?>">
+>>>>>>> 557aaee826af3947958820fb199ede498fc1be0e
 
                     <input name="author_id" type="hidden" value="<?php echo get_current_user_id(); ?>">
 
@@ -229,7 +240,13 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
 
                             //    echo "<pre>";
                             //   print_r($review_data);
+<<<<<<< HEAD
                          
+=======
+                            ?>
+
+                            <?php
+>>>>>>> 557aaee826af3947958820fb199ede498fc1be0e
 
                             foreach ($static_content as $field_name => $label) {
                                 // Get the corresponding value from review data
@@ -504,4 +521,9 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                 </form>
             </div>
         </div>
+<<<<<<< HEAD
 <?php } 
+=======
+<?php }
+; ?>
+>>>>>>> 557aaee826af3947958820fb199ede498fc1be0e

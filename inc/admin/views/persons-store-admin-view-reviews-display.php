@@ -134,7 +134,11 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
 
     <?php
     //  echo "<pre>";
+<<<<<<< HEAD
    // print_r($reviews);
+=======
+    print_r($reviews);
+>>>>>>> 557aaee826af3947958820fb199ede498fc1be0e
     ?>
     <h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
     </h2>
