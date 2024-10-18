@@ -52,7 +52,7 @@ class AjaxHandler
     {
         // Get order_id and person_id from the AJAX request
         $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
-        $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : 0;
+        $profile_id = isset($_GET['p_id']) ? intval($_GET['p_id']) : 0;
 
         if (!$profile_id) {
             wp_send_json_error('Person ID is requiredff.');
