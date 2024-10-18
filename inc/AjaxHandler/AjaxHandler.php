@@ -55,7 +55,7 @@ class AjaxHandler
         $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : 0;
 
         if (!$profile_id) {
-            wp_send_json_error('Person ID is required.');
+            wp_send_json_error('Person ID is requiredff.');
         }
 
         global $wpdb;
