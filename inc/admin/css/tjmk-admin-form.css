@@ -8,18 +8,6 @@ ul.striped>:nth-child(odd) {
     width: 100%;
 }
 
-.unclickable {
-    pointer-events: none;
-    /* Disable click events */
-    opacity: 0.5;
-    /* Make the button look disabled */
-    cursor: not-allowed;
-    /* Change the cursor to indicate it's disabled */
-}
-
-
-
-
 /* person add/edit css  */
 
 .person-edit-page {

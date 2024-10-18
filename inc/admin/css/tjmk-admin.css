@@ -1,3 +1,22 @@
+/**
+ * All of the CSS for your admin-specific functionality should be included in this file.
+ *
+ * The file is enqueued from inc/admin/class-admin.php.
+ */
+
+/* Import specific page/module CSS files */
+/* @import url('Parts/add_edit-form.css');
+@import url('Parts/common.css'); */
+
+.unclickable {
+    pointer-events: none;
+    /* Disable click events */
+    opacity: 0.5;
+    /* Make the button look disabled */
+    cursor: not-allowed;
+    /* Change the cursor to indicate it's disabled */
+}
+
 .submit-button {
     color: #fff;
     border: none;
@@ -48,5 +67,34 @@
 
 .custom-button:disabled {
     background-color: #ddd;
+    cursor: not-allowed;
+}
+
+
+.striped .alternate {
+    background-color: white !important;
+}
+
+@keyframes blink {
+    0% {
+        background-color: #ffcccc;
+    }
+
+    50% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: #ffcccc;
+    }
+}
+
+.blink {
+    animation: blink 1s steps(5, start) infinite;
+}
+
+.unclickable {
+    pointer-events: none;
+    opacity: 0.5;
     cursor: not-allowed;
 }

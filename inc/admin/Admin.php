@@ -587,18 +587,67 @@ class Admin
 
     public function enqueue_styles()
     {
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/review-store-admin.css', array(), $this->version, 'all');
+        // Get the current screen object
+        $screen = get_current_screen();
+
+        error_log('Current screen ID: ' . $screen->id);
+        // Define the allowed page slugs
+        $allowed_pages = [
+            'toplevel_page_persons-store',
+            'tjmk_page_persons-store-pending-profiles',
+            'tjmk_page_persons-store-add-person',
+            'tjmk_page_persons-store-approve-reviews',
+            'tjmk_page_persons-store-pending-review',
+            'tjmk_page_persons-store-view-reviews',
+            'tjmk_page_persons-store-bulk-upload',
+        ];
+
+
+
+        // Check if the current page is in the allowed pages
+        if (isset($screen->id) && in_array($screen->id, $allowed_pages)) {
+            // Enqueue the stylesheet only for the allowed pages
+            wp_enqueue_style('tjmk-admin-css', PLUGIN_ADMIN_URL . 'css/tjmk-admin.css', array(), $this->version, 'all');
+        }
+
+        // Check if the current page is in the allowed pages
+        if (isset($screen->id) && $screen->id === 'tjmk_page_persons-store-add-person') {
+            // Enqueue the stylesheet only for the allowed pages
+            wp_enqueue_style('tjmk-admin-form-css', PLUGIN_ADMIN_URL . 'css/tjmk-admin-form.css', array(), $this->version, 'all');
+        }
+
+
     }
+
 
     public function enqueue_scripts()
     {
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/review-store-admin.js', array('jquery'), $this->version, true);
-        // Localize script with AJAX data
-        wp_localize_script($this->plugin_name, 'myPluginAjax', [
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('approve_reject_review_nonce'),
-            'import_nonce' => wp_create_nonce('urp_import_nonce'), // Add this line for import actions
-            'bulk_delete_nonce' => wp_create_nonce('bulk_delete_nonce') // Add this line for import actions
-        ]);
+        // Get the current screen object
+        $screen = get_current_screen();
+
+        error_log('Current screen ID: ' . $screen->id);
+        // Define the allowed page slugs
+        $allowed_pages = [
+            'toplevel_page_persons-store',
+            'tjmk_page_persons-store-pending-profiles',
+            'tjmk_page_persons-store-add-person',
+            'tjmk_page_persons-store-approve-reviews',
+            'tjmk_page_persons-store-pending-review',
+            'tjmk_page_persons-store-view-reviews',
+            'tjmk_page_persons-store-bulk-upload',
+        ];
+
+        // Check if the current page is in the allowed pages
+        if (isset($screen->id) && in_array($screen->id, $allowed_pages)) {
+
+            wp_enqueue_script('tjmk-admin-js', plugin_dir_url(__FILE__) . 'js/tjmk-admin.js', array('jquery'), $this->version, true);
+            // Localize script with AJAX data
+            wp_localize_script('tjmk-admin-js', 'myPluginAjax', [
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('approve_reject_review_nonce'),
+                'import_nonce' => wp_create_nonce('urp_import_nonce'), // Add this line for import actions
+                'bulk_delete_nonce' => wp_create_nonce('bulk_delete_nonce') // Add this line for import actions
+            ]);
+        }
     }
 }

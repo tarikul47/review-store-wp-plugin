@@ -55,6 +55,7 @@ define('PLUGIN_TEXT_DOMAIN', 'persons-store');
 
 // New constants for admin directories
 define('PLUGIN_ADMIN_DIR', PLUGIN_NAME_DIR . 'inc/Admin/');
+define('PLUGIN_ADMIN_URL', PLUGIN_NAME_URL . 'inc/Admin/');
 define('PLUGIN_ADMIN_VIEWS_DIR', PLUGIN_ADMIN_DIR . 'views/');
 
 define('PLUGIN_FRONTEND_DIR', PLUGIN_NAME_DIR . 'inc/Frontend/');
