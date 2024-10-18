@@ -34,11 +34,62 @@ class AjaxHandler
 
             add_action('wp_ajax_urp_bulk_delete_profiles', [$this, 'urp_bulk_delete_profiles']);
 
+            // download review as pdf 
+            add_action('wp_ajax_download_reviews', [$this, 'download_reviews_callback']);
+
         }
 
         $this->db = Database::getInstance();
 
         $this->define_frontend_action();
+    }
+
+
+    /**
+     * Download review as pdf after order completed 
+     */
+    function download_reviews_callback()
+    {
+        // Get order_id and person_id from the AJAX request
+        $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
+        $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : 0;
+
+        if (!$profile_id) {
+            wp_send_json_error('Person ID is required.');
+        }
+
+        global $wpdb;
+
+
+        // Fetch all approved reviews
+        $approved_reviews = $this->db->get_reviews('approved', $profile_id);
+
+
+        // Calculate rating
+        $average_rating = 0; // Implement your logic here
+
+        // Process review content
+        $review_content = Helper::content_process($approved_reviews, $average_rating);
+
+        //   error_log(print_r($approved_reviews, true));
+        //      error_log(print_r($review_content, true));
+
+        //   Helper::log_error_data(message: 'approved_reviews', $review_content)
+
+        // Generate the PDF content
+        $pdf_content = "<h1>Reviews for Profile ID: {$profile_id}</h1>";
+        $pdf_content .= "<p>Average Rating: {$average_rating}</p>";
+        $pdf_content .= $review_content;
+
+        // Use mPDF to generate PDF and force download
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML($pdf_content);
+
+        // Force download the PDF
+        $pdf_filename = 'profile_' . $profile_id . '_reviews.pdf';
+        $mpdf->Output($pdf_filename, 'D');  // 'D' forces download in the browser
+
+        wp_die();
     }
 
     /**
@@ -81,8 +132,7 @@ class AjaxHandler
                 echo "<td>" . esc_html($profile->department) . "</td>";
                 echo "<td>" . esc_html($profile->municipality) . "</td>";
                 echo "<td>" . esc_html($profile->average_rating) . "</td>";
-                echo '<td><a href="' . wc_get_cart_url() . "?add-to-cart=" . $product_id . "&person_id=" . $profile->profile_id . '">Buy</a></td>';
-                echo '<td><a href="' . esc_url(get_permalink() . '?profile_id=' . $profile->profile_id) . '">View</a></td>';
+                echo '<td><a href="' . wc_get_cart_url() . "?add-to-cart=" . $product_id . "&p_id=" . $profile->profile_id . '">Buy</a></td>';
                 echo "</tr>";
             }
         } else {
@@ -384,108 +434,6 @@ class AjaxHandler
         }
     }
 
-    // public function approve_review()
-    // {
-    //     // Check for nonce security
-    //     check_ajax_referer('approve_reject_review_nonce', 'security');
-
-    //     // Sanitize and validate input
-    //     $data = Helper::sanitize_review_data($_POST);
-
-    //     if (!$data['review_id']) {
-    //         $this->log_error('Review ID is missing');
-    //         wp_send_json_error(['message' => 'Review ID is missing.']);
-    //         return;
-    //     }
-    //     if (!$data['profile_id']) {
-    //         $this->log_error('Profile ID is missing');
-    //         wp_send_json_error(['message' => 'Profile ID is missing.']);
-    //         return;
-    //     }
-
-    //     // Review featch by review id 
-    //     $review_data = $this->db->get_review_by_review_id($data['review_id']);
-
-    //     if ($review_data) {
-    //         // Process the approval 
-    //         //    $result = $this->db->update_review_status($review_id, 'approved');
-
-    //         // Fetch Person data 
-    //         $person_data = $this->db->get_profile_by_id($data['profile_id']);
-
-    //         // Fetch Person Full Name 
-    //         $person_name = Helper::get_person_name_process($person_data);
-
-    //         // fetch Person product id 
-    //         $peron_product_id = $person_data->product_id;
-
-    //         // fethc all approve review 
-    //         $get_approve_reviews = $this->db->get_reviews('approved', $data['profile_id']);
-
-    //         //TODO: Need to calculate rating 
-
-    //         $average_rating = 0;
-    //         // Process review content
-    //         $review_content = Helper::content_process($get_approve_reviews, $average_rating);
-
-    //         if (!$review_content) {
-    //             error_log('Failed to process review content');
-    //         }
-
-    //         // Make unique username for pdf URL 
-    //         $person_unique_name = "$person_data->first_name" . "_" . "$person_data->profile_id";
-
-    //         // Generate PDF URL
-    //         $generate_pdf_url = Helper::generate_pdf_url($person_unique_name, $review_content);
-    //         if (!$generate_pdf_url) {
-    //             error_log('Failed to generate PDF URL');
-    //         }
-
-    //         //  Product update with pdf url 
-    //         $product_id = Helper::create_or_update_downloadable_product($person_name, $generate_pdf_url, $peron_product_id);
-    //         if (!$product_id) {
-    //             error_log('Failed to create or update product');
-    //         }
-
-
-    //         // Send email
-    //         $email = Email::getInstance();
-    //         // First email for Profile person 
-    //    //     $email->setEmailDetails($person_data->email, 'Hurrah! A Review is live!', 'Hello ' . $person_name . ',<br>One of a review is now live. You can check it.');
-
-    //         // Reviewer email for approve messave 
-    //    //     $email->setEmailDetails($person_data->email, 'Hurrah! Your Review is approved!', 'Hello ' . $person_name . ',<br>You can check it in your account.');
-
-    //     //    $result = $email->send();
-
-    //         // if (!$result) {
-    //         //     error_log('Failed to send email');
-    //         // }
-
-    //         // error_log(print_r('$product_id', true));
-    //         // error_log(print_r($product_id, true));
-    //         // print_r($product_id);
-    //         // die();
-
-    //         if ($result = true) {
-    //             wp_send_json_success(['message' => 'Review approved successfully.']);
-    //         } else {
-    //             $this->log_error('Failed to approve review with ID: ' . $review_id);
-    //             wp_send_json_error(['message' => 'Failed to approve review.']);
-    //         }
-
-    //     }
-
-    //     // Calculate rating
-    //     // $average_rating = Helper::calculate_rating($review_data);
-
-    //     // if (!$average_rating) {
-    //     //     error_log('Failed to calculate rating');
-    //     // }
-
-
-    // }
-
     /**
      * Handle the rejection of a review.
      *
@@ -572,8 +520,8 @@ class AjaxHandler
      * @param string $message The error message to log.
      * @return void
      */
-    private function log_error($message)
-    {
-        error_log('[AjaxHandler] ' . $message);
-    }
+    // private function log_error($message)
+    // {
+    //     error_log('[AjaxHandler] ' . $message);
+    // }
 }

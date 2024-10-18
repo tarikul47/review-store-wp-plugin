@@ -451,7 +451,7 @@ class Database
                 u.municipality, 
                 u.department,
                 u.author_id,
-                IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0) as average_rating,
+                ROUND(IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0), 2) as average_rating,  -- Fix average rating to 2 decimal places
                 COUNT(r.review_id) as total_reviews,
                 SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
                 SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
@@ -791,10 +791,6 @@ class Database
         // Return true if the update was successful
         return true;
     }
-
-
-
-
 
     /**
      * Update person data by profile ID.

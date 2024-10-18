@@ -61,12 +61,12 @@ Search person css Start
     /* ক্লিকযোগ্য ইঙ্গিত দেয় */
 }
 
-.clickable-row:hover {
-    background-color: #5CC19F;
+/*.clickable-row:hover {*/
+/*    background-color: #5CC19F;*/
     /* হোভার করলে রং পরিবর্তন */
-    transition: background-color 0.3s;
+/*    transition: background-color 0.3s;*/
     /* রং পরিবর্তনে স্মুথ ট্রানজিশন */
-}
+/*}*/
 
 
 .tjmk-search-result-wrpper table tr:nth-child(even) {
@@ -74,7 +74,7 @@ Search person css Start
 }
 
 /* হোভার করার সময় ব্যাকগ্রাউন্ড রঙ পরিবর্তন */
-.tjmk-search-result-wrpper table tr:hover {
+.tjmk-search-result-wrpper .clickable-row:hover {
     background-color: #5CC19F; /* হোভার করার সময় নতুন রঙ */
     transition: background-color 0.3s; /* স্মুথ ট্রানজিশন */
 }

@@ -33,7 +33,6 @@ $db = Database::getInstance();
                             <th>Municipality</th>
                             <th>Rating</th>
                             <th>Buy report</th>
-                            <th>View</th>
                         </tr>
                     </thead>
                     <tbody id="profile-list">
