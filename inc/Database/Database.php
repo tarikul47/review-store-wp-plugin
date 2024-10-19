@@ -530,47 +530,57 @@ class Database
     }
 
     /**
-     * Retrieve reviews based on their status with grouped meta data.
+     * Retrieve reviews based on their status with grouped meta data, and filter by date.
      *
      * This function retrieves reviews with the specified status ('pending', 'approved', etc.),
-     * along with their associated meta data. The meta data is returned as an associative array.
+     * along with their associated meta data. Reviews are filtered by a cutoff date to get only those created before the specified date.
      *
      * @param string $status The status of the reviews to retrieve (e.g., 'pending', 'approved').
+     * @param int|null $profile_id Optional profile ID to filter reviews by profile.
+     * @param string|null $cutoff_date Optional date to filter reviews before this date (Y-m-d H:i:s format).
      * @return array An array of reviews, each containing review details and associated meta data.
      */
-
-    public function get_reviews($status, $profile_id = null)
+    public function get_reviews($status, $profile_id = null, $cutoff_date = null)
     {
         global $wpdb;
 
         // Base SQL query
         $sql = "
-             SELECT 
-                 r.review_id,
-                 r.profile_id,
-                 r.rating,
-                 r.status,
-                 r.created_at,
-                 r.updated_at,
-                 GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
-                 GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
-             FROM 
-                 {$wpdb->prefix}ps_reviews r
-             LEFT JOIN 
-                 {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
-             WHERE 
-                 r.status = %s";
+         SELECT 
+             r.review_id,
+             r.profile_id,
+             r.rating,
+             r.status,
+             r.created_at,
+             r.updated_at,
+             GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
+             GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
+         FROM 
+             {$wpdb->prefix}ps_reviews r
+         LEFT JOIN 
+             {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
+         WHERE 
+             r.status = %s";
 
-        // If profile_id is provided, add it to the WHERE clause
+        // Add profile_id condition if provided
         if (!is_null($profile_id)) {
             $sql .= " AND r.profile_id = %d";
         }
 
+        // Add cutoff date condition if provided (reviews created before the cutoff date)
+        if (!is_null($cutoff_date)) {
+            $sql .= " AND r.created_at <= %s";
+        }
+
         $sql .= " GROUP BY r.review_id ORDER BY r.created_at DESC";
 
-        // Prepare the query based on whether profile_id is provided
-        if (!is_null($profile_id)) {
+        // Prepare the query depending on provided parameters
+        if (!is_null($profile_id) && !is_null($cutoff_date)) {
+            $results = $wpdb->get_results($wpdb->prepare($sql, $status, $profile_id, $cutoff_date), ARRAY_A);
+        } elseif (!is_null($profile_id)) {
             $results = $wpdb->get_results($wpdb->prepare($sql, $status, $profile_id), ARRAY_A);
+        } elseif (!is_null($cutoff_date)) {
+            $results = $wpdb->get_results($wpdb->prepare($sql, $status, $cutoff_date), ARRAY_A);
         } else {
             $results = $wpdb->get_results($wpdb->prepare($sql, $status), ARRAY_A);
         }
@@ -595,6 +605,7 @@ class Database
 
         return $reviews;
     }
+
 
 
     // public function get_reviews_by_status($status)

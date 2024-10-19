@@ -39,7 +39,6 @@ use Tarikul\PersonsStore\Inc\Core\Activate;
 use Tarikul\PersonsStore\Inc\Core\Deactivate;
 use Tarikul\PersonsStore\Inc\Core\Init;
 
-
 /**
  * Define Constants
  */
@@ -59,6 +58,7 @@ define('PLUGIN_ADMIN_URL', PLUGIN_NAME_URL . 'inc/Admin/');
 define('PLUGIN_ADMIN_VIEWS_DIR', PLUGIN_ADMIN_DIR . 'views/');
 
 define('PLUGIN_FRONTEND_DIR', PLUGIN_NAME_DIR . 'inc/Frontend/');
+define('PLUGIN_FRONTEND_URL', PLUGIN_NAME_URL . 'inc/Frontend/');
 define('PLUGIN_FRONTEND_VIEWS_DIR', PLUGIN_FRONTEND_DIR . 'views/');
 
 

@@ -4,6 +4,7 @@ namespace Tarikul\PersonsStore\Inc\Core;
 use Tarikul\PersonsStore\Inc\Admin as Admin;
 use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Frontend as Frontend;
+use Tarikul\PersonsStore\Inc\WooCommerceIntegration\WooCommerceIntegration;
 
 /**
  * The core plugin class.
@@ -98,6 +99,17 @@ class Init
         // template controller class 
         $template = new Frontend\TemplateController();
 
+        // Check if WooCommerce is active after plugins are loaded
+        add_action('plugins_loaded', [$this, 'check_for_woocommerce']);
+
+    }
+
+    public function check_for_woocommerce()
+    {
+        if (class_exists('\WooCommerce')) {
+            // WooCommerce is active, so load the integration
+            new WooCommerceIntegration();
+        }
     }
 
 
@@ -129,7 +141,7 @@ class Init
 
         $plugin_admin = new Admin\Admin($this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain());
 
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles',100);
+        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles', 100);
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
         /*
@@ -157,7 +169,7 @@ class Init
 
         $plugin_public = new Frontend\Frontend($this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain());
 
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles',100);
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
     }

@@ -1,0 +1,133 @@
+.alternate,
+.striped>tbody>:nth-child(odd),
+ul.striped>:nth-child(odd) {
+    background-color: #F1F9FF;
+}
+
+.custom-button {
+    background: #000;
+    color: #fff;
+    padding: 2px 4px 6px 4px;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 7px;
+    display: inline-block;
+    min-width: 40px;
+}
+
+.custom-button:hover {
+    background: #5FC19F;
+    color: #fff;
+}
+
+.review-icon-backend {
+    width: 100%;
+}
+
+
+
+/* person add/edit css  */
+
+.person-edit-page {
+    padding: 30px;
+}
+
+.form-field.give-review h4 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.give-review p {
+    font-weight: bold;
+}
+
+.give-review input[type=number] {
+    max-width: 60px;
+    text-align: center;
+}
+
+.form-table td input,
+.form-table td textarea {
+    max-width: 270px;
+}
+
+input#createpersonsub {
+    background: #C69367;
+    color: #fff;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#profile-form {
+    width: 70%;
+    margin: auto;
+}
+
+.person-rating-wrpper h3 {
+    font-size: 2rem;
+}
+
+/*
+* Custom css 
+*/
+/* Style the disabled button to look inactive */
+.pagination a.disabled {
+    pointer-events: none;
+    /* This makes the element not clickable */
+    opacity: 0.5;
+    /* Visually indicates the button is disabled */
+    cursor: not-allowed;
+    /* Changes the cursor to 'not-allowed' */
+}
+
+button#search-button {
+    border-radius: 5px;
+    margin: 0px 10px 0px;
+}
+
+button#clear-button {
+    border-radius: 5px;
+}
+
+.tjmk-search-result-wrpper .clickable-row:hover {
+    background-color: #5CC19F;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.striped .alternate {
+    background-color: white !important;
+}
+
+@keyframes blink {
+    0% {
+        background-color: #ffcccc;
+    }
+
+    50% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: #ffcccc;
+    }
+}
+
+.blink {
+    animation: blink 1s steps(5, start) infinite;
+}
+
+.submit-button {
+    color: #fff;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button-edit {
+    background-color: #007bff;
+}

@@ -1,0 +1,91 @@
+/*
+====================================
+Search person css Start
+====================================
+*/
+
+.tjmk-search-person-content-box .content-title h2 {
+    color: #5CC19F;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-family: 'Have nothing to do with';
+}
+
+.tjmk-search-person-content-box .name-button-box {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.tjmk-search-person-content-box .name-button-box input {
+    width: 416px;
+    height: 87px;
+    text-align: center;
+    border-radius: 12px;
+    background: #FFF;
+    color: #7C7B7B;
+    font-family: 'roboto';
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 1.1px;
+    outline: none;
+    border: 1px solid #d7d7d7;
+}
+
+
+.tjmk-search-person-content-box .search-button input {
+    width: 312px;
+    height: 68px;
+    border-radius: 12px;
+    background: #5CC19F;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Have nothing to do with';
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width: 778px) {
+
+    .tjmk-search-person-content-box .content-title h2 {
+        font-size: 22px;
+    }
+
+    .tjmk-search-person-content-box .name-button-box input {
+        width: 95% !important;
+        height: 60px;
+        font-size: 20px;
+    }
+
+    .tjmk-search-person-content-box .name-button-box {
+        margin-bottom: 20px;
+    }
+
+    .tjmk-search-person-content-box .search-button input {
+        width: 80%;
+        height: 50px;
+        font-size: 20px;
+    }
+
+
+}
+
+
+/*
+====================================
+Search person css End
+====================================
+*/

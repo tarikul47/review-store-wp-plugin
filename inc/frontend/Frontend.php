@@ -199,8 +199,13 @@ class Frontend
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name . "-add-profile", plugin_dir_url(__FILE__) . 'css/review-store-frontend-add-profile.css', array(), $this->version, 'all');
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/review-store-frontend.css', array(), $this->version, 'all');
+		wp_enqueue_style("tjmk-frontend-search-css", PLUGIN_FRONTEND_URL . 'css/tjmk-frontend-search.css', array(), time(), 'all');
+
+		wp_enqueue_style("tjmk-frontend-table-css", PLUGIN_FRONTEND_URL . 'css/tjmk-frontend-table.css', array(), time(), 'all');
+
+		wp_enqueue_style("tjmk-frontend-profile-css", PLUGIN_FRONTEND_URL . 'css/tjmk-frontend-profile.css', array(), time(), 'all');
+
+		wp_enqueue_style("tjmk-frontend-css", PLUGIN_FRONTEND_URL . 'css/tjmk-frontend.css', array(), time(), 'all');
 
 	}
 
@@ -216,21 +221,21 @@ class Frontend
 		wp_enqueue_script('jquery');
 
 		// Enqueue validation.js
-		wp_enqueue_script('tjmk-validation-js', PLUGIN_NAME_URL . 'inc/Frontend/js/partials/validation.js', array('jquery'), null, true);
+		wp_enqueue_script('tjmk-validation-js', PLUGIN_FRONTEND_URL . 'js/partials/validation.js', array('jquery'), null, true);
 
 		// Enqueue ajaxHandler.js
-		wp_enqueue_script('tjmk-ajax-handler-js', PLUGIN_NAME_URL . 'inc/Frontend/js/partials/ajaxHandler.js', array('tjmk-validation-js'), null, true);
+		wp_enqueue_script('tjmk-ajax-handler-js', PLUGIN_FRONTEND_URL . 'js/partials/ajaxHandler.js', array('tjmk-validation-js'), null, true);
 
-		wp_enqueue_script('tjmk-main-js', PLUGIN_NAME_URL . 'inc/Frontend/js/tjmk-main.js', array('tjmk-ajax-handler-js'), null, true);
+		wp_enqueue_script('tjmk-main-js', PLUGIN_FRONTEND_URL . 'js/tjmk-main.js', array('tjmk-ajax-handler-js'), null, true);
 
 		// Localize script to pass AJAX URL
 		wp_localize_script('tjmk-ajax-handler-js', 'myPluginAjax', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 		]);
 
-		wp_enqueue_script($this->plugin_name, PLUGIN_NAME_URL . 'inc/Frontend/js/review-store-frontend.js', array('jquery'), $this->version, false);
+		wp_enqueue_script('tjmk-frontend-js', PLUGIN_FRONTEND_URL . 'js/tjmk-frontend.js', array('jquery'), $this->version, false);
 		// Localize script with AJAX data
-		wp_localize_script($this->plugin_name, 'myPluginAjax', [
+		wp_localize_script('tjmk-frontend-js', 'myPluginAjax', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 		]);
 	}

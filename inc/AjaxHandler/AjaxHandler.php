@@ -34,62 +34,11 @@ class AjaxHandler
 
             add_action('wp_ajax_urp_bulk_delete_profiles', [$this, 'urp_bulk_delete_profiles']);
 
-            // download review as pdf 
-            add_action('wp_ajax_download_reviews', [$this, 'download_reviews_callback']);
-
         }
 
         $this->db = Database::getInstance();
 
         $this->define_frontend_action();
-    }
-
-
-    /**
-     * Download review as pdf after order completed 
-     */
-    function download_reviews_callback()
-    {
-        // Get order_id and person_id from the AJAX request
-        $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
-        $profile_id = isset($_GET['p_id']) ? intval($_GET['p_id']) : 0;
-
-        if (!$profile_id) {
-            wp_send_json_error('Person ID is requiredff.');
-        }
-
-        global $wpdb;
-
-
-        // Fetch all approved reviews
-        $approved_reviews = $this->db->get_reviews('approved', $profile_id);
-
-
-        // Calculate rating
-        $average_rating = 0; // Implement your logic here
-
-        // Process review content
-        $review_content = Helper::content_process($approved_reviews, $average_rating);
-
-        //   error_log(print_r($approved_reviews, true));
-        //      error_log(print_r($review_content, true));
-
-        //   Helper::log_error_data(message: 'approved_reviews', $review_content)
-
-        // Generate the PDF content
-        $pdf_content = "<h1>Reviews for Profile ID: {$profile_id}</h1>";
-        $pdf_content .= "<p>Average Rating: {$average_rating}</p>";
-        $pdf_content .= $review_content;
-
-        // Use mPDF to generate PDF and force download
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML($pdf_content);
-
-        // Force download the PDF
-        $pdf_filename = 'profile_' . $profile_id . '_reviews.pdf';
-        $mpdf->Output($pdf_filename, 'D');  // 'D' forces download in the browser
-
-        wp_die();
     }
 
     /**
