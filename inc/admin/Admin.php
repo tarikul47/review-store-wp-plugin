@@ -1,6 +1,7 @@
 <?php
 namespace Tarikul\PersonsStore\Inc\Admin;
 
+use Tarikul\PersonsStore\Inc\Admin\Class\Menu\MenuManager;
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
@@ -33,7 +34,6 @@ class Admin
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->plugin_text_domain = $plugin_text_domain;
-        add_action('admin_menu', array($this, 'urs_admin_menu'));
         $this->db = Database::getInstance();
 
         // Add action for form submission
@@ -42,168 +42,16 @@ class Admin
 
         add_action('admin_post_tjmk_review_update', [$this, 'handle_tjmk_review_update']);
 
+        add_action('init', [$this, 'init']);
+    }
+
+    public function init()
+    {
         // Initialize AJAX handling
         new AjaxHandler();
 
-        // Register form submission handler
-        //   add_action('admin_post_handle_add_user_form', array($this, 'handle_add_user_form_submission'));
-
-        // $mpdf = new \Mpdf\Mpdf();
-        // $mpdf->WriteHTML('<h1>Hello world!</h1>');
-        // $mpdf->Output();
-    }
-
-    public function urs_admin_menu()
-    {
-        add_menu_page(
-            __('TJMK', $this->plugin_text_domain),
-            __('TJMK', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name,
-            array($this, 'urs_user_list_page'),
-            //   PLUGIN_NAME_ASSETS_URI . '/images/tjmk-logo.png', // Path to custom image,
-            'dashicons-admin-generic',
-            6
-        );
-
-        add_submenu_page(
-            $this->plugin_name,
-            __('Pending Profile', $this->plugin_text_domain),
-            __('Pending Profile', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-pending-profiles',
-            array($this, 'urs_pending_profile_list_page'),
-        );
-
-        add_submenu_page(
-            $this->plugin_name,
-            __('Add Person', $this->plugin_text_domain),
-            __('Add Person', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-add-person',
-            array($this, 'urs_add_user_page')
-        );
-        add_submenu_page(
-            $this->plugin_name,
-            __('Approve Reviews', $this->plugin_text_domain),
-            __('Approve Reviews', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-approve-reviews',
-            array($this, 'urs_approve_reviews_page')
-        );
-
-        add_submenu_page(
-            $this->plugin_name,
-            __('Pending Review', $this->plugin_text_domain),
-            __('Pending Review', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-pending-review',
-            array($this, 'urs_pending_reviews_page')
-        );
-        add_submenu_page(
-            $this->plugin_name,
-            __('View Reviews', $this->plugin_text_domain),
-            __('View Reviews', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-view-reviews',
-            array($this, 'urs_view_reviews_page')
-        );
-        add_submenu_page(
-            $this->plugin_name,
-            __('Bulk Upload', $this->plugin_text_domain),
-            __('Bulk Upload', $this->plugin_text_domain),
-            'manage_options',
-            $this->plugin_name . '-bulk-upload',
-            array($this, 'urs_bulk_upload')
-        );
-
-    }
-
-    public function urs_user_list_page()
-    {
-        // if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['external_profile_id'])) {
-        //     $this->handle_delete_user(intval($_GET['external_profile_id']));
-        // }
-
-        // if (isset($_POST['bulk_delete_users']) && !empty($_POST['external_profile_ids'])) {
-        //     $this->handle_bulk_delete_users(array_map('intval', $_POST['external_profile_ids']));
-        // }
-
-        // Display the message from the transient, if it exists
-        if ($message = get_transient('form_submission_message')) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
-            delete_transient('form_submission_message');
-        }
-
-        //  var_dump($_GET);
-
-        $users = $this->db->get_profiles_with_review_data('approved');
-
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-persons-list-display.php';
-    }
-
-    public function urs_pending_profile_list_page()
-    {
-        // Display the message from the transient, if it exists
-        if ($message = get_transient('form_submission_message')) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
-            delete_transient('form_submission_message');
-        }
-
-        $users = $this->db->get_profiles_with_review_data('pending');
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-pending-profile-list-display.php';
-    }
-
-    public function urs_add_user_page()
-    {
-        // Check if this is an edit form  edit-person&profile_id
-        $profile_id = isset($_GET['action']) && $_GET['action'] === 'edit-person' && !empty($_GET['profile_id']) ? $_GET['profile_id'] : false;
-
-        $person_data = $this->db->get_profile_by_id($profile_id);
-        $review_data = $this->db->get_review_meta_by_review_id($profile_id);
-
-
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-add-person-display.php';
-    }
-
-    public function urs_approve_reviews_page()
-    {
-        $approved_reviews = $this->db->get_reviews('approved'); // Get approved reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-approve-reviews-display.php';
-    }
-
-    public function urs_pending_reviews_page()
-    {
-        $pending_reviews = $this->db->get_reviews('pending'); // Get pending reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-pending-reviews-display.php';
-    }
-
-    public function urs_view_reviews_page()
-    {
-        // Get the external_profile_id from the URL parameter
-        $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : false;
-
-        // Fetch reviews for the selected external profile
-        $reviews = $this->db->get_reviews_by_external_profile_id($profile_id);
-
-        $profile_data = $this->db->get_profile_by_id($profile_id);
-
-
-        // Display the message from the transient, if it exists
-        if ($message = get_transient('form_submission_message')) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
-            delete_transient('form_submission_message');
-        }
-
-        // Include the view file to display the reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-view-reviews-display.php';
-    }
-
-
-    public function urs_bulk_upload()
-    {
-        // Include the view file to display the reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . $this->plugin_name . '-admin-person-bulk-upload.php';
+        // MenuManager 
+        new MenuManager($this->plugin_name, $this->version, $this->plugin_text_domain);
     }
 
     /**
@@ -471,8 +319,6 @@ class Admin
         exit; // Make sure to exit after sending the response
     }
 
-
-
     // public function handle_update_profile_submission()
     // {
     //     global $wpdb; // Access the global $wpdb object
@@ -651,3 +497,23 @@ class Admin
         }
     }
 }
+
+
+/**
+ * protected $user_management;
+    protected $review_management;
+    protected $bulk_upload;
+    protected $assets_manager;
+    protected $menu_manager;
+
+    $this->user_management = new UserManagement();
+    $this->review_management = new ReviewManagement();
+    $this->bulk_upload = new BulkUpload();
+    $this->assets_manager = new AssetsManager();
+    $this->menu_manager = new MenuManager();
+    
+    // Register hooks, etc.
+    add_action('admin_menu', [$this->menu_manager, 'register_menu']);
+    add_action('admin_enqueue_scripts', [$this->assets_manager, 'enqueue_styles']);
+    add_action('admin_enqueue_scripts', [$this->assets_manager, 'enqueue_scripts']);
+ */
