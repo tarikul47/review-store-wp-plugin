@@ -66,7 +66,7 @@
           url: myPluginAjax.ajax_url,
           type: "POST",
           data: {
-            action: action + "_review",
+            action: "tjmk_" + action + "_review",
             review_id: reviewId,
             profile_id: profileId,
             security: myPluginAjax.nonce,
@@ -199,7 +199,7 @@
         url: ajaxurl,
         type: "POST",
         data: {
-          action: "approve_profile",
+          action: "tjmk_approve_profile",
           profile_id: profileId,
         },
         success: function (response) {
@@ -235,7 +235,7 @@
         url: ajaxurl,
         type: "POST",
         data: {
-          action: "delete_profile",
+          action: "tjmk_delete_profile",
           profile_id: profileId,
         },
         success: function (response) {

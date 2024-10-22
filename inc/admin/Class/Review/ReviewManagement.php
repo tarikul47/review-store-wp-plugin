@@ -41,6 +41,9 @@ class ReviewManagement
         }
 
         $review_id = isset($_POST['review_id']) ? intval($_POST['review_id']) : 0;
+        // Capture the return_to parameter (if present) to handle redirection
+        $return_to = isset($_POST['return_to']) ? sanitize_text_field($_POST['return_to']) : '';
+
 
         if (!$review_id) {
             wp_send_json_error(['message' => 'Review ID is missing or invalid']);
@@ -88,6 +91,14 @@ class ReviewManagement
 
         // Construct the URL for redirection
         $url = "admin.php?page=persons-store-view-reviews&profile_id=" . $profile_id;
+
+   //     Helper::log_error_data('retun to', $return_to);
+
+        // Redirect based on the return_to parameter
+        if ($return_to === 'persons-store-pending-review') {
+            // Construct the URL for redirection
+            $url = "admin.php?page=persons-store-pending-review&profile_id=" . $profile_id;
+        }
 
         // Use the static method to handle the redirection with a success or failure message
         $message = $update_result ? 'Review updated successfully!' : 'There were errors in the update process.';

@@ -93,6 +93,14 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                             </td>
                             <td class="column-actions" data-colname="">
 
+                                <a class="custom-button button-edit"
+                                    href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-review&profile_id=' . esc_attr($review['profile_id']) . '&review_id=' . esc_attr($review['review_id']) . '&return_to=persons-store-pending-review')); ?>"
+                                    data-profile-id="<?php echo esc_html($review['profile_id']); ?>"
+                                    data-review-id="<?php echo esc_attr($review['review_id']); ?>">
+                                    Edit
+                                </a>
+
+
                                 <a class="custom-button button-approve approve_reject"
                                     data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
 

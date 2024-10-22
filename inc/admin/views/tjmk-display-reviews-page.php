@@ -134,7 +134,7 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
 
     <?php
     //  echo "<pre>";
-   // print_r($reviews);
+    // print_r($reviews);
     ?>
     <h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
     </h2>
@@ -172,7 +172,7 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                             <a href="#">Rejected</a>
                         <?php } else { // status is "pending" or other values ?>
                             <a class="custom-button button-edit <?php echo ($profile_data->status === 'pending') ? 'unclickable' : ''; ?>"
-                                href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-person&profile_id=' . esc_attr($profile_id) . '&review_id=' . esc_attr($review['review_id']))); ?>"
+                                href="<?php echo esc_url(admin_url('admin.php?page=persons-store-add-person&action=edit-review&profile_id=' . esc_attr($profile_id) . '&review_id=' . esc_attr($review['review_id']) . '&return_to=persons-store-view-reviews')); ?>"
                                 data-profile-id="<?php echo esc_html($profile_id); ?>"
                                 data-review-id="<?php echo esc_attr($review['review_id']); ?>">
                                 Edit

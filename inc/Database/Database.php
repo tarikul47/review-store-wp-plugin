@@ -60,6 +60,23 @@ class Database
         }
     }
 
+    // Function to remove columns
+    private static function remove_column(string $table_name, string $column_name): void
+    {
+        global $wpdb;
+
+        // Check if the column exists in the table
+        $column_exists = $wpdb->get_results($wpdb->prepare(
+            "SHOW COLUMNS FROM {$table_name} LIKE %s",
+            $column_name
+        ));
+
+        // If the column exists, remove it
+        if (!empty($column_exists)) {
+            $wpdb->query("ALTER TABLE {$table_name} DROP COLUMN {$column_name}");
+        }
+    }
+
     /**
      * Create required tables for the plugin.
      */
@@ -147,6 +164,9 @@ class Database
          */
         self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
 
+        // Remove unwanted column (product_id)
+        self::remove_column($wpdb->prefix . $plugin_prefix . 'profile', 'product_id');
+
         //   if (!self::table_exists($name)) {
         //    dbDelta($sql);
         //   }
@@ -157,10 +177,9 @@ class Database
      * Insert a new user into the custom profile table.
      *
      * @param array $user_data The associative array containing user data.
-     * @param int $product_id The ID of the product associated with the user.
      * @return int The ID of the newly inserted user.
      */
-    public function insert_user($user_data, $product_id, $status = 'pending')
+    public function insert_user($user_data, $status = 'pending')
     {
         $author_info = Helper::get_current_user_id_and_roles();
 
@@ -197,7 +216,6 @@ class Database
                 'department' => $user_data['department'],
                 'created_at' => current_time('mysql'),
                 'updated_at' => current_time('mysql'),
-                'product_id' => $product_id,
                 'author_id' => $author_id,
                 'status' => $status,
             ),
@@ -219,7 +237,6 @@ class Database
                 '%s', // department
                 '%s', // created_at
                 '%s', // updated_at
-                '%d',  // product_id
                 '%d', // author_id
                 '%s'  // status
             )
@@ -540,27 +557,43 @@ class Database
      * @param string|null $cutoff_date Optional date to filter reviews before this date (Y-m-d H:i:s format).
      * @return array An array of reviews, each containing review details and associated meta data.
      */
+
+    /**
+     * Retrieve reviews based on their status with grouped meta data, and filter by date.
+     *
+     * This function retrieves reviews with the specified status ('pending', 'approved', etc.),
+     * along with their associated meta data. Reviews are filtered by a cutoff date to get only those created before the specified date.
+     *
+     * Additionally, for 'pending' reviews, it only retrieves reviews whose profiles are 'approved'.
+     *
+     * @param string $status The status of the reviews to retrieve (e.g., 'pending', 'approved').
+     * @param int|null $profile_id Optional profile ID to filter reviews by profile.
+     * @param string|null $cutoff_date Optional date to filter reviews before this date (Y-m-d H:i:s format).
+     * @return array An array of reviews, each containing review details and associated meta data.
+     */
     public function get_reviews($status, $profile_id = null, $cutoff_date = null)
     {
         global $wpdb;
 
         // Base SQL query
         $sql = "
-         SELECT 
-             r.review_id,
-             r.profile_id,
-             r.rating,
-             r.status,
-             r.created_at,
-             r.updated_at,
-             GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
-             GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
-         FROM 
-             {$wpdb->prefix}ps_reviews r
-         LEFT JOIN 
-             {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
-         WHERE 
-             r.status = %s";
+     SELECT 
+         r.review_id,
+         r.profile_id,
+         r.rating,
+         r.status,
+         r.created_at,
+         r.updated_at,
+         GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
+         GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
+     FROM 
+         {$wpdb->prefix}ps_reviews r
+     LEFT JOIN 
+         {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
+     LEFT JOIN 
+         {$wpdb->prefix}ps_profile p ON r.profile_id = p.profile_id
+     WHERE 
+         r.status = %s";
 
         // Add profile_id condition if provided
         if (!is_null($profile_id)) {
@@ -570,6 +603,11 @@ class Database
         // Add cutoff date condition if provided (reviews created before the cutoff date)
         if (!is_null($cutoff_date)) {
             $sql .= " AND r.created_at <= %s";
+        }
+
+        // Add condition to ensure profiles must be approved only if the review status is pending
+        if ($status === 'pending') {
+            $sql .= " AND p.status = 'approved'";
         }
 
         $sql .= " GROUP BY r.review_id ORDER BY r.created_at DESC";
@@ -608,32 +646,50 @@ class Database
 
 
 
-    // public function get_reviews_by_status($status)
+    // public function get_reviews($status, $profile_id = null, $cutoff_date = null)
     // {
     //     global $wpdb;
 
-    //     // Query to get reviews based on status with grouped meta data
-    //     $results = $wpdb->get_results($wpdb->prepare("
-    //     SELECT 
-    //         r.review_id,
-    //         r.profile_id,
-    //         r.rating,
-    //         r.status,
-    //         r.created_at,
-    //         r.updated_at,
-    //         GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
-    //         GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
-    //     FROM 
-    //         {$wpdb->prefix}ps_reviews r
-    //     LEFT JOIN 
-    //         {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
-    //     WHERE 
-    //         r.status = %s
-    //     GROUP BY 
-    //         r.review_id
-    //     ORDER BY 
-    //         r.created_at DESC
-    // ", $status), ARRAY_A);
+    //     // Base SQL query
+    //     $sql = "
+    //      SELECT 
+    //          r.review_id,
+    //          r.profile_id,
+    //          r.rating,
+    //          r.status,
+    //          r.created_at,
+    //          r.updated_at,
+    //          GROUP_CONCAT(m.meta_key ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_keys,
+    //          GROUP_CONCAT(m.meta_value ORDER BY m.meta_key ASC SEPARATOR ',') AS meta_values
+    //      FROM 
+    //          {$wpdb->prefix}ps_reviews r
+    //      LEFT JOIN 
+    //          {$wpdb->prefix}ps_review_meta m ON r.review_id = m.review_id
+    //      WHERE 
+    //          r.status = %s";
+
+    //     // Add profile_id condition if provided
+    //     if (!is_null($profile_id)) {
+    //         $sql .= " AND r.profile_id = %d";
+    //     }
+
+    //     // Add cutoff date condition if provided (reviews created before the cutoff date)
+    //     if (!is_null($cutoff_date)) {
+    //         $sql .= " AND r.created_at <= %s";
+    //     }
+
+    //     $sql .= " GROUP BY r.review_id ORDER BY r.created_at DESC";
+
+    //     // Prepare the query depending on provided parameters
+    //     if (!is_null($profile_id) && !is_null($cutoff_date)) {
+    //         $results = $wpdb->get_results($wpdb->prepare($sql, $status, $profile_id, $cutoff_date), ARRAY_A);
+    //     } elseif (!is_null($profile_id)) {
+    //         $results = $wpdb->get_results($wpdb->prepare($sql, $status, $profile_id), ARRAY_A);
+    //     } elseif (!is_null($cutoff_date)) {
+    //         $results = $wpdb->get_results($wpdb->prepare($sql, $status, $cutoff_date), ARRAY_A);
+    //     } else {
+    //         $results = $wpdb->get_results($wpdb->prepare($sql, $status), ARRAY_A);
+    //     }
 
     //     // Process the results to convert meta data into an associative array
     //     $reviews = [];
@@ -655,6 +711,7 @@ class Database
 
     //     return $reviews;
     // }
+
 
 
     /**
@@ -699,53 +756,6 @@ class Database
     /*---------------------*
      * Profle Related Operation
      *----------------------*/
-
-    public function update_user($user_data, $product_id, $profile_id)
-    {
-        return $this->wpdb->update(
-            "{$this->wpdb->prefix}ps_profile",
-            array(
-                'first_name' => $user_data['first_name'],
-                'last_name' => $user_data['last_name'],
-                'title' => $user_data['title'],
-                'email' => $user_data['email'],
-                'phone' => $user_data['phone'],
-                'address' => $user_data['address'],
-                'zip_code' => $user_data['zip_code'],
-                'city' => $user_data['city'],
-                'salary_per_month' => $user_data['salary_per_month'],
-                'employee_type' => $user_data['employee_type'],
-                'region' => $user_data['region'],
-                'state' => $user_data['state'],
-                'country' => $user_data['country'],
-                'municipality' => $user_data['municipality'],
-                'department' => $user_data['department'],
-                'updated_at' => current_time('mysql'),
-                'product_id' => $product_id,
-            ),
-            array('profile_id' => $profile_id),
-            array(
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%f',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%d'
-            ),
-            array('%d')
-        );
-    }
 
     public function update_review($profile_id, $average_rating)
     {
@@ -926,31 +936,8 @@ class Database
         global $wpdb;
 
         try {
-            // Start by getting the product ID
-            $product_id = $this->get_column_value('ps_profile', 'product_id', ['profile_id' => $profile_id]);
-
             // Optional: Begin a pseudo-transaction
             $wpdb->query('START TRANSACTION');
-
-            // 1. Delete the WooCommerce product directly from the database if it exists
-            if ($product_id) {
-                $product_deleted = $wpdb->delete($wpdb->prefix . 'posts', ['ID' => $product_id, 'post_type' => 'product']);
-                if ($product_deleted === false) {
-                    throw new \Exception('Failed to delete WooCommerce product for profile ID: ' . $profile_id);
-                }
-
-                // You should also delete related product metadata
-                $meta_deleted = $wpdb->delete($wpdb->prefix . 'postmeta', ['post_id' => $product_id]);
-                if ($meta_deleted === false) {
-                    throw new \Exception('Failed to delete WooCommerce product metadata for product ID: ' . $product_id);
-                }
-
-                // Optionally, delete related term relationships
-                $term_relationships_deleted = $wpdb->delete($wpdb->prefix . 'term_relationships', ['object_id' => $product_id]);
-                if ($term_relationships_deleted === false) {
-                    throw new \Exception('Failed to delete WooCommerce product term relationships for product ID: ' . $product_id);
-                }
-            }
 
             // Start by getting the product ID
             $review_id = $this->get_column_value('ps_reviews', 'review_id', ['profile_id' => $profile_id]);
@@ -1034,19 +1021,5 @@ class Database
         // Format the average rating to 2 decimal places
         return number_format((float) $average_rating, 2, '.', '');
     }
-
-    /**
-     * 
-     
-     * @param mixed $profile_id
-     * @return int 
-     */
-    public function get_product_id_by_profile($profile_id): int
-    {
-        // Start by getting the product ID
-        $product_id = $this->get_column_value('ps_profile', 'product_id', ['profile_id' => $profile_id]);
-        return $product_id;
-    }
-
 
 }

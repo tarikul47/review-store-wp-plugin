@@ -16,8 +16,8 @@ class AjaxHandler
     public function __construct()
     {
         if (is_admin()) {
-            add_action('wp_ajax_approve_review', [$this, 'approve_review']);
-            add_action('wp_ajax_reject_review', [$this, 'reject_review']);
+            add_action('wp_ajax_tjmk_approve_review', [$this, 'tjmk_approve_review']);
+            add_action('wp_ajax_tjmk_reject_review', [$this, 'tjmk_reject_review']);
 
             // add_action('wp_ajax_urp_handle_file_upload', array($this, 'handle_file_upload'));
             // add_action('wp_ajax_urp_process_chunks_async', array($this, 'process_chunks_async'));
@@ -28,9 +28,9 @@ class AjaxHandler
             add_action('wp_ajax_urp_process_chunks_async', [$this, 'ps_process_chunks_async']);
 
 
-            add_action('wp_ajax_approve_profile', [$this, 'handle_approve_profile']);
+            add_action('wp_ajax_tjmk_approve_profile', [$this, 'tjmk_approve_profile']);
 
-            add_action('wp_ajax_delete_profile', [$this, 'handle_delete_profile']);
+            add_action('wp_ajax_tjmk_delete_profile', [$this, 'tjmk_delete_profile']);
 
             add_action('wp_ajax_urp_bulk_delete_profiles', [$this, 'urp_bulk_delete_profiles']);
 
@@ -67,7 +67,7 @@ class AjaxHandler
         $total_profiles = $this->db->get_total_profiles_count($search_term);
         $total_pages = ceil($total_profiles / $profiles_per_page);
 
-        $product_id = 360;
+        $product_id = 509;
 
         // Generate HTML for profiles
         ob_start();
@@ -231,8 +231,11 @@ class AjaxHandler
      * A profile approve function handle the ajax request
      */
 
-    function handle_approve_profile()
+    function tjmk_approve_profile()
     {
+        // Check for nonce security
+        check_ajax_referer('tjmk_approve_profile_nonce', 'security');
+
         if (isset($_POST['action']) && $_POST['action'] == 'approve_profile' && isset($_POST['profile_id'])) {
             $profile_id = intval($_POST['profile_id']);
 
@@ -248,18 +251,34 @@ class AjaxHandler
         }
     }
 
+    function tjmk_delete_profile()
+    {
+        if (isset($_POST['action']) && $_POST['action'] == 'tjmk_delete_profile' && isset($_POST['profile_id'])) {
+            $profile_id = intval($_POST['profile_id']);
+
+            // Assuming `delete_profile_and_related_data()` is a method within a class.
+            $deleted = $this->db->delete_profile_and_related_data($profile_id);
+
+            // If successful, return a JSON response
+            if ($deleted) {
+                wp_send_json_success(array('message' => 'Profile deleted successfully.', 'profile_id' => $profile_id));
+            } else {
+                wp_send_json_error(array('message' => 'Profile deletion failed.'));
+            }
+        }
+    }
+
     /**
      * Handle the approval of a review.
      *
      * @return void
      */
-
-    public function approve_review()
+    public function tjmk_approve_review()
     {
         global $wpdb;
 
         // Check for nonce security
-        check_ajax_referer('approve_reject_review_nonce', 'security');
+        check_ajax_referer('tjmk_approve_reject_review_nonce', 'security');
 
         // Sanitize and validate input
         $data = Helper::sanitize_review_data($_POST);
@@ -308,9 +327,6 @@ class AjaxHandler
                 throw new \Exception('Failed to fetch person name.');
             }
 
-            // Fetch Person's product ID
-            $person_product_id = $person_data->product_id;
-
             // Fetch all approved reviews
             $approved_reviews = $this->db->get_reviews('approved', $profile_id);
             if (!$approved_reviews) {
@@ -324,21 +340,6 @@ class AjaxHandler
             $review_content = Helper::content_process($approved_reviews, $average_rating);
             if (!$review_content) {
                 throw new \Exception('Failed to process review content.');
-            }
-
-            // Generate a unique username for PDF URL
-            //    $person_unique_name = "{$person_data->first_name}_{$person_data->profile_id}";
-
-            // Generate PDF URL
-            $pdf_url = Helper::generate_pdf_url($person_name, $review_content, $person_data->profile_id);
-            if (!$pdf_url) {
-                throw new \Exception('Failed to generate PDF URL.');
-            }
-
-            // Update the product with the new PDF URL
-            $updated_product_id = Helper::create_or_update_downloadable_product($person_name, $pdf_url, $person_product_id);
-            if (!$updated_product_id) {
-                throw new \Exception('Failed to create or update product.');
             }
 
             // Commit the transaction if all operations are successful
@@ -388,10 +389,10 @@ class AjaxHandler
      *
      * @return void
      */
-    public function reject_review()
+    public function tjmk_reject_review()
     {
         // Check for nonce security
-        check_ajax_referer('approve_reject_review_nonce', 'security');
+        check_ajax_referer('tjmk_approve_reject_review_nonce', 'security');
 
         $review_id = intval($_POST['review_id']);
 
@@ -409,23 +410,6 @@ class AjaxHandler
         } else {
             $this->log_error('Failed to reject review with ID: ' . $review_id);
             wp_send_json_error(['message' => 'Failed to reject review.']);
-        }
-    }
-
-    function handle_delete_profile()
-    {
-        if (isset($_POST['action']) && $_POST['action'] == 'delete_profile' && isset($_POST['profile_id'])) {
-            $profile_id = intval($_POST['profile_id']);
-
-            // Assuming `delete_profile_and_related_data()` is a method within a class.
-            $deleted = $this->db->delete_profile_and_related_data($profile_id);
-
-            // If successful, return a JSON response
-            if ($deleted) {
-                wp_send_json_success(array('message' => 'Profile deleted successfully.', 'profile_id' => $profile_id));
-            } else {
-                wp_send_json_error(array('message' => 'Profile deletion failed.'));
-            }
         }
     }
 

@@ -55,13 +55,6 @@ class MenuCallbacks
 
     public function tjmk_add_profile_page()
     {
-        // Check if this is an edit form  edit-person&profile_id
-        $profile_id = isset($_GET['action']) && $_GET['action'] === 'edit-person' && !empty($_GET['profile_id']) ? $_GET['profile_id'] : false;
-
-        $person_data = $this->db->get_profile_by_id($profile_id);
-        $review_data = $this->db->get_review_meta_by_review_id($profile_id);
-
-
         include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-add-profile-page.php';
     }
 
@@ -73,6 +66,12 @@ class MenuCallbacks
 
     public function tjmk_pending_reviews_page()
     {
+        // Display the message from the transient, if it exists
+        if ($message = get_transient('form_submission_message')) {
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
+            delete_transient('form_submission_message');
+        }
+
         $pending_reviews = $this->db->get_reviews('pending'); // Get pending reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-pending-reviews-page.php';
     }

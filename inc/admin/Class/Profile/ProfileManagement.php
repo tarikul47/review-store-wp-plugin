@@ -80,22 +80,10 @@ class ProfileManagement
             $review_content = Helper::content_process($review_data, $average_rating);
             if (!$review_content) {
                 throw new \Exception('Failed to process review content');
-            }
-
-            // Generate PDF URL
-            $generate_pdf_url = Helper::generate_pdf_url($user_data['first_name'], $review_content);
-            if (!$generate_pdf_url) {
-                throw new \Exception('Failed to generate PDF URL');
-            }
-
-            // Create downloadable product
-            $product_id = Helper::create_or_update_downloadable_product($user_data['first_name'], $generate_pdf_url);
-            if (!$product_id) {
-                throw new \Exception('Failed to create or update product');
-            }
-
+            }      
+   
             // Insert person into database
-            $profile_id = $this->db->insert_user($user_data, $product_id);
+            $profile_id = $this->db->insert_user($user_data);
             if (!$profile_id) {
                 throw new \Exception('Failed to insert user');
             }

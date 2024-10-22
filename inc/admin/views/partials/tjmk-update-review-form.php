@@ -7,11 +7,11 @@
 
             <input type="hidden" name="action" value="tjmk_review_update">
 
-            <input name="profile_id" type="hidden"
-                value="<?php echo ($person_data !== null) ? esc_html($_GET['profile_id']) : '' ?>">
+            <input type="hidden" name="return_to" value="<?php echo esc_attr($_GET['return_to']); ?>">
 
-            <input name="review_id" type="hidden"
-                value="<?php echo ($person_data !== null) ? esc_html($_GET['review_id']) : ''; ?>">
+            <input name="profile_id" type="hidden" value="<?php echo esc_html($_GET['profile_id']); ?>">
+
+            <input name="review_id" type="hidden" value="<?php echo esc_html($_GET['review_id']); ?>">
 
             <input name="author_id" type="hidden" value="<?php echo get_current_user_id(); ?>">
 
