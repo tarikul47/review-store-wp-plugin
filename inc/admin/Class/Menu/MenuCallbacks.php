@@ -5,10 +5,16 @@ use Tarikul\PersonsStore\Inc\Database\Database;
 
 class MenuCallbacks
 {
+    private $plugin_name;
+    private $version;
+    private $plugin_text_domain;
     private $db;
 
-    public function __construct()
+    public function __construct($plugin_name, $version, $plugin_text_domain)
     {
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
+        $this->plugin_text_domain = $plugin_text_domain;
         $this->db = Database::getInstance();
     }
 

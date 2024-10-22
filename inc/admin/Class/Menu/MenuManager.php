@@ -12,7 +12,7 @@ class MenuManager
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->plugin_text_domain = $plugin_text_domain;
-        $this->menuCallbacks = new MenuCallbacks();
+        $this->menuCallbacks = new MenuCallbacks($plugin_name, $version, $plugin_text_domain);
         add_action('admin_menu', array($this, 'tjmk_admin_menus'));
     }
 
