@@ -174,12 +174,6 @@ Single person page css start
 .tjmk-person-content-wrpper .detail-rating li {
     width: 210px;
 }
-
-.tjmk-person-content-wrpper .detail-rating li .single-total-reivew {}
-
-
-
-
 .tjmk-person-content-wrpper .all-reviwe-btn a {
     color: #FFF;
     font-family: 'Have nothing to do with';
@@ -333,6 +327,10 @@ Comment Box CSS
     background-color: rgba(92, 193, 159, 0.8);
 }
 
+.submit-form {
+    text-align: center;
+    padding: 20px 0px;
+}
 
 
 

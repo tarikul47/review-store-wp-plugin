@@ -65,7 +65,7 @@
       });
 
       // Log formData for debugging purposes (optional)
-   //   console.log("Form Data:", formData);
+     console.log("Form Data:", formData);
 
       // Call the submitForm function from ajaxHandler.js
       window.submitForm(formData);

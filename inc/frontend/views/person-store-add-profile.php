@@ -12,7 +12,7 @@
  */
 get_header();
 ?>
-<div id="profile-form">
+<div id="profile-form" class="tjmk-person-content-wrpper">
 
     <?php
     // if (isset($_GET['error_message'])) {
@@ -196,7 +196,7 @@ get_header();
                                     src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="fair" id="fair-impartial-input" value="0">
+                        <input type="hidden" name="fair" id="fair-impartial-input" value="1">
                     </div>
 
                     <div class="single-review ">
@@ -222,7 +222,7 @@ get_header();
                                     src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="professional" id="sufficient-competence-input" value="0">
+                        <input type="hidden" name="professional" id="sufficient-competence-input" value="1">
                     </div>
 
                     <div class="single-review ">
@@ -248,7 +248,7 @@ get_header();
                                     src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="response" id="personal-response-input" value="0">
+                        <input type="hidden" name="response" id="personal-response-input" value="1">
                     </div>
 
                     <div class="single-review ">
@@ -274,7 +274,7 @@ get_header();
                                     src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="communication" id="communication-skills-input" value="0">
+                        <input type="hidden" name="communication" id="communication-skills-input" value="1">
                     </div>
 
 
@@ -300,7 +300,7 @@ get_header();
                                     src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="decisions" id="fair-decisions-input" value="0">
+                        <input type="hidden" name="decisions" id="fair-decisions-input" value="1">
                     </div>
 
                     <div class="single-review ">
@@ -322,15 +322,31 @@ get_header();
                                     src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="recommend" id="recommend-person-input" value="0">
+                        <input type="hidden" name="recommend" id="recommend-person-input" value="1">
                     </div>
                 </div>
             </div>
             <!-- Review Section  -->
 
-            <p class="submit"><input type="submit" name="createperson" id="createpersonsub"
-                    class="button button-primary" value="Add Person Now"></p>
-            <div id="form-message"></div>
+            <!-- Comment Box -->
+            <div class="comment-wrpper">
+                <div class="inner-comment-wrpper">
+                    <div class="title-box">
+                        <h2>Say something about this Person</h2>
+                    </div>
+                    <div class="comment-form">
+                        <textarea id="comments" name="comments"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- Comment form -->
+            <div class="submit-form">
+                <p class="submit">
+                    <input type="submit" name="createperson" id="createpersonsub"
+                        class="button button-primary" value="Add Person Now">
+                </p>
+                <div id="form-message"></div>
+            </div>
         </form>
 
     </div>
