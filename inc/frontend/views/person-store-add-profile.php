@@ -159,83 +159,174 @@ get_header();
                                 autocapitalize="none" autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
-                    <?php
-                    // Conditional rendering for the "Give reviews" section
-                    if (empty($profile_id)): ?>
-                        <!-- Review Section -->
-                        <tr class="form-field give-review">
-                            <th scope="row" colspan="2">
-                                <h4>Give reviews to Sven Nilsson?</h4>
-                            </th>
-                        </tr>
 
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you experience the official as fair and impartial (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="fair" id="fair" value="2">
-                            </td>
-                        </tr>
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official has sufficient competence, is professional and qualified
-                                    for his service (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="professional" id="professional" value="3">
-                            </td>
-                        </tr>
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official has a personal and good response (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="response" id="response" value="4">
-                            </td>
-                        </tr>
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official has good communication, good response time (from 1 to 5)
-                                </p>
-                            </td>
-                            <td>
-                                <input type="number" name="communication" id="communication" value="2">
-                            </td>
-                        </tr>
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you feel that the official makes fair decisions (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="decisions" id="decisions" value="5">
-                            </td>
-                        </tr>
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Do you recommend this official employee? (from 1 to 5)</p>
-                            </td>
-                            <td>
-                                <input type="number" name="recommend" id="recommend" value="5">
-                            </td>
-                        </tr>
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Say something about Sven Nilsson</p>
-                            </td>
-                            <td>
-                                <textarea name="comments" id="comments" cols="20" rows="4"></textarea>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
                 </tbody>
             </table>
+
+            <!-- Review Section  -->
+
+            <div class="review-area">
+                <div class="review-title">
+                    <h2>Give reviews to
+                        <b>Rinku</b>?
+                    </h2>
+                </div>
+                <div class="review-wrpper">
+
+                    <div class="single-review ">
+                        <h2>Do you experience the official employee
+                            <b>Rinku</b> as
+                            impartial, factual and fair?<br>(from 1 to
+                            5)
+                        </h2>
+                        <ul class="review-icon">
+                            <li data-value="1" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="2" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="3" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="4" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="5" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                        </ul>
+                        <input type="hidden" name="fair" id="fair-impartial-input" value="0">
+                    </div>
+
+                    <div class="single-review ">
+                        <h2>Do you experience that the official employee
+                            <b>Rinku</b> has
+                            sufficient competence, is professional
+                            and qualified for the given service and role?<br>(from 1 to 5)
+                        </h2>
+                        <ul class="review-icon">
+                            <li data-value="1" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="2" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="3" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="4" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="5" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                        </ul>
+                        <input type="hidden" name="professional" id="sufficient-competence-input" value="0">
+                    </div>
+
+                    <div class="single-review ">
+                        <h2>Do you experience that the official employee
+                            <b>Rinku</b> have
+                            given you a good response that you
+                            understand?<br>(from 1 to 5)
+                        </h2>
+                        <ul class="review-icon">
+                            <li data-value="1" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="2" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="3" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="4" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="5" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                        </ul>
+                        <input type="hidden" name="response" id="personal-response-input" value="0">
+                    </div>
+
+                    <div class="single-review ">
+                        <h2>Do you experience that the official employee
+                            <b>Rinku</b> have good
+                            communication skills and good
+                            response time?<br>(from 1 to 5)
+                        </h2>
+                        <ul class="review-icon">
+                            <li data-value="1" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="2" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="3" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="4" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="5" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                        </ul>
+                        <input type="hidden" name="communication" id="communication-skills-input" value="0">
+                    </div>
+
+
+                    <div class="single-review ">
+                        <h2>Do you experience that the official employee
+                            <b>Rinku</b> makes
+                            fair decisions?<br>(from 1 to 5)
+                        </h2>
+                        <ul class="review-icon">
+                            <li data-value="1" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="2" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="3" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="4" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="5" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                        </ul>
+                        <input type="hidden" name="decisions" id="fair-decisions-input" value="0">
+                    </div>
+
+                    <div class="single-review ">
+                        <h2>Do you recommend this official employee?<br>(from 1 to 5)</h2>
+                        <ul class="review-icon">
+                            <li data-value="1" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="2" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="3" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="4" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                            <li data-value="5" class="star"><img
+                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.svg"
+                                    alt=""></li>
+                        </ul>
+                        <input type="hidden" name="recommend" id="recommend-person-input" value="0">
+                    </div>
+                </div>
+            </div>
+            <!-- Review Section  -->
 
             <p class="submit"><input type="submit" name="createperson" id="createpersonsub"
                     class="button button-primary" value="Add Person Now"></p>

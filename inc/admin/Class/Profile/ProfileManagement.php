@@ -2,6 +2,7 @@
 
 namespace Tarikul\PersonsStore\Inc\Admin\Class\Profile;
 use Tarikul\PersonsStore\Inc\Database\Database;
+use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
 use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
 
@@ -18,6 +19,7 @@ class ProfileManagement
         $this->version = $version;
         $this->plugin_text_domain = $plugin_text_domain;
         $this->db = Database::getInstance();
+      // add_action('woocommerce_email_classes', [$this, 'tjmk_register_wc_email_class']);
         $this->init();
     }
 
@@ -28,6 +30,14 @@ class ProfileManagement
         add_action('admin_post_tjmk_update_profile', [$this, 'tjmk_handle_update_profile_submission']);
 
     }
+
+    // public function tjmk_register_wc_email_class($email_classes)
+    // {
+    //     // Register the custom email class using the fully qualified name
+    //     $email_classes['WC_TJMK_Email'] = new WC_TJMK_Email();
+    //     return $email_classes;
+
+    // }
 
     /**
      * Handles the form submission for adding a new user with an associated review.
@@ -80,8 +90,8 @@ class ProfileManagement
             $review_content = Helper::content_process($review_data, $average_rating);
             if (!$review_content) {
                 throw new \Exception('Failed to process review content');
-            }      
-   
+            }
+
             // Insert person into database
             $profile_id = $this->db->insert_user($user_data);
             if (!$profile_id) {
@@ -103,12 +113,22 @@ class ProfileManagement
             }
 
             // Send email
-            $email = Email::getInstance();
-            $email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.');
-            $email_sent = $email->send();
-            if (!$email_sent) {
-                throw new \Exception('Failed to send email');
-            }
+            // $email = Email::getInstance();
+            // $email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.');
+            // $email_sent = $email->send();
+            // if (!$email_sent) {
+            //     throw new \Exception('Failed to send email');
+            // }
+
+            // Instantiate the email class
+            $mailer = WC()->mailer();
+
+            // // Set the recipient and custom content
+            $recipient = $user_data['email'];
+            $custom_content = 'This is the custom content of your email.';
+
+            // Send the custom email notification
+            do_action('tjmk_trigger_ajax_email', $recipient, $custom_content);
 
             // Commit the transaction if everything is successful
             $wpdb->query('COMMIT');

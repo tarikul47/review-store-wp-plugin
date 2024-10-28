@@ -145,42 +145,46 @@ class Helper
 
     public static function content_process($review_data, $average_rating)
     {
-        // error_log(print_r('$review_data', true));
-        // error_log(print_r($review_data, true));
-        // Static content that describes each review criteria
         $static_content = [
-            'fair' => 'Do you experience the official as fair and impartial (from 1 to 5)',
-            'professional' => 'Do you feel that the official has sufficient competence, is professional and qualified for his service (from 1 to 5)',
-            'response' => 'Do you feel that the official has a personal and good response (from 1 to 5)',
-            'communication' => 'Do you feel that the official has good communication, good response time (from 1 to 5)',
-            'decisions' => 'Do you feel that the official makes fair decisions (from 1 to 5)',
-            'recommend' => 'Do you recommend this official employee? (from 1 to 5)',
-            'comments' => 'Review Message',
+            'fair' => 'Fair and impartial (1 to 5)',
+            'professional' => 'Competence and professionalism (1 to 5)',
+            'response' => 'Personal and good response (1 to 5)',
+            'communication' => 'Communication and response time (1 to 5)',
+            'decisions' => 'Fair decision making (1 to 5)',
+            'recommend' => 'Would you recommend this official? (1 to 5)',
+            'comments' => 'Additional Comments',
         ];
 
-        // Initialize content variable
-        $content = '<h1>Reviews for Official</h1>';
+        $content = '<table class="table">';
+        $content .= '<thead><tr>';
+        foreach ($static_content as $header) {
+            $content .= '<th>' . esc_html($header) . '</th>';
+        }
+        $content .= '</tr></thead><tbody>';
 
-        // Check if $review_data is a single review or multiple reviews
+        // Check if single or multiple reviews
         if (isset($review_data['fair']) || isset($review_data['comments'])) {
-            // Single review scenario
-            $review_content = self::process_single_review($review_data, $static_content);
-            //   $content .= '<h2>Review by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
-            $content .= '<p>Review Content:</p>';
-            $content .= $review_content;
-            $content .= '<p>Average Rating: ' . esc_html($average_rating) . '</p>';
-            $content .= '<hr>';
+            $content .= '<tr>';
+            foreach (array_keys($static_content) as $key) {
+                $score = isset($review_data[$key]) ? esc_html($review_data[$key]) : 'N/A';
+                $content .= "<td>{$score}</td>";
+            }
+            $content .= '</tr>';
         } else {
-            // Multiple reviews scenario
             foreach ($review_data as $review) {
-                $meta_data = $review['meta'];
-                $review_content = self::process_single_review($meta_data, $static_content);
-                //  $content .= '<h2>Review ID: ' . esc_html($review['review_id']) . ' by ' . esc_html(wp_get_current_user()->display_name) . '</h2>';
-                $content .= $review_content;
-                $content .= '<p>Rating: ' . esc_html($review['rating']) . '</p>';
-                $content .= '<hr>';
+                $content .= '<tr>';
+                foreach (array_keys($static_content) as $key) {
+                    $score = isset($review['meta'][$key]) ? esc_html($review['meta'][$key]) : 'N/A';
+                    $content .= "<td>{$score}</td>";
+                }
+                $content .= '</tr>';
             }
         }
+
+        $content .= '</tbody></table>';
+
+        // Append Average Rating
+        $content .= '<p class="rating">Average Rating: ' . esc_html($average_rating) . '</p>';
 
         return $content;
     }

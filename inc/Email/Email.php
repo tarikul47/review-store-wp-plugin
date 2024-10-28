@@ -1,6 +1,8 @@
 <?php
 namespace Tarikul\PersonsStore\Inc\Email;
 
+use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
+
 /**
  * Email Class for handling email operations including sending emails instantly, 
  * enqueuing emails for later processing, and processing the email queue in batches.
@@ -53,7 +55,9 @@ class Email
 
         // Register hooks within the constructor
         add_action('ps_process_email_queue_event', [$this, 'processQueue']);
-       // error_log('Email class constructor called.');
+        add_action('woocommerce_email_classes', [$this, 'tjmk_register_wc_email_class']);
+        add_action('admin_enqueue_scripts', [$this, 'add_rich_editor_to_wc_email_settings']);
+
     }
 
     /**
@@ -70,6 +74,21 @@ class Email
             // error_log('Email instance reused'); // Log instance reuse
         }
         return self::$instance;
+    }
+
+    public function tjmk_register_wc_email_class($email_classes)
+    {
+        // Register the custom email class using the fully qualified name
+        $email_classes['WC_TJMK_Email'] = new WC_TJMK_Email();
+        return $email_classes;
+    }
+
+    function add_rich_editor_to_wc_email_settings($hook)
+    {
+        if ('woocommerce_page_wc-settings' === $hook) {
+            wp_enqueue_editor();
+            wp_enqueue_script('wc-email-rich-editor', PLUGIN_ADMIN_EMAIL_URL . 'js/wc-email-rich-editor.js', array('jquery'), null, true);
+        }
     }
 
 

@@ -120,12 +120,12 @@ button#clear-button {
 }
 
 .submit-button {
-    color: #fff;
+    color: #ffffff !important;
     border: none;
     padding: 14px 25px;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .button-edit {

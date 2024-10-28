@@ -1,3 +1,53 @@
+1. Where and Who gets email 
+
+    - When profile add with a review [ Autometically publish ] by admin 
+    
+        - profile user gets an email 
+
+    - When profile added by a logged user not admin and the profile add as a pending - 
+
+        - we need to send 2 email 
+
+            - admin get's an email 
+            - Author also get's an email
+
+
+
+            
+
+    - When profile publish from admin which profile adding by a logged user
+
+            - We need to send 2 Email
+
+                - profile user get's an email
+                - Author gets an email
+
+    - When a review added by a logged user and the review add as pending 
+
+            - we need to send 2 email 
+
+                - admin get's an email 
+                - Author also get's an email
+
+    - When a review publish 
+
+        - We need to send 2 Email
+
+            - profile user get's an email
+            - Author gets an email
+
+
+    - When bulk profile uplaod with review 
+
+        - profile user gets an email 
+
+
+
+
+
+
+
+
 1. Review-Store.php
     - Singleton Class Init 
     - A function call with our plugin init function call 

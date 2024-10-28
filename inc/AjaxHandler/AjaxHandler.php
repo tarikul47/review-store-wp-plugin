@@ -234,9 +234,9 @@ class AjaxHandler
     function tjmk_approve_profile()
     {
         // Check for nonce security
-        check_ajax_referer('tjmk_approve_profile_nonce', 'security');
+    //    check_ajax_referer('tjmk_approve_profile_nonce', 'security');
 
-        if (isset($_POST['action']) && $_POST['action'] == 'approve_profile' && isset($_POST['profile_id'])) {
+        if (isset($_POST['action']) && $_POST['action'] == 'tjmk_approve_profile' && isset($_POST['profile_id'])) {
             $profile_id = intval($_POST['profile_id']);
 
             // approve operation.

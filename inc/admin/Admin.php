@@ -5,6 +5,7 @@ use Tarikul\PersonsStore\Inc\Admin\Class\Menu\MenuManager;
 use Tarikul\PersonsStore\Inc\Admin\Class\Profile\ProfileManagement;
 use Tarikul\PersonsStore\Inc\Admin\Class\Review\ReviewManagement;
 use Tarikul\PersonsStore\Inc\Database\Database;
+use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
 use Tarikul\PersonsStore\Inc\Email\Email;
 use Tarikul\PersonsStore\Inc\Helper\Helper;
 use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
@@ -39,6 +40,7 @@ class Admin
         $this->db = Database::getInstance();
 
         add_action('init', [$this, 'init']);
+
     }
 
     public function init()
@@ -54,6 +56,8 @@ class Admin
 
         // Initialize ReviewManagement 
         new ReviewManagement($this->plugin_name, $this->version, $this->plugin_text_domain);
+
+        //   add_filter('woocommerce_email_classes', [$this, 'register_wc_tjmk_email_class']);
     }
 
     public function enqueue_styles()
@@ -61,7 +65,7 @@ class Admin
         // Get the current screen object
         $screen = get_current_screen();
 
-       // error_log('Current screen ID: ' . $screen->id);
+        // error_log('Current screen ID: ' . $screen->id);
         // Define the allowed page slugs
         $allowed_pages = [
             'toplevel_page_persons-store',
@@ -96,7 +100,7 @@ class Admin
         // Get the current screen object
         $screen = get_current_screen();
 
-       // error_log('Current screen ID: ' . $screen->id);
+        // error_log('Current screen ID: ' . $screen->id);
         // Define the allowed page slugs
         $allowed_pages = [
             'toplevel_page_persons-store',

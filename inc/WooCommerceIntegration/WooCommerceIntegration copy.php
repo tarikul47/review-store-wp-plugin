@@ -40,27 +40,35 @@ class WooCommerceIntegration
             wp_send_json_error('Profile ID and Order ID are required.');
         }
 
+
+
         $order = wc_get_order($order_id);
 
         if ($order) {
             $order_date = $order->get_date_completed();
+
             $valid_duration = 2; // Adjust as needed
 
             if ($this->is_link_valid($order_date, $valid_duration)) {
+
                 // Fetch all approved reviews
                 $approved_reviews = $this->db->get_reviews('approved', $profile_id, $order_date->date('Y-m-d H:i:s'));
 
+                //       error_log(print_r($order_date->date('Y-m-d H:i:s'), true));
+                //     error_log(print_r($approved_reviews, true));
+
                 if (!empty($approved_reviews)) {
-                    // Calculate rating (optional)
+
+                    // Calculate rating
                     $average_rating = 0; // Implement your logic here
 
                     // Process review content
                     $review_content = Helper::content_process($approved_reviews, $average_rating);
 
-                    // Load the HTML template
-                    ob_start();
-                    include 'pdf-template.php';  // Adjust the path to your HTML template file
-                    $pdf_content = ob_get_clean();
+                    // Generate the PDF content
+                    $pdf_content = "<h1>Reviews for Profile ID: {$profile_id}</h1>";
+                    $pdf_content .= "<p>Average Rating: {$average_rating}</p>";
+                    $pdf_content .= $review_content;
 
                     // Use mPDF to generate PDF and force download
                     $mpdf = new \Mpdf\Mpdf();
@@ -69,6 +77,9 @@ class WooCommerceIntegration
                     // Force download the PDF
                     $pdf_filename = 'profile_' . $profile_id . '_reviews.pdf';
                     $mpdf->Output($pdf_filename, 'D');  // 'D' forces download in the browser
+
+                    // Return reviews
+                    // wp_send_json_success($approved_reviews);
                 } else {
                     wp_send_json_error('No approved reviews found for this profile.');
                 }
@@ -79,6 +90,7 @@ class WooCommerceIntegration
 
         wp_die();
     }
+
 
     // function download_reviews_callback()
     // {
