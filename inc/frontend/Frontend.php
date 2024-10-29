@@ -135,15 +135,33 @@ class Frontend
 				}
 			}
 
-			// Send email [Admin get ony email later we fix it ]
-			$email = Email::getInstance();
-			$email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of your reviews is now live. You can check it.');
-			$result = $email->send();
-			if (!$result) {
-				throw new \Exception('Failed to send email');
-			} else {
-				$successMessages[] = 'Email sent successfully';
-			}
+			/* ----------- Stat Sending Email Notification ------*/
+			// Instantiate the email class
+			$mailer = WC()->mailer();
+
+			/**
+			 * User user get an eamail notification 
+			 */
+			$author_data = [
+				'name' => Helper::get_current_user_id_and_roles()['name'],
+				'email' => Helper::get_current_user_id_and_roles()['email'],
+				'id' => Helper::get_current_user_id_and_roles()['id'],
+			];
+			$admin_data = [
+				'name' => Helper::get_admin_info()['name'],
+				'email' => Helper::get_admin_info()['email'],
+				'id' => 1, // assuming the admin user has ID 1
+			];
+
+			// Send the custom email notification
+			// do_action('tjmk_trigger_ajax_email', $recipient, $custom_content);
+
+			do_action('tjmk_trigger_profile_created_pending_by_user_to_user', $author_data['email'], $author_data);
+			do_action('tjmk_trigger_profile_created_pending_by_user_to_admin', $admin_data['email'], $admin_data);
+
+			/* ----------- Stat Sending Email Notification ------*/
+
+
 
 			// Commit the transaction if everything is successful
 			$wpdb->query('COMMIT');

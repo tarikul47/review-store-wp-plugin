@@ -102,6 +102,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
 
 
                                 <a class="custom-button button-approve approve_reject"
+                                    data-profile-id="<?php echo esc_html($review['profile_id']); ?>"
                                     data-review-id="<?php echo esc_attr($review['review_id']); ?>" href="#">Approve</a>
 
                                 <a class="custom-button button-reject approve_reject"

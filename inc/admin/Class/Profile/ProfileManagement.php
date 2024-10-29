@@ -19,7 +19,7 @@ class ProfileManagement
         $this->version = $version;
         $this->plugin_text_domain = $plugin_text_domain;
         $this->db = Database::getInstance();
-      // add_action('woocommerce_email_classes', [$this, 'tjmk_register_wc_email_class']);
+        // add_action('woocommerce_email_classes', [$this, 'tjmk_register_wc_email_class']);
         $this->init();
     }
 
@@ -111,24 +111,25 @@ class ProfileManagement
                     throw new \Exception("Failed to insert review meta: $meta_key");
                 }
             }
-
-            // Send email
-            // $email = Email::getInstance();
-            // $email->setEmailDetails($user_data['email'], 'Hurrah! A Review is live!', 'Hello ' . $user_data['first_name'] . ',<br>One of a review is now live. You can check it.');
-            // $email_sent = $email->send();
-            // if (!$email_sent) {
-            //     throw new \Exception('Failed to send email');
-            // }
-
+            /* ----------- Stat Sending Email Notification ------*/
             // Instantiate the email class
             $mailer = WC()->mailer();
 
-            // // Set the recipient and custom content
-            $recipient = $user_data['email'];
-            $custom_content = 'This is the custom content of your email.';
+            /**
+             * Profile user get an eamail notification 
+             */
+            $profile_data = [
+                'name' => $user_data['first_name'] . ' ' . $user_data['last_name'],
+                'email' => $user_data['email'],
+                'id' => $profile_id,
+            ];
 
             // Send the custom email notification
-            do_action('tjmk_trigger_ajax_email', $recipient, $custom_content);
+            // do_action('tjmk_trigger_ajax_email', $recipient, $custom_content);
+
+            do_action('tjmk_trigger_profile_created_by_admin_to_profile', $user_data['email'], $profile_data);
+
+            /* ----------- Stat Sending Email Notification ------*/
 
             // Commit the transaction if everything is successful
             $wpdb->query('COMMIT');

@@ -329,11 +329,47 @@ class Helper
             return [
                 'id' => $current_user->ID,
                 'roles' => $current_user->roles,
-                'name' => $name
+                'name' => $name,
+                'email' => $current_user->user_email, // Retrieve the user's email
             ];
         }
 
         return null; // or return an empty array, depending on your use case
+    }
+
+
+    /**
+     * Get Admin Information
+     *
+     * @return array|null An array containing admin name and email, or null if not found.
+     */
+    public static function get_admin_info()
+    {
+        // Get the admin email
+        $admin_email = get_option('admin_email');
+
+        // Get the admin user object
+        $admin_user = get_user_by('email', $admin_email);
+
+        // If the admin user is found, prepare the information
+        if ($admin_user) {
+            // Get the admin's first and last name
+            $first_name = $admin_user->first_name;
+            $last_name = $admin_user->last_name;
+
+            // Determine the admin name to use (full name or username)
+            $admin_name = trim($first_name . ' ' . $last_name);
+            if (empty($admin_name)) {
+                $admin_name = $admin_user->user_login;
+            }
+
+            return [
+                'name' => $admin_name,
+                'email' => $admin_email,
+            ];
+        }
+
+        return null; // Return null if the admin user is not found
     }
 
     /**

@@ -58,7 +58,11 @@
 <body>
 
     <div class="header">Reviews for Profile ID: <?php echo $profile_id; ?></div>
+    <div style="background-color: black;">
+        <img src="https://stage.tjanstemannakollen.se/wp-content/uploads/2024/10/tjmk-logo-white.png" alt="">
+    </div>
     <p>Generated on: <?php echo date('Y-m-d'); ?></p>
+
 
     <!-- Review content -->
     <?php echo $review_content; ?>

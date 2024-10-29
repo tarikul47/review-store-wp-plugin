@@ -67,7 +67,7 @@ class AjaxHandler
         $total_profiles = $this->db->get_total_profiles_count($search_term);
         $total_pages = ceil($total_profiles / $profiles_per_page);
 
-        $product_id = 509;
+        $product_id = 52;
 
         // Generate HTML for profiles
         ob_start();
@@ -150,7 +150,6 @@ class AjaxHandler
             exit;
         }
 
-
         // Ensure profile_id exists in the review data
         if (empty($review_data)) {
             wp_send_json_error(['message' => 'Profile ID is missing']);
@@ -198,6 +197,30 @@ class AjaxHandler
 
         //TODO: Email Need to send Author and Admin 
 
+        /* ----------- Stat Sending Email Notification ------*/
+        // Instantiate the email class
+        $mailer = WC()->mailer();
+
+        /**
+         * User user get an eamail notification 
+         */
+        $author_data = [
+            'name' => Helper::get_current_user_id_and_roles()['name'],
+            'email' => Helper::get_current_user_id_and_roles()['email'],
+            'id' => Helper::get_current_user_id_and_roles()['id'],
+        ];
+        $admin_data = [
+            'name' => Helper::get_admin_info()['name'],
+            'email' => Helper::get_admin_info()['email'],
+            'id' => 1, // assuming the admin user has ID 1
+        ];
+
+        // Send the custom email notification
+        do_action('tjmk_trigger_review_created_pending_by_user_to_user', $author_data['email'], $author_data);
+        do_action('tjmk_trigger_review_created_pending_by_user_to_admin', $admin_data['email'], $admin_data);
+
+        /* ----------- Stat Sending Email Notification ------*/
+
         // Send success message
         wp_send_json_success(['message' => $message]);
 
@@ -234,13 +257,50 @@ class AjaxHandler
     function tjmk_approve_profile()
     {
         // Check for nonce security
-    //    check_ajax_referer('tjmk_approve_profile_nonce', 'security');
+        //    check_ajax_referer('tjmk_approve_profile_nonce', 'security');
 
         if (isset($_POST['action']) && $_POST['action'] == 'tjmk_approve_profile' && isset($_POST['profile_id'])) {
             $profile_id = intval($_POST['profile_id']);
 
             // approve operation.
             $approve = $this->db->approve_profile($profile_id, 'approved');
+
+
+            /* ----------- Stat Sending Email Notification ------*/
+            // Author + Profile user get notification 
+
+            // Instantiate the email class
+            $mailer = WC()->mailer();
+
+            $profile_data = $this->db->get_profile_by_id($profile_id);
+
+            $author_id = $profile_data->author_id;
+            $author = Helper::get_user_info_by_id($author_id);
+
+            // Author data 
+            $author_data = [
+                'name' => $author['full_name'],
+                'email' => $author['email'],
+                'id' => $author_id,
+            ];
+            // Profile data 
+            $profile_data = [
+                'name' => Helper::get_person_name_process($profile_data),
+                'email' => $profile_data->email,
+                'id' => $profile_id,
+            ];
+
+            // Send the custom email notification
+            // do_action('tjmk_trigger_ajax_email', $recipient, $custom_content);
+
+            do_action('tjmk_trigger_profile_published_by_admin_to_author', $author_data['email'], $author_data);
+            do_action('tjmk_trigger_profile_published_by_admin_to_profile', $profile_data['email'], $profile_data);
+
+            /* ----------- Stat Sending Email Notification ------*/
+
+
+
+
 
             // If successful, return a JSON response
             if ($approve) {
@@ -285,13 +345,11 @@ class AjaxHandler
         $profile_id = isset($_POST['profile_id']) ? intval($_POST['profile_id']) : 0;
 
         if (!$data['review_id']) {
-            $this->log_error('Review ID is missing');
             wp_send_json_error(['message' => 'Review ID is missing.']);
             return;
         }
 
         if (!$profile_id) {
-            $this->log_error('Profile ID is missing');
             wp_send_json_error(['message' => 'Profile ID is missing or invalid']);
             exit;
         }
@@ -316,13 +374,13 @@ class AjaxHandler
             }
 
             // Fetch Person data
-            $person_data = $this->db->get_profile_by_id($profile_id);
-            if (!$person_data) {
+            $profile_data = $this->db->get_profile_by_id($profile_id);
+            if (!$profile_data) {
                 throw new \Exception('Failed to fetch person data.');
             }
 
             // Fetch Person Full Name
-            $person_name = Helper::get_person_name_process($person_data);
+            $person_name = Helper::get_person_name_process($profile_data);
             if (!$person_name) {
                 throw new \Exception('Failed to fetch person name.');
             }
@@ -347,31 +405,36 @@ class AjaxHandler
 
             // Only send emails if the transaction was successful
 
-            // Initialize the email class
-            $email = Email::getInstance();
+            /* ----------- Stat Sending Email Notification ------*/
+            // Admin approve and Author and Profile user gets email 
+            // Instantiate the email class
+            $mailer = WC()->mailer();
 
-            // First email for the profile person
-            $email->setEmailDetails(
-                $person_data->email,
-                'Hurrah! A Review is live!',
-                'Hello ' . $person_name . ',<br>One of your reviews is now live. You can check it.'
-            );
-            $profile_email_result = $email->send();
+            /**
+             * User user get an eamail notification 
+             */
+            $author_id = $profile_data->author_id;
+            $author = Helper::get_user_info_by_id($author_id);
 
-            // Second email for the reviewer
-            $email->setEmailDetails(
-                $reviewer_user_data['email'],
-                'Hurrah! Your Review is approved!',
-                'Hello ' . $reviewer_user_data['full_name'] . ',<br>Your review has been approved. Check it in your account.'
-            );
-            $reviewer_email_result = $email->send();
+            // Author data 
+            $author_data = [
+                'name' => $author['full_name'],
+                'email' => $author['email'],
+                'id' => $author_id,
+            ];
+            // Profile data 
+            $profile_data = [
+                'name' => Helper::get_person_name_process($profile_data),
+                'email' => $profile_data->email,
+                'id' => $profile_id,
+            ];
+            // Send the custom email notification
+            do_action('tjmk_trigger_review_published_to_author', $author_data['email'], $author_data);
+            do_action('tjmk_trigger_review_published_to_profile', $profile_data['email'], $profile_data);
 
-            if (!$profile_email_result || !$reviewer_email_result) {
-                error_log('One or both emails failed to send.');
-                // Optionally notify the admin or log it for retries
-            }
 
             wp_send_json_success(['message' => 'Review approved successfully.']);
+
         } catch (\Exception $e) {
             // If any step fails, roll back the transaction
             $wpdb->query('ROLLBACK');
@@ -404,6 +467,39 @@ class AjaxHandler
 
         // Process the rejection
         $result = $this->db->update_review_status($review_id, 'rejected');
+
+        // Review fetched by review ID 
+        $review_data = $this->db->get_review_by_review_id($review_id);
+
+
+        if (!$review_data) {
+            throw new \Exception('Failed to fetch review.');
+        }
+
+        // Reviewer user data 
+        $author = Helper::get_user_info_by_id($review_data->reviewer_user_id);
+
+
+        /* ----------- Stat Sending Email Notification ------*/
+        // Admin approve and Author and Profile user gets email 
+        // Instantiate the email class
+        $mailer = WC()->mailer();
+
+        /**
+         * User user get an eamail notification 
+         */
+        // Author data 
+        $author_data = [
+            'name' => $author['full_name'],
+            'email' => $author['email'],
+            'id' => $review_data->reviewer_user_id,
+        ];
+        // Send the custom email notification
+        do_action('tjmk_trigger_review_reject_to_author', $author_data['email'], $author_data);
+
+        /* ----------- Stat Sending Email Notification ------*/
+
+
 
         if ($result) {
             wp_send_json_success(['message' => 'Review rejected successfully.']);
