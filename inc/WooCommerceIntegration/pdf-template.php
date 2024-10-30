@@ -123,18 +123,6 @@
         .green {
             background-color: #4CAF50;
         }
-
-        .review-box {
-            page-break-inside: avoid;
-            /* Prevent breaking inside review box */
-        }
-
-        @media print {
-            .ratings {
-                page-break-after: always;
-                /* Page break after every two reviews */
-            }
-        }
     </style>
 </head>
 
@@ -231,11 +219,7 @@
         <div class="ratings">
             <div class="ratings-title">All Reviews (<?php echo count($approved_reviews); ?>)</div>
 
-            <?php
-            $total_reviews = count($approved_reviews);
-            for ($i = 0; $i < $total_reviews; $i++):
-                $review = $approved_reviews[$i]; ?>
-
+            <?php foreach ($approved_reviews as $review): ?>
                 <div class="review-box">
                     <div class="title">
                         Reviewed By: Anonymous | Date: <?php echo date('Y-m-d', strtotime($review['created_at'])); ?> | ID:
@@ -246,19 +230,25 @@
                             <td class="rating-box">
                                 <div class="criteria">IS SEEN AS FAIR AND IMPARTIAL</div>
                                 <div class="score">
-                                    <?php echo get_rating_icons($review['meta']['fair'] ?? 0); ?>
+                                    <?php
+                                    echo get_rating_icons($review['meta']['fair'] ?? 0);
+                                    ?>
                                 </div>
                             </td>
                             <td class="rating-box">
                                 <div class="criteria">HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM</div>
                                 <div class="score">
-                                    <?php echo get_rating_icons($review['meta']['professional'] ?? 0); ?>
+                                    <?php
+                                    echo get_rating_icons($review['meta']['professional'] ?? 0);
+                                    ?>
                                 </div>
                             </td>
                             <td class="rating-box">
                                 <div class="criteria">PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES</div>
                                 <div class="score">
-                                    <?php echo get_rating_icons($review['meta']['response'] ?? 0); ?>
+                                    <?php
+                                    echo get_rating_icons($review['meta']['response'] ?? 0);
+                                    ?>
                                 </div>
                             </td>
                         </tr>
@@ -266,36 +256,35 @@
                             <td class="rating-box">
                                 <div class="criteria">HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME</div>
                                 <div class="score">
-                                    <?php echo get_rating_icons($review['meta']['communication'] ?? 0); ?>
+                                    <?php
+                                    echo get_rating_icons($review['meta']['communication'] ?? 0);
+                                    ?>
                                 </div>
                             </td>
                             <td class="rating-box">
                                 <div class="criteria">MAKES FAIR AND WISE DECISIONS</div>
                                 <div class="score">
-                                    <?php echo get_rating_icons($review['meta']['decisions'] ?? 0); ?>
+                                    <?php
+                                    echo get_rating_icons($review['meta']['decisions'] ?? 0);
+                                    ?>
                                 </div>
                             </td>
                             <td class="rating-box">
                                 <div class="criteria">IS RECOMMENDED BY OTHERS</div>
                                 <div class="score">
-                                    <?php echo get_rating_icons($review['meta']['recommend'] ?? 0); ?>
+                                    <?php
+                                    echo get_rating_icons($review['meta']['recommend'] ?? 0);
+                                    ?>
                                 </div>
                             </td>
                         </tr>
                     </table>
-                    <div class="comment-box">
+                    <div class="comemnt-box">
                         <div class="title">COMMENT</div>
                         <p><?php echo htmlspecialchars($review['meta']['comment'] ?? 'Comment text goes here.'); ?></p>
                     </div>
                 </div>
-
-                <?php
-                // Add a page break after every two reviews
-                if (($i + 1) % 2 == 0 && ($i + 1) < $total_reviews): ?>
-                    <pagebreak />
-                <?php endif; ?>
-
-            <?php endfor; ?>
+            <?php endforeach; ?>
         </div>
 
         <!-- Footer -->
@@ -304,4 +293,5 @@
         </div>
     </div>
 </body>
+
 </html>
