@@ -413,11 +413,11 @@ class Helper
     /**
      * 
      */
-    public static function get_person_name_process($peron)
+    public static function get_person_name_process($profile)
     {
         // If the profile is found, concatenate first_name and last_name
-        if ($peron) {
-            return $peron->first_name;
+        if ($profile) {
+            return $profile->first_name . $profile->last_name;
         }
 
         // Return null if the profile was not found
