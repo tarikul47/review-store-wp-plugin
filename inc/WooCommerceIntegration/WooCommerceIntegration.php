@@ -53,8 +53,24 @@ class WooCommerceIntegration
             if ($this->is_link_valid($order_date, $valid_duration)) {
                 // Fetch all approved reviews
                 $approved_reviews = $this->db->get_reviews('approved', $profile_id, $order_date->date('Y-m-d H:i:s'));
+              
+                //   error_log(print_r($approved_reviews, true));
+                //  die();
 
                 if (!empty($approved_reviews)) {
+
+                    // formate order date
+                    $formatted_order_date = $order_date->date('Y-m-d');
+
+                    $profile_data = $this->db->get_profile_by_id($profile_id);
+
+                    // profile user name
+                    $profile_user_name = Helper::get_person_name_process($profile_data);
+
+                    $fair = $this->db->get_average_meta_rating($profile_id, 'fair');
+                    error_log(print_r($fair, true));
+
+
                     // Calculate rating (optional)
                     $average_rating = 0; // Implement your logic here
 

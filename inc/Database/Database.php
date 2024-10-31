@@ -1030,6 +1030,7 @@ class Database
         return number_format((float) $average_rating, 2, '.', '');
     }
 
+<<<<<<< HEAD
     public function insert_email_data($profile_data)
     {
         global $wpdb;
@@ -1061,6 +1062,39 @@ class Database
         } else {
             return false; // Insertion failed
         }
+=======
+    /**
+     * Calculate the average rating for a specific review meta key.
+     *
+     * @param int $profile_id The profile ID.
+     * @param string $meta_key The review meta key (e.g., 'fair', 'professional').
+     * @return float The average rating for the specified meta key.
+     */
+    public function get_average_meta_rating($profile_id, $meta_key)
+    {
+        // Step 1: Fetch approved reviews for the profile
+        $reviews = $this->get_reviews('approved', $profile_id);
+
+        if (empty($reviews)) {
+            return 0; // No approved reviews, return 0
+        }
+
+        // Step 2: Calculate the total rating and count for the meta key
+        $total_rating = 0;
+        $review_count = 0;
+
+        foreach ($reviews as $review) {
+            if (isset($review['meta'][$meta_key])) {
+                $total_rating += (float) $review['meta'][$meta_key];
+                $review_count++;
+            }
+        }
+
+        // Step 3: Calculate the average rating and round it
+        $average_rating = $review_count > 0 ? $total_rating / $review_count : 0;
+
+        return round($average_rating); // Round to the nearest integer
+>>>>>>> d751beb9b9de24bcdb82320ddcae68c1644763e8
     }
 
 }
