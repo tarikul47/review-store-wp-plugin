@@ -417,7 +417,7 @@ class Helper
     {
         // If the profile is found, concatenate first_name and last_name
         if ($profile) {
-            return $profile->first_name . $profile->last_name;
+            return $profile->first_name .' '. $profile->last_name;
         }
 
         // Return null if the profile was not found

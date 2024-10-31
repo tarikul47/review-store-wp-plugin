@@ -1,6 +1,7 @@
 <?php
 
 namespace Tarikul\PersonsStore\Inc\Frontend;
+use Tarikul\PersonsStore\Inc\Frontend\Class\Shortcode;
 use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\Email\Email;
@@ -64,14 +65,20 @@ class Frontend
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->plugin_text_domain = $plugin_text_domain;
+		$this->init();
+	}
 
+	public function init()
+	{
+		// Instantiate the shortcode class
+		new Shortcode();
 		// Initialize AJAX handling
 		new AjaxHandler();
 
 		$this->db = Database::getInstance();
-
 		// Add action for form submission
 		add_action('wp_ajax_frontend_add_profile_with_review', [$this, 'handle_frontend_add_profile_form_submission']);
+
 	}
 
 	/**

@@ -53,7 +53,7 @@ class WooCommerceIntegration
             if ($this->is_link_valid($order_date, $valid_duration)) {
                 // Fetch all approved reviews
                 $approved_reviews = $this->db->get_reviews('approved', $profile_id, $order_date->date('Y-m-d H:i:s'));
-              
+
                 //   error_log(print_r($approved_reviews, true));
                 //  die();
 
@@ -87,7 +87,10 @@ class WooCommerceIntegration
                     $mpdf->WriteHTML($pdf_content);
 
                     // Force download the PDF
-                    $pdf_filename = 'profile_' . $profile_id . '_reviews.pdf';
+                    //   $pdf_filename = 'profile_' . $profile_id . '_reviews.pdf';
+
+                    $pdf_filename = strtolower($profile_data->first_name) . '-' . strtolower($profile_data->last_name) . '-recensionsrapport.pdf';
+
                     $mpdf->Output($pdf_filename, 'D');  // 'D' forces download in the browser
                 } else {
                     wp_send_json_error('No approved reviews found for this profile.');
