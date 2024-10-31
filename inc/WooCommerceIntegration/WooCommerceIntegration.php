@@ -20,6 +20,7 @@ class WooCommerceIntegration
         add_action('woocommerce_checkout_create_order_line_item', [$this, 'save_person_id_in_order'], 10, 4);
 
         add_action('woocommerce_order_details_after_order_table', [$this, 'add_custom_link_on_thankyou_page']);
+        //add_action('woocommerce_view_order', [$this, 'add_custom_link_on_thankyou_page']);
 
         // download review as pdf 
         add_action('wp_ajax_download_reviews', [$this, 'download_reviews_callback']);
@@ -39,6 +40,9 @@ class WooCommerceIntegration
         if (!$profile_id || !$order_id) {
             wp_send_json_error('Profile ID and Order ID are required.');
         }
+
+        error_log(print_r($order_id));
+        error_log(print_r($profile_id));
 
         $order = wc_get_order($order_id);
 

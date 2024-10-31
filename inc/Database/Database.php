@@ -40,10 +40,16 @@ class Database
     {
         global $wpdb;
 
-        // Define the columns you expect to be in the table
+        // Define the columns you expect to be in each table (e.g., ps_profile or ps_email_queue)
         $expected_columns = [
-            'author_id' => "BIGINT(20) UNSIGNED NOT NULL",
-            'status' => "ENUM('pending', 'approved', 'rejected') DEFAULT 'pending'"
+            // Columns expected in the ps_profile table
+            'name' => "VARCHAR(255) NOT NULL",
+            'profile_id' => "BIGINT(20) UNSIGNED NOT NULL",
+            'updated_at' => "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+
+            // Additional columns for the ps_email_queue table
+            'last_attempt_at' => "TIMESTAMP NULL DEFAULT NULL",
+            'attempt_count' => "INT UNSIGNED DEFAULT 0"
         ];
 
         foreach ($expected_columns as $column => $definition) {
@@ -136,10 +142,12 @@ class Database
             "ps_email_queue" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}email_queue (
                 id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 to_email VARCHAR(255) NOT NULL,
-                subject VARCHAR(255) NOT NULL,
-                message TEXT NOT NULL,
                 status ENUM('pending', 'sent', 'failed') DEFAULT 'pending',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                name VARCHAR(255) NOT NULL,
+                profile_id BIGINT(20) UNSIGNED NOT NULL,
+                last_attempt_at TIMESTAMP NULL DEFAULT NULL,
+                attempt_count INT UNSIGNED DEFAULT 0
             ) $charset_collate;",
 
             "ps_notifications" => "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$plugin_prefix}notifications (
@@ -162,10 +170,10 @@ class Database
          * Here we can add colum for any specific table 
          * Check for missing columns and add them if necessary
          */
-        self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'profile');
+        self::add_missing_columns($wpdb->prefix . $plugin_prefix . 'email_queue');
 
         // Remove unwanted column (product_id)
-        self::remove_column($wpdb->prefix . $plugin_prefix . 'profile', 'product_id');
+        self::remove_column($wpdb->prefix . $plugin_prefix . 'email_queue', 'subject');
 
         //   if (!self::table_exists($name)) {
         //    dbDelta($sql);
@@ -1020,6 +1028,39 @@ class Database
 
         // Format the average rating to 2 decimal places
         return number_format((float) $average_rating, 2, '.', '');
+    }
+
+    public function insert_email_data($profile_data)
+    {
+        global $wpdb;
+        $plugin_prefix = 'ps' . '_';
+
+        // Sanitize inputs
+        $to_email = sanitize_email($profile_data['to_email']);
+        $name = sanitize_text_field($profile_data['name']);
+        $profile_id = intval($profile_data['profile_id']); // Assuming profile_id is an integer
+
+        // Prepare data for insertion
+        $data = [
+            'to_email' => $to_email,
+            'name' => $name,
+            'profile_id' => $profile_id,
+            'status' => 'pending', // Default status
+            'created_at' => current_time('mysql'), // Use WordPress's current time
+        ];
+
+        // Insert into the email queue
+        $inserted = $wpdb->insert(
+            $wpdb->prefix . $plugin_prefix . 'email_queue',
+            $data
+        );
+
+        // Check if insertion was successful
+        if ($inserted) {
+            return $wpdb->insert_id; // Return the ID of the newly inserted row
+        } else {
+            return false; // Insertion failed
+        }
     }
 
 }

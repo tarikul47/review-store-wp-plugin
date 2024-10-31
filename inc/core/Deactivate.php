@@ -24,9 +24,9 @@ class Deactivate
 	 */
 	public static function deactivate()
 	{
-		$timestamp = wp_next_scheduled('ps_process_email_queue_event');
-		if ($timestamp) {
-			wp_unschedule_event($timestamp, 'ps_process_email_queue_event');
+		$timestamp = wp_next_scheduled('tjmk_process_email_queue_event');
+		if ($timestamp !== false) {
+			wp_unschedule_event($timestamp, 'tjmk_process_email_queue_event');
 		}
 	}
 

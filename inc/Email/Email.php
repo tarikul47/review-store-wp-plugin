@@ -54,10 +54,11 @@ class Email
         $this->wpdb = $wpdb;
 
         // Register hooks within the constructor
-        add_action('ps_process_email_queue_event', [$this, 'processQueue']);
+        add_action('tjmk_process_email_queue_event', [$this, 'processQueue']);
         add_action('woocommerce_email_classes', [$this, 'tjmk_register_wc_email_class']);
         add_action('admin_enqueue_scripts', [$this, 'add_rich_editor_to_wc_email_settings']);
 
+        // add_action('init', [$this, 'initialize_email_queue_event']);
     }
 
     /**
@@ -75,6 +76,14 @@ class Email
         }
         return self::$instance;
     }
+
+    // function initialize_email_queue_event()
+    // {
+    //     if (!wp_next_scheduled('tjmk_process_email_queue_event')) {
+    //         wp_schedule_single_event(time() + 300, 'tjmk_process_email_queue_event');
+    //         error_log('Scheduled tjmk_process_email_queue_event for the first time');
+    //     }
+    // }
 
     public function tjmk_register_wc_email_class($email_classes)
     {
@@ -162,37 +171,86 @@ class Email
         // Retrieve a batch of pending emails
         $emails = $this->wpdb->get_results($this->wpdb->prepare("SELECT * FROM $table_name WHERE status = 'pending' LIMIT %d", $batch_size));
 
-        foreach ($emails as $email) {
-            // Create an instance for sending each email
-            $this->setEmailDetails($email->to_email, $email->subject, $email->message);
-            $sent = $this->send();
+        // Check if there are no pending emails
+        if (empty($emails)) {
+            // No pending emails to process, cleanup the scheduled event
+            $this->cleanup_cron_job();
+            return; // Exit the function
+        }
 
-            error_log(print_r('Email $sent', true));
-            error_log(print_r($sent, true));
+
+        foreach ($emails as $email) {
+            // Prepare the email data
+            $profile_data = [
+                'name' => 'Random Name',
+                'email' => $email->to_email,
+                'id' => $email->id, // Use the email ID to update its status later
+            ];
+
+            // Send email and capture status
+            $sent = $this->sendEmailNotification($profile_data);
 
             // Update email status based on send result
             $status = $sent ? 'sent' : 'failed';
+
+            // Prepare the data to update
+            $update_data = [
+                'status' => $status,
+                'last_attempt_at' => current_time('mysql'), // Get the current time in MySQL format
+                'attempt_count' => $email->attempt_count + 1 // Increment the attempt count
+            ];
+
+            // Update the email record
             $this->wpdb->update(
                 $table_name,
-                array('status' => $status),
+                $update_data,
                 array('id' => $email->id),
-                array('%s'),
-                array('%d')
+                array('%s', '%s', '%d'), // Data types for status, last_attempt_at, attempt_count
+                array('%d') // Data type for the WHERE clause
             );
+
+            error_log("Email to {$profile_data['email']} - Status: {$status}");
         }
 
-        // Schedule the next batch processing if there are still pending emails
+        // Schedule the next batch if there are more pending emails
         $pending_emails_count = $this->wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE status = 'pending'");
 
         if ($pending_emails_count > 0) {
-            if (!wp_next_scheduled('ps_process_email_queue_event')) {
-                wp_schedule_single_event(time() + 300, 'ps_process_email_queue_event');
+            // Schedule the next batch
+            if (!wp_next_scheduled('tjmk_process_email_queue_event')) {
+                wp_schedule_event(time(), 'tjmk_five_minutes', 'tjmk_process_email_queue_event');
             }
         } else {
-            // Optionally, clean up cron job if queue is empty
+            // Cleanup cron job if the queue is empty
             $this->cleanup_cron_job();
         }
     }
+
+
+    public function sendEmailNotification($profile_data)
+    {
+        // Instantiate WooCommerce mailer
+        $mailer = WC()->mailer();
+
+        // Trigger WooCommerce email action (custom action example)
+        $email_sent = do_action('tjmk_trigger_profile_created_by_admin_to_profile', $profile_data['email'], $profile_data);
+
+        // Add logging for the send attempt
+        error_log("Attempting to send email to: {$profile_data['email']}");
+
+        // Capture send result
+        $email_sent = (bool) apply_filters('wp_mail', ['to' => $profile_data['email']]);
+
+        // Log and return the send status
+        if ($email_sent) {
+            error_log("Email successfully sent to: {$profile_data['email']}");
+            return true;
+        } else {
+            error_log("Failed to send email to: {$profile_data['email']}");
+            return false;
+        }
+    }
+
 
     /**
      * Cleanup cron job if there are no pending emails.
@@ -200,9 +258,9 @@ class Email
     private function cleanup_cron_job()
     {
         // Remove cron job if there are no pending emails
-        $timestamp = wp_next_scheduled('ps_process_email_queue_event');
-        if ($timestamp) {
-            wp_unschedule_event($timestamp, 'ps_process_email_queue_event');
+        $timestamp = wp_next_scheduled('tjmk_process_email_queue_event');
+        if ($timestamp !== false) {
+            wp_unschedule_event($timestamp, 'tjmk_process_email_queue_event');
         }
     }
 

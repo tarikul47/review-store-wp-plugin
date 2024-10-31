@@ -43,12 +43,14 @@ class BulkUploadHandler
             $file = $_FILES['user_file']['tmp_name'];
             $file_type = wp_check_filetype(basename($_FILES['user_file']['name']));
 
-            if (in_array($file_type['ext'], ['csv', 'xls', 'xlsx'])) {
+            if (in_array($file_type['ext'], ['csv', 'xls', 'xlsx'])) { //  we support now only csv 
                 $upload_dir = wp_upload_dir();
                 $file_path = $upload_dir['path'] . '/' . basename($_FILES['user_file']['name']);
                 move_uploaded_file($file, $file_path);
 
-                $this->process_file_async($file_path, $file_type['ext']);
+                // we check file extension and create a chunk size 
+                $this->process_file_async($file_path, $file_type['ext']); //
+
             } else {
                 wp_send_json_error('Invalid file type. Please upload a CSV or XLS file.');
             }
@@ -56,7 +58,7 @@ class BulkUploadHandler
             wp_send_json_error('No file uploaded. Please upload a CSV or XLS file.');
         }
 
-        wp_send_json_success('Handle upload - raju');
+        wp_send_json_success('Successfully Uploaded!');
     }
 
 
@@ -98,10 +100,7 @@ class BulkUploadHandler
 
             if (count($chunks) == $chunk_size) {
                 $this->enqueue_chunk($chunks);
-                //   error_log(print_r(count($chunks), true));
-                //   error_log(print_r($chunks, true));
                 $chunks = [];
-                //  error_log(print_r($chunks, true));
             }
         }
 
@@ -140,6 +139,8 @@ class BulkUploadHandler
     {
         check_ajax_referer('urp_import_nonce', 'security');
 
+        global $wpdb; // Access the global $wpdb object
+
         $queue = get_option('urp_import_queue', []);
         $total_chunks = count($queue) + 1;
 
@@ -151,116 +152,111 @@ class BulkUploadHandler
             delete_transient($chunk_key);
 
             if ($chunk) {
+                // Start transaction
+                $wpdb->query('START TRANSACTION');
+                $success = true; // Track success of the transaction
 
-                foreach ($chunk as $row) {
-                    error_log("data upload here in database");
-                    //  error_log(print_r($row, true));
+                try {
+                    foreach ($chunk as $row) {
+                        $data = [
+                            'first_name' => $row[0],
+                            'last_name' => $row[1],
+                            'title' => $row[2],
+                            'email' => $row[3],
+                            'phone' => $row[4],
+                            'address' => $row[5],
+                            'zip_code' => $row[6],
+                            'city' => $row[7],
+                            'salary_per_month' => $row[8],
+                            'employee_type' => $row[9],
+                            'region' => $row[10],
+                            'state' => $row[11],
+                            'country' => $row[12],
+                            'municipality' => $row[13],
+                            'department' => $row[14],
+                            'fair' => $row[15],
+                            'professional' => $row[16],
+                            'response' => $row[17],
+                            'communication' => $row[18],
+                            'decisions' => $row[19],
+                            'recommend' => $row[20],
+                            'comments' => $row[21]
+                        ];
 
-                    $data = [
-                        'first_name' => $row[0],
-                        'last_name' => $row[1],
-                        'title' => $row[2],
-                        'email' => $row[3],
-                        'phone' => $row[4],
-                        'address' => $row[5],
-                        'zip_code' => $row[6],
-                        'city' => $row[7],
-                        'salary_per_month' => $row[8],
-                        'employee_type' => $row[9],
-                        'region' => $row[10],
-                        'state' => $row[11],
-                        'country' => $row[12],
-                        'municipality' => $row[13],
-                        'department' => $row[14],
-                        'fair' => $row[15],
-                        'professional' => $row[16],
-                        'response' => $row[17],
-                        'communication' => $row[18],
-                        'decisions' => $row[19],
-                        'recommend' => $row[20],
-                        'comments' => $row[21]
-                    ];
+                        // Sanitize and validate input
+                        $user_data = Helper::sanitize_user_data($data);
+                        $review_data = Helper::sanitize_review_data($data);
 
-                    // Sanitize and validate input
-                    $user_data = Helper::sanitize_user_data($data);
-                    $review_data = Helper::sanitize_review_data($data);
+                        // Calculate rating
+                        $average_rating = Helper::calculate_rating($review_data);
+                        if (!$average_rating) {
+                            throw new \Exception('Failed to calculate rating');
+                        }
 
-                    // Log sanitized user and review data
-                    //   error_log('User Data: ' . print_r($user_data, true));
-                    //   error_log('Review Data: ' . print_r($review_data, true));
+                        // Process review content
+                        $review_content = Helper::content_process($review_data, $average_rating);
+                        if (!$review_content) {
+                            throw new \Exception('Failed to process review content');
+                        }
 
-                    // Calculate rating
-                    $average_rating = Helper::calculate_rating($review_data);
-                    if (!$average_rating) {
-                        error_log('Failed to calculate rating');
-                    }
+                        // Insert person into database
+                        $profile_id = $this->db->insert_user($user_data);
+                        if (!$profile_id) {
+                            throw new \Exception('Failed to insert user');
+                        }
 
-                    // Process review content
-                    $review_content = Helper::content_process($review_data, $average_rating);
-                    if (!$review_content) {
-                        error_log('Failed to process review content');
-                    }
-
-                    // Insert person into database
-                    $profile_id = $this->db->insert_user($user_data);
-                    if (!$profile_id) {
-                        error_log('Failed to insert user');
-                    }
-
-                    // Insert review into database
-                    if ($profile_id) {
+                        // Insert review into database
                         $review_id = $this->db->insert_review($profile_id, $average_rating);
                         if (!$review_id) {
-                            error_log('Failed to insert review');
+                            throw new \Exception('Failed to insert review');
                         }
-                    }
 
-                    // Insert review meta
-                    if ($review_id) {
+                        // Insert review meta
                         foreach ($review_data as $meta_key => $meta_value) {
                             $insert_meta = $this->db->insert_review_meta($review_id, $meta_key, $meta_value);
                             if (!$insert_meta) {
-                                error_log("Failed to insert review meta: $meta_key");
+                                throw new \Exception("Failed to insert review meta: $meta_key");
                             }
                         }
-                    }
 
+                        // Prepare profile data for email
+                        $profile_data = [
+                            'to_email' => $user_data['email'],
+                            'name' => $user_data['first_name'] . ' ' . $user_data['last_name'],
+                            'profile_id' => $profile_id,
+                            'status' => 'pending', // Default status
+                        ];
 
-                    // Queue email notification for the user
-                    $email = $user_data['email'];
-                    $subject = 'Hurrah! A Review is live!';
-                    $message = 'Hello ' . $user_data['first_name'] . ',<br>One of your reviews is now live. You can check it.';
+                        // Insert email data
+                        $this->db->insert_email_data($profile_data);
+                    } // end foreach
 
-                    //  error_log(print_r($email, true));
-                    //  error_log(print_r($subject, true));
-                    //  error_log(print_r($message, true));
+                    // Commit the transaction if everything is successful
+                    $wpdb->query('COMMIT');
 
-                    // Enqueue the email after inserting user data
-                    $email = Email::getInstance();
-                    $email->setEmailDetails(
-                        $user_data['email'], // recipient email
-                        $subject, // subject
-                        $message, // message
-                        [], // headers, optional
-                        []  // attachments, optional
-                    );
-                    $email_queued = $email->enqueue();
+                } catch (\Exception $e) {
+                    // Rollback the transaction on error
+                    $wpdb->query('ROLLBACK');
+                    $success = false; // Set success to false if any exception occurs
 
-                    if (!$email_queued) {
-                        error_log("Failed to enqueue email for: " . print_r($email, true));
-                    }
-                } // foreach end 
+                    // Log the error
+                    Helper::log_error('Error during chunk processing: ' . $e->getMessage());
+                }
 
                 update_option('urp_import_queue', $queue);
 
-                wp_send_json_success([
-                    'remaining' => count($queue),
-                    'completed' => $chunk_key,
-                    'total_chunks' => $total_chunks
-                ]);
+                if ($success) {
+                    wp_send_json_success([
+                        'remaining' => count($queue),
+                        'completed' => $chunk_key,
+                        'total_chunks' => $total_chunks
+                    ]);
+                } else {
+                    wp_send_json_error('There were errors during the processing.');
+                }
 
             } else {
-                error_log('Chunk data not found for key: ' . $chunk_key); // Add logging
+                error_log('Chunk data not found for key: ' . $chunk_key);
                 wp_send_json_error('Chunk data not found.');
             }
         }

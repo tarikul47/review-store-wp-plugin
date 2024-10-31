@@ -10,6 +10,7 @@ class AjaxHandler
 {
 
     private $db;
+    private $BulkUploadHandler;
     /**
      * Constructor to add AJAX actions.
      */
@@ -33,6 +34,8 @@ class AjaxHandler
             add_action('wp_ajax_tjmk_delete_profile', [$this, 'tjmk_delete_profile']);
 
             add_action('wp_ajax_urp_bulk_delete_profiles', [$this, 'urp_bulk_delete_profiles']);
+
+            $this->BulkUploadHandler = BulkUploadHandler::getInstance();
 
         }
 
@@ -67,7 +70,7 @@ class AjaxHandler
         $total_profiles = $this->db->get_total_profiles_count($search_term);
         $total_pages = ceil($total_profiles / $profiles_per_page);
 
-        $product_id = 52;
+        $product_id = 509;
 
         // Generate HTML for profiles
         ob_start();
@@ -235,8 +238,7 @@ class AjaxHandler
      */
     public function ps_handle_file_upload()
     {
-        $bulkUploadHandler = BulkUploadHandler::getInstance();
-        $bulkUploadHandler->handle_file_upload();
+        $this->BulkUploadHandler->handle_file_upload();
     }
 
     /**
@@ -246,8 +248,7 @@ class AjaxHandler
      */
     public function ps_process_chunks_async()
     {
-        $bulkUploadHandler = BulkUploadHandler::getInstance();
-        $bulkUploadHandler->process_chunks_async();
+        $this->BulkUploadHandler->process_chunks_async();
     }
 
     /**

@@ -54,33 +54,33 @@ class Helper
 
     public static function sanitize_review_data($data)
     {
-        if (isset($data['action']) && $data['action'] !== 'approve_review') {
-            $sanitized_data = [
-                'fair' => isset($data['fair']) ? intval($data['fair']) : 0,
-                'professional' => isset($data['professional']) ? intval($data['professional']) : 0,
-                'response' => isset($data['response']) ? intval($data['response']) : 0,
-                'communication' => isset($data['communication']) ? intval($data['communication']) : 0,
-                'decisions' => isset($data['decisions']) ? intval($data['decisions']) : 0,
-                'recommend' => isset($data['recommend']) ? intval($data['recommend']) : 0,
-                'comments' => isset($data['comments']) ? sanitize_textarea_field($data['comments']) : ''
-            ];
+        $sanitized_data = [
+            'fair' => isset($data['fair']) ? intval($data['fair']) : 0,
+            'professional' => isset($data['professional']) ? intval($data['professional']) : 0,
+            'response' => isset($data['response']) ? intval($data['response']) : 0,
+            'communication' => isset($data['communication']) ? intval($data['communication']) : 0,
+            'decisions' => isset($data['decisions']) ? intval($data['decisions']) : 0,
+            'recommend' => isset($data['recommend']) ? intval($data['recommend']) : 0,
+            'comments' => isset($data['comments']) ? sanitize_textarea_field($data['comments']) : '',
+        ];
+
+        // Conditionally add profile_id, review_id, and action if they exist in $data
+        if (isset($data['profile_id'])) {
+            $sanitized_data['profile_id'] = intval($data['profile_id']);
         }
 
-        if (isset($data['action']) && $data['action'] === 'approve_review') {
-            $sanitized_data['action'] = sanitize_text_field($data['action']);
-        }
-
-        // Check if profile_id exists, sanitize and include it
-        // if (!empty($data['profile_id'])) {
-        //     $sanitized_data['profile_id'] = intval($data['profile_id']);
-        // }
-
-        if (!empty($data['review_id'])) {
+        if (isset($data['review_id'])) {
             $sanitized_data['review_id'] = intval($data['review_id']);
+        }
+
+        if (isset($data['action'])) {
+            $sanitized_data['action'] = sanitize_text_field($data['action']);
         }
 
         return $sanitized_data;
     }
+
+
 
     public static function validate_user_data($data)
     {

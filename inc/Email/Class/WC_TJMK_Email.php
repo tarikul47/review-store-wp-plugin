@@ -9,7 +9,7 @@ class WC_TJMK_Email extends \WC_Email
 {
     // Define blank custom_data variable
     protected $custom_data;
-
+    
     public function __construct()
     {
         $this->id = 'wc_tjmk_email';

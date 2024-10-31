@@ -3,6 +3,7 @@
 namespace Tarikul\PersonsStore\Inc\Core;
 
 use Tarikul\PersonsStore\Inc\Database as Database;
+use Tarikul\PersonsStore\Inc\Email\Email;
 
 /**
  * Fired during plugin activation
@@ -42,10 +43,13 @@ class Activate
          * If no scheduled event exists, create one.
          */
 
-        if (!wp_next_scheduled('ps_process_email_queue_event')) {
-            wp_schedule_event(time(), 'ps_five_minutes', 'ps_process_email_queue_event');
+        if (!wp_next_scheduled('tjmk_process_email_queue_event')) {
+            wp_schedule_event(time(), 'tjmk_five_minutes', 'tjmk_process_email_queue_event');
             error_log(print_r('Activate class - wp_schedule_event', true)); // Log the schedules to ensure yours is added
         }
+
+        // Hook the function to the scheduled event
+        add_action('tjmk_process_email_queue_event', [Email::class, 'processQueue']);
 
     }
     /**
@@ -58,12 +62,12 @@ class Activate
 
     public static function ps_add_cron_schedule($schedules)
     {
-        $schedules['ps_five_minutes'] = array(
-            'interval' => 60, // 5 minutes in seconds
+        $schedules['tjmk_five_minutes'] = array(
+            'interval' => 300, // 5 minutes in seconds
             'display' => __('Every Five Minutes')
         );
-      //  error_log(print_r('Activate class - $schedules', true)); // Log the schedules to ensure yours is added
-       // error_log(print_r('$schedules set', true)); // Log the schedules to ensure yours is added
+        //  error_log(print_r('Activate class - $schedules', true)); // Log the schedules to ensure yours is added
+        // error_log(print_r('$schedules set', true)); // Log the schedules to ensure yours is added
         return $schedules;
     }
 }
