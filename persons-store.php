@@ -47,7 +47,7 @@ define('PLUGIN_NAME', 'persons-store');
 define('PLUGIN_VERSION', '1.0.0');
 define('PLUGIN_NAME_DIR', plugin_dir_path(__FILE__));
 define('PLUGIN_NAME_URL', plugin_dir_url(__FILE__));
-define('PLUGIN_NAME_ASSETS_URI', PLUGIN_NAME_URL .'/assets');
+define('PLUGIN_NAME_ASSETS_URI', PLUGIN_NAME_URL .'assets');
 define('PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PLUGIN_TEXT_DOMAIN', 'persons-store');
 
