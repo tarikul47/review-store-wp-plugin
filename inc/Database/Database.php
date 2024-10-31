@@ -1030,39 +1030,6 @@ class Database
         return number_format((float) $average_rating, 2, '.', '');
     }
 
-<<<<<<< HEAD
-    public function insert_email_data($profile_data)
-    {
-        global $wpdb;
-        $plugin_prefix = 'ps' . '_';
-
-        // Sanitize inputs
-        $to_email = sanitize_email($profile_data['to_email']);
-        $name = sanitize_text_field($profile_data['name']);
-        $profile_id = intval($profile_data['profile_id']); // Assuming profile_id is an integer
-
-        // Prepare data for insertion
-        $data = [
-            'to_email' => $to_email,
-            'name' => $name,
-            'profile_id' => $profile_id,
-            'status' => 'pending', // Default status
-            'created_at' => current_time('mysql'), // Use WordPress's current time
-        ];
-
-        // Insert into the email queue
-        $inserted = $wpdb->insert(
-            $wpdb->prefix . $plugin_prefix . 'email_queue',
-            $data
-        );
-
-        // Check if insertion was successful
-        if ($inserted) {
-            return $wpdb->insert_id; // Return the ID of the newly inserted row
-        } else {
-            return false; // Insertion failed
-        }
-=======
     /**
      * Calculate the average rating for a specific review meta key.
      *
@@ -1094,7 +1061,39 @@ class Database
         $average_rating = $review_count > 0 ? $total_rating / $review_count : 0;
 
         return round($average_rating); // Round to the nearest integer
->>>>>>> d751beb9b9de24bcdb82320ddcae68c1644763e8
+    }
+
+    public function insert_email_data($profile_data)
+    {
+        global $wpdb;
+        $plugin_prefix = 'ps' . '_';
+
+        // Sanitize inputs
+        $to_email = sanitize_email($profile_data['to_email']);
+        $name = sanitize_text_field($profile_data['name']);
+        $profile_id = intval($profile_data['profile_id']); // Assuming profile_id is an integer
+
+        // Prepare data for insertion
+        $data = [
+            'to_email' => $to_email,
+            'name' => $name,
+            'profile_id' => $profile_id,
+            'status' => 'pending', // Default status
+            'created_at' => current_time('mysql'), // Use WordPress's current time
+        ];
+
+        // Insert into the email queue
+        $inserted = $wpdb->insert(
+            $wpdb->prefix . $plugin_prefix . 'email_queue',
+            $data
+        );
+
+        // Check if insertion was successful
+        if ($inserted) {
+            return $wpdb->insert_id; // Return the ID of the newly inserted row
+        } else {
+            return false; // Insertion failed
+        }
     }
 
 }
