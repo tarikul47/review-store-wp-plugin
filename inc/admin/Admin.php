@@ -4,6 +4,7 @@ namespace Tarikul\PersonsStore\Inc\Admin;
 use Tarikul\PersonsStore\Inc\Admin\Class\Menu\MenuManager;
 use Tarikul\PersonsStore\Inc\Admin\Class\Profile\ProfileManagement;
 use Tarikul\PersonsStore\Inc\Admin\Class\Review\ReviewManagement;
+use Tarikul\PersonsStore\Inc\Admin\Class\Settings\Settings;
 use Tarikul\PersonsStore\Inc\Database\Database;
 use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
 use Tarikul\PersonsStore\Inc\Email\Email;
@@ -56,6 +57,9 @@ class Admin
 
         // Initialize ReviewManagement 
         new ReviewManagement($this->plugin_name, $this->version, $this->plugin_text_domain);
+
+        // Initialize ReviewManagement 
+        //   new Settings($this->plugin_name, $this->version, $this->plugin_text_domain);
 
         //   add_filter('woocommerce_email_classes', [$this, 'register_wc_tjmk_email_class']);
     }

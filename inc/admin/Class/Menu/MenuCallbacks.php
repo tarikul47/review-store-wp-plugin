@@ -102,4 +102,9 @@ class MenuCallbacks
         // Include the view file to display the reviews
         include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-bulk-profiles-upload.php';
     }
+    // public function tjmk_settings_page()
+    // {
+    //     // Include the view file to display the reviews
+    //     include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-settings-page.php';
+    // }
 }

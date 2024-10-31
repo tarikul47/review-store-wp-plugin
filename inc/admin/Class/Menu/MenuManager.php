@@ -41,8 +41,8 @@ class MenuManager
 
         add_submenu_page(
             $this->plugin_name,
-            __('Add Person', $this->plugin_text_domain),
-            __('Add Person', $this->plugin_text_domain),
+            __('Add Profile', $this->plugin_text_domain),
+            __('Add Profile', $this->plugin_text_domain),
             'manage_options',
             $this->plugin_name . '-add-person',
             array($this->menuCallbacks, 'tjmk_add_profile_page')
@@ -80,6 +80,14 @@ class MenuManager
             $this->plugin_name . '-bulk-upload',
             array($this->menuCallbacks, 'tjmk_bulk_profiles_upload')
         );
+        // add_submenu_page(
+        //     $this->plugin_name,
+        //     __('Settings', $this->plugin_text_domain),
+        //     __('Settings', $this->plugin_text_domain),
+        //     'manage_options',
+        //     $this->plugin_name . '-settings',
+        //     array($this->menuCallbacks, 'tjmk_settings_page')
+        // );
 
     }
 
