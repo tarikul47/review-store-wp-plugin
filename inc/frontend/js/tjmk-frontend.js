@@ -162,8 +162,16 @@
             if (response.success) {
               $("#review-message").text(response.data.message).show(); // Show success message
               $("#singlereview").hide(); // Hide the submit form or button
+              // Refresh page on success after a short delay
+              setTimeout(function () {
+                location.reload();
+              }, 6000); // Delay of 1 second (1000 ms) for UX
             } else {
               $("#review-message").text(response.data.message).show(); // Show error message from server
+              // Refresh page on success after a short delay
+              setTimeout(function () {
+                location.reload();
+              }, 6000); // Delay of 1 second (1000 ms) for UX
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {

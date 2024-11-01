@@ -131,3 +131,10 @@ button#clear-button {
 .button-edit {
     background-color: #007bff;
 }
+
+/*
+* Woocommerce CSS 
+*/
+.wc-item-meta {
+    display: none;
+}

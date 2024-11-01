@@ -91,7 +91,7 @@ Search Result table css Start
 .tjmk-search-result-wrpper th {
     color: #000;
     font-family: 'Have nothing to do with';
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
 }
 
@@ -104,7 +104,7 @@ Search Result table css Start
 .tjmk-search-result-wrpper td {
     color: #000;
     font-family: 'roboto';
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 }
 
@@ -114,10 +114,9 @@ Search Result table css Start
 
 
 .tjmk-search-result-wrpper td .review-score-icon {
-
     min-width: 100px;
+    height: 40px;
 }
-
 
 
 .tjmk-search-result-wrpper .pagination {
@@ -143,11 +142,10 @@ Search Result table css Start
     font-size: 12px;
     font-weight: 500;
     text-decoration: navajowhite;
+    background-color: transparent;
 }
 
-.tjmk-search-result-wrpper .pagination ul li:nth-child(2) a,
-.tjmk-search-result-wrpper .pagination ul li:nth-child(3) a,
-.tjmk-search-result-wrpper .pagination ul li:nth-child(4) a {
+.tjmk-search-result-wrpper .pagination ul li a {
     display: inline-flex;
     padding: 8px 13px;
     align-items: center;
@@ -159,9 +157,7 @@ Search Result table css Start
     font-family: 'roboto';
 }
 
-.tjmk-search-result-wrpper .pagination ul li:nth-child(2) a:hover,
-.tjmk-search-result-wrpper .pagination ul li:nth-child(3) a:hover,
-.tjmk-search-result-wrpper .pagination ul li:nth-child(4) a:hover,
+.tjmk-search-result-wrpper .pagination ul li a:hover,
 .tjmk-search-result-wrpper #active {
     background-color: #5CC19F;
     color: #ffffff;

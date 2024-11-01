@@ -60,7 +60,7 @@ class AjaxHandler
         global $wpdb;
         $search_term = isset($_POST['search_term']) ? sanitize_text_field($_POST['search_term']) : '';
         $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-        $profiles_per_page = 2; // Set the number of profiles per page
+        $profiles_per_page = 5; // Set the number of profiles per page
 
         $offset = ($page - 1) * $profiles_per_page;
 
@@ -83,8 +83,16 @@ class AjaxHandler
                 echo "<td>" . esc_html($profile->employee_type) . "</td>";
                 echo "<td>" . esc_html($profile->department) . "</td>";
                 echo "<td>" . esc_html($profile->municipality) . "</td>";
-                echo "<td>" . esc_html($profile->average_rating) . "</td>";
-                echo '<td><a href="' . wc_get_cart_url() . "?add-to-cart=" . $product_id . "&p_id=" . $profile->profile_id . '">Buy</a></td>';
+
+                $review_score_image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/review-icon' . '-' . $profile->average_rating . '.png';
+
+                echo "<td><img class='review-score-icon' src='" . $review_score_image_path . "' alt=''></td>";
+
+                $review_icon_image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/card-icon' . '.svg';
+
+                echo '<td><a href="' . wc_get_cart_url() . "?add-to-cart=" . $product_id . "&p_id=" . $profile->profile_id . '"><img src="' . $review_icon_image_path . '" alt="card-icon"></a></td>';
+
+
                 echo "</tr>";
             }
         } else {
@@ -94,6 +102,7 @@ class AjaxHandler
 
         // Generate HTML for pagination
         ob_start();
+
         if ($total_pages > 1) {
             echo '<ul>';
 

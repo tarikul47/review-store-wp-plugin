@@ -14,16 +14,21 @@ class WooCommerceIntegration
         add_filter('woocommerce_add_cart_item_data', [$this, 'add_person_id_to_cart_item'], 10, 2);
 
         // Hook to display profile ID in the cart
-        add_filter('woocommerce_get_item_data', [$this, 'display_person_id_in_cart'], 10, 2);
+        //    add_filter('woocommerce_get_item_data', [$this, 'display_person_id_in_cart'], 10, 2);
 
         // Hook to save profile ID in order line items
         add_action('woocommerce_checkout_create_order_line_item', [$this, 'save_person_id_in_order'], 10, 4);
 
+
         add_action('woocommerce_order_details_after_order_table', [$this, 'add_custom_link_on_thankyou_page']);
+
         //add_action('woocommerce_view_order', [$this, 'add_custom_link_on_thankyou_page']);
 
         // download review as pdf 
         add_action('wp_ajax_download_reviews', [$this, 'download_reviews_callback']);
+
+        // login redirect 
+        //   add_action('woocommerce_login_redirect', [$this, 'custom_login_redirect'], 10, 2);
 
     }
 
@@ -251,6 +256,17 @@ class WooCommerceIntegration
         $current_time = current_time('timestamp');
 
         return $current_time <= $valid_until;
+    }
+
+    public function custom_login_redirect($redirect_to, $request)
+    {
+        // Ensure $request is a string before processing
+        if (isset($request) && is_string($request) && !empty($request)) {
+            return esc_url($request);
+        }
+
+        // Default redirect if no request is available
+        return get_permalink(); // Change this to the URL of your reviews page if needed
     }
 
 }

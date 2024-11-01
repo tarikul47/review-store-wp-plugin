@@ -268,10 +268,12 @@ class Database
      */
     public function get_existing_review($profile_id)
     {
+        // Get the current user information
         $user_info = Helper::get_current_user_id_and_roles();
 
+        // If user is not logged in, return false indicating no existing review (and unauthenticated)
         if (!$user_info) {
-            return new WP_Error('unauthorized', 'Unauthorized access.');
+            return false;
         }
 
         // Get reviewer ID and check if user is an administrator
@@ -280,7 +282,7 @@ class Database
 
         // Restrict regular users to one review per profile
         if (!$is_admin) {
-            // Check if the user has already submitted a review for this profile
+            // Query to check if the user has already submitted a review for this profile
             $existing_review = $this->wpdb->get_var(
                 $this->wpdb->prepare(
                     "SELECT review_id FROM {$this->wpdb->prefix}ps_reviews WHERE profile_id = %d AND reviewer_user_id = %d",
@@ -289,12 +291,13 @@ class Database
                 )
             );
 
-            // If a review already exists, return an error or a message
+            // If a review already exists, return true
             if ($existing_review) {
                 return true;
             }
         }
 
+        // If the user is an admin or no review exists, return false
         return false;
     }
 
@@ -476,8 +479,8 @@ class Database
                 u.municipality, 
                 u.department,
                 u.author_id,
-                ROUND(IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0), 2) as average_rating,  -- Fix average rating to 2 decimal places
                 COUNT(r.review_id) as total_reviews,
+                ROUND(IFNULL(AVG(CASE WHEN r.status = 'approved' THEN r.rating ELSE NULL END), 0)) as average_rating,  -- Round to nearest whole number                COUNT(r.review_id) as total_reviews,
                 SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) as approved_reviews,
                 SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) as pending_reviews
             FROM {$this->wpdb->prefix}ps_profile u
@@ -512,7 +515,7 @@ class Database
             SELECT COUNT(DISTINCT u.profile_id)
             FROM {$this->wpdb->prefix}ps_profile u
             LEFT JOIN {$this->wpdb->prefix}ps_reviews r ON u.profile_id = r.profile_id
-            WHERE 1=1
+            WHERE u.status = 'approved'
         ";
 
         // Apply search filter if a search term is provided
@@ -1027,7 +1030,9 @@ class Database
         $average_rating = $this->wpdb->get_var($this->wpdb->prepare($query, $profile_id));
 
         // Format the average rating to 2 decimal places
-        return number_format((float) $average_rating, 2, '.', '');
+        // return number_format((float) $average_rating, 2, '.', '');
+        $rounded_rating = (int) round($average_rating); // Round and cast to integer
+        return $rounded_rating; // Return the rounded value as an integer
     }
 
     /**

@@ -38,6 +38,9 @@ class MenuCallbacks
 
         $users = $this->db->get_profiles_with_review_data('approved');
 
+        //  echo "<pre>";
+        //print_r($users);
+
         include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-profile-list-page.php';
     }
 
