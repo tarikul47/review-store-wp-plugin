@@ -72,13 +72,13 @@ class Admin
         // error_log('Current screen ID: ' . $screen->id);
         // Define the allowed page slugs
         $allowed_pages = [
-            'toplevel_page_persons-store',
-            'tjmk_page_persons-store-pending-profiles',
-            'tjmk_page_persons-store-add-person',
-            'tjmk_page_persons-store-approve-reviews',
-            'tjmk_page_persons-store-pending-review',
-            'tjmk_page_persons-store-view-reviews',
-            'tjmk_page_persons-store-bulk-upload',
+            'toplevel_page_tjmk',
+            'tjmk_page_tjmk-pending-profiles',
+            'tjmk_page_tjmk-add-person',
+            'tjmk_page_tjmk-approve-reviews',
+            'tjmk_page_tjmk-pending-review',
+            'tjmk_page_tjmk-view-reviews',
+            'tjmk_page_tjmk-bulk-upload',
         ];
 
 
@@ -90,7 +90,7 @@ class Admin
         }
 
         // Check if the current page is in the allowed pages
-        if (isset($screen->id) && $screen->id === 'tjmk_page_persons-store-add-person') {
+        if (isset($screen->id) && $screen->id === 'tjmk_page_tjmk-add-person') {
             // Enqueue the stylesheet only for the allowed pages
             wp_enqueue_style('tjmk-admin-form-css', PLUGIN_ADMIN_URL . 'css/tjmk-admin-form.css', array(), $this->version, 'all');
         }
@@ -107,13 +107,13 @@ class Admin
         // error_log('Current screen ID: ' . $screen->id);
         // Define the allowed page slugs
         $allowed_pages = [
-            'toplevel_page_persons-store',
-            'tjmk_page_persons-store-pending-profiles',
-            'tjmk_page_persons-store-add-person',
-            'tjmk_page_persons-store-approve-reviews',
-            'tjmk_page_persons-store-pending-review',
-            'tjmk_page_persons-store-view-reviews',
-            'tjmk_page_persons-store-bulk-upload',
+            'toplevel_page_tjmk',
+            'tjmk_page_tjmk-pending-profiles',
+            'tjmk_page_tjmk-add-person',
+            'tjmk_page_tjmk-approve-reviews',
+            'tjmk_page_tjmk-pending-review',
+            'tjmk_page_tjmk-view-reviews',
+            'tjmk_page_tjmk-bulk-upload',
         ];
 
         // Check if the current page is in the allowed pages

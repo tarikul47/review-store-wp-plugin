@@ -145,7 +145,7 @@ class ProfileManagement
 
         // Handle form submission result
         $message = $success ? 'Successfully Added Person!' : 'There were errors in the addition process.';
-        Helper::handle_form_submission_result($success, admin_url('admin.php?page=persons-store'), $message);
+        Helper::handle_form_submission_result($success, admin_url('admin.php?page=tjmk'), $message);
 
         exit; // Make sure to exit after sending the response
     }
@@ -225,7 +225,7 @@ class ProfileManagement
 
         // get profile status 
         $profile = $this->db->get_profile_by_id($profile_id);
-        $url = $profile->status === 'pending' ? 'admin.php?page=persons-store-pending-profiles' : 'admin.php?page=persons-store';
+        $url = $profile->status === 'pending' ? 'admin.php?page=tjmk-pending-profiles' : 'admin.php?page=tjmk';
 
         // Use the static method to handle the redirection with a success or fail message
         $message = $result ? 'Profile updated successfully!' : 'There were errors in the update process.';

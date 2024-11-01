@@ -181,19 +181,19 @@ get_header();
                         </h2>
                         <ul class="review-icon">
                             <li data-value="1" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="2" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="3" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="4" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="5" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
                         <input type="hidden" name="fair" id="fair-impartial-input" value="1">
@@ -207,19 +207,19 @@ get_header();
                         </h2>
                         <ul class="review-icon">
                             <li data-value="1" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="2" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="3" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="4" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="5" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
                         <input type="hidden" name="professional" id="sufficient-competence-input" value="1">
@@ -233,19 +233,19 @@ get_header();
                         </h2>
                         <ul class="review-icon">
                             <li data-value="1" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="2" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="3" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="4" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="5" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
                         <input type="hidden" name="response" id="personal-response-input" value="1">
@@ -259,19 +259,19 @@ get_header();
                         </h2>
                         <ul class="review-icon">
                             <li data-value="1" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="2" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="3" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="4" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="5" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
                         <input type="hidden" name="communication" id="communication-skills-input" value="1">
@@ -285,19 +285,19 @@ get_header();
                         </h2>
                         <ul class="review-icon">
                             <li data-value="1" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="2" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="3" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="4" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="5" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
                         <input type="hidden" name="decisions" id="fair-decisions-input" value="1">
@@ -307,19 +307,19 @@ get_header();
                         <h2>Do you recommend this official employee?<br>(from 1 to 5)</h2>
                         <ul class="review-icon">
                             <li data-value="1" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="2" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="3" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="4" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                             <li data-value="5" class="star"><img
-                                    src="http://team.local/wp-content/plugins/persons-store//assets/images/icons/rating-two.png"
+                                    src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
                         <input type="hidden" name="recommend" id="recommend-person-input" value="1">

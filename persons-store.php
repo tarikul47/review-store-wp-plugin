@@ -20,7 +20,7 @@
  * Author URI:        http://onlytarikul.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       persons-store
+ * Text Domain:       tjmk
  * Domain Path:       /languages
  */
 
@@ -43,13 +43,13 @@ use Tarikul\PersonsStore\Inc\Core\Init;
  * Define Constants
  */
 
-define('PLUGIN_NAME', 'persons-store');
+define('PLUGIN_NAME', 'tjmk');
 define('PLUGIN_VERSION', '1.0.0');
 define('PLUGIN_NAME_DIR', plugin_dir_path(__FILE__));
 define('PLUGIN_NAME_URL', plugin_dir_url(__FILE__));
 define('PLUGIN_NAME_ASSETS_URI', PLUGIN_NAME_URL . 'assets');
 define('PLUGIN_BASENAME', plugin_basename(__FILE__));
-define('PLUGIN_TEXT_DOMAIN', 'persons-store');
+define('PLUGIN_TEXT_DOMAIN', 'tjmk');
 
 
 // New constants for admin directories

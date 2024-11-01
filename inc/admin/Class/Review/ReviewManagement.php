@@ -90,14 +90,14 @@ class ReviewManagement
         }
 
         // Construct the URL for redirection
-        $url = "admin.php?page=persons-store-view-reviews&profile_id=" . $profile_id;
+        $url = "admin.php?page=tjmk-view-reviews&profile_id=" . $profile_id;
 
    //     Helper::log_error_data('retun to', $return_to);
 
         // Redirect based on the return_to parameter
-        if ($return_to === 'persons-store-pending-review') {
+        if ($return_to === 'tjmk-pending-review') {
             // Construct the URL for redirection
-            $url = "admin.php?page=persons-store-pending-review&profile_id=" . $profile_id;
+            $url = "admin.php?page=tjmk-pending-review&profile_id=" . $profile_id;
         }
 
         // Use the static method to handle the redirection with a success or failure message
