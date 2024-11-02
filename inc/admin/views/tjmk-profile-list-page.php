@@ -15,28 +15,28 @@ use Tarikul\TJMK\Inc\Helper\Helper;
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
-    <h2>All Active Profiles - <?php echo count($users); ?></h2>
+    <h2> <?php esc_html_e('All Active Profiles', 'tjmk'); ?> - <?php echo count($users); ?></h2>
 
     <form id="bulk-action-form" method="post">
         <p class="search-box">
-            <label class="screen-reader-text" for="post-search-input">Search Users:</label>
+            <label class="screen-reader-text" for="post-search-input"><?php esc_html_e('Search Users:', 'tjmk'); ?></label>
             <input type="search" id="post-search-input" name="s" value="">
             <input type="submit" id="search-submit" class="button" value="Search Users">
         </p>
         <div class="tablenav top">
 
             <div class="alignleft actions bulkactions">
-                <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
+                <label for="bulk-action-selector-top" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'tjmk'); ?></label>
                 <select name="action" id="bulk-action-selector-top">
-                    <option value="-1">Bulk actions</option>
+                    <option value="-1"><?php esc_html_e('Bulk actions', 'tjmk'); ?></option>
                     <!-- <option value="edit" class="hide-if-no-js">Edit</option> -->
-                    <option value="delete">Move to Delete</option>
+                    <option value="delete"><?php esc_html_e('Move to Delete', 'tjmk'); ?></option>
                 </select>
                 <input type="submit" id="doaction" class="button action" value="Apply">
             </div>
 
             <div class="tablenav-pages one-page">
-                <span class="displaying-num"><?php echo count($users); ?> items</span>
+                <span class="displaying-num"><?php echo count($users); ?><?php esc_html_e('items', 'tjmk'); ?> </span>
             </div>
             <br class="clear">
         </div>

@@ -29,15 +29,13 @@ class Admin
 
     private $plugin_name;
     private $version;
-    private $plugin_text_domain;
     private $db;
 
-    public function __construct($plugin_name, $version, $plugin_text_domain)
+    public function __construct($plugin_name, $version)
     {
         global $wpdb;
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        $this->plugin_text_domain = $plugin_text_domain;
         $this->db = Database::getInstance();
 
         add_action('init', [$this, 'init']);
@@ -50,16 +48,16 @@ class Admin
         new AjaxHandler();
 
         // Initialize MenuManager 
-        new MenuManager($this->plugin_name, $this->version, $this->plugin_text_domain);
+        new MenuManager($this->plugin_name, $this->version);
 
         // Initialize ProfileManagement 
-        new ProfileManagement($this->plugin_name, $this->version, $this->plugin_text_domain);
+        new ProfileManagement($this->plugin_name, $this->version);
 
         // Initialize ReviewManagement 
-        new ReviewManagement($this->plugin_name, $this->version, $this->plugin_text_domain);
+        new ReviewManagement($this->plugin_name, $this->version);
 
         // Initialize ReviewManagement 
-        //   new Settings($this->plugin_name, $this->version, $this->plugin_text_domain);
+        //   new Settings($this->plugin_name, $this->version);
 
         //   add_filter('woocommerce_email_classes', [$this, 'register_wc_tjmk_email_class']);
     }

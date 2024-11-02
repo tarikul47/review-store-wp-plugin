@@ -57,14 +57,12 @@ class Frontend
 	 * @since       1.0.0
 	 * @param       string $plugin_name        The name of this plugin.
 	 * @param       string $version            The version of this plugin.
-	 * @param       string $plugin_text_domain The text domain of this plugin.
 	 */
-	public function __construct($plugin_name, $version, $plugin_text_domain)
+	public function __construct($plugin_name, $version)
 	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->plugin_text_domain = $plugin_text_domain;
 		$this->init();
 	}
 

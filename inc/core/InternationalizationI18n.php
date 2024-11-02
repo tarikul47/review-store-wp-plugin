@@ -46,11 +46,12 @@ class InternationalizationI18n
     public function load_plugin_textdomain()
     {
 
-        load_plugin_textdomain(
-            $this->text_domain,
-            false,
-            dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
-        );
+        // custom language file path 
+        $mofile = PLUGIN_NAME_DIR . 'languages/tjmk-' . get_locale() . '.mo';
+
+        if (file_exists($mofile)) {
+            load_textdomain($this->text_domain, $mofile);
+        }
     }
 
 }

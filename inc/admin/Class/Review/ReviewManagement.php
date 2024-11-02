@@ -12,11 +12,10 @@ class ReviewManagement
     private $plugin_text_domain;
     private $db;
 
-    public function __construct($plugin_name, $version, $plugin_text_domain)
+    public function __construct($plugin_name, $version)
     {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        $this->plugin_text_domain = $plugin_text_domain;
         $this->db = Database::getInstance();
         $this->init();
     }

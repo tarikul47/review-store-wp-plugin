@@ -50,7 +50,7 @@ get_header();
                     </div>
                     <!-- Person Name Here -->
                     <div class="profile-title">
-                        <h3>What do others think of
+                        <h3><?php esc_html_e('What do others think of', 'tjmk'); ?>
                             <span><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></span>
                             ?
                         </h3>
@@ -62,13 +62,32 @@ get_header();
 
                         <?php
                         $criteria = [
-                            'fair' => ['title' => 'IS SEEN AS FAIR AND IMPARTIAL', 'image' => 'fair-impartial-icon'],
-                            'professional' => ['title' => 'HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM', 'image' => 'sufficient-competence'],
-                            'response' => ['title' => 'PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'image' => 'personal-response'],
-                            'communication' => ['title' => 'HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'image' => 'communication-skills'],
-                            'decisions' => ['title' => 'MAKES FAIR AND WISE DECISIONS', 'image' => 'fair-decisions'],
-                            'recommend' => ['title' => 'IS RECOMMENDED BY OTHERS', 'image' => 'recommend-profile'],
+                            'fair' => [
+                                'title' => __('IS SEEN AS FAIR AND IMPARTIAL', 'tjmk'),
+                                'image' => 'fair-impartial-icon'
+                            ],
+                            'professional' => [
+                                'title' => __('HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM', 'tjmk'),
+                                'image' => 'sufficient-competence'
+                            ],
+                            'response' => [
+                                'title' => __('PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'tjmk'),
+                                'image' => 'personal-response'
+                            ],
+                            'communication' => [
+                                'title' => __('HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'tjmk'),
+                                'image' => 'communication-skills'
+                            ],
+                            'decisions' => [
+                                'title' => __('MAKES FAIR AND WISE DECISIONS', 'tjmk'),
+                                'image' => 'fair-decisions'
+                            ],
+                            'recommend' => [
+                                'title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'),
+                                'image' => 'recommend-profile'
+                            ],
                         ];
+
 
                         // get all approves for the profile 
                         $approved_reviews = $db->get_reviews('approved', $profile_id);
@@ -86,11 +105,13 @@ get_header();
                     </div>
 
                     <div class="profile-profile">
-                        <h2>if this is you, you can <br> claim this profile here</h2>
+                        <h2><?php esc_html_e('If this is you, you can', 'tjmk'); ?>
+                            <br><?php esc_html_e('claim this profile here', 'tjmk'); ?>
+                        </h2>
                     </div>
 
                     <div class="clame-btn">
-                        <a href="" title="Click here for claim">Click here for claim</a>
+                        <a href="" title="Click here for claim"><?php esc_html_e('Click here for claim', 'tjmk'); ?></a>
                     </div>
                 </div>
 
@@ -98,7 +119,7 @@ get_header();
                 <div class="details-right-area">
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>First name:</p>
+                            <p><?php esc_html_e('First name:', 'tjmk'); ?> </p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -108,7 +129,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Last Name:</p>
+                            <p><?php esc_html_e('Last Name:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -118,7 +139,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Title:</p>
+                            <p><?php esc_html_e('Title:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -128,7 +149,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Department:</p>
+                            <p><?php esc_html_e('Department:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -138,7 +159,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Type of Employee:</p>
+                            <p><?php esc_html_e('Type of Employee:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -148,7 +169,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Municipality:</p>
+                            <p><?php esc_html_e('Municipality:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -158,7 +179,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Telephone:</p>
+                            <p><?php esc_html_e('Telephone:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -168,7 +189,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>E-post:</p>
+                            <p><?php esc_html_e('E-post:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <input type="text"
@@ -178,7 +199,7 @@ get_header();
                     </div>
                     <div class="single-details-wrpper">
                         <div class="tittle-box">
-                            <p>Rating:</p>
+                            <p><?php esc_html_e('Rating:', 'tjmk'); ?></p>
                         </div>
                         <div class="detail-content-box">
                             <ul class="detail-rating">
@@ -226,18 +247,22 @@ get_header();
         <!-- Review Area -->
         <div class="review-area">
             <div class="review-title">
-                <h2>Give reviews to
+                <h2><?php esc_html_e('Give reviews to', 'tjmk'); ?>
                     <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b>?
                 </h2>
             </div>
             <div class="review-wrpper">
 
                 <div class="single-review ">
-                    <h2>Do you experience the official employee
-                        <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b> as
-                        impartial, factual and fair?<br>(from 1 to
-                        5)
+                    <h2>
+                        <?php
+                        printf(
+                            esc_html__('Do you experience the official employee %1$s as impartial, factual, and fair? (from 1 to 5)', 'tjmk'),
+                            '<b>' . esc_html(($profile_data !== null) ? $profile_data->first_name : '') . '</b>'
+                        );
+                        ?>
                     </h2>
+
                     <ul class="review-icon">
                         <li data-value="1" class="star"><img
                                 src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
@@ -254,11 +279,15 @@ get_header();
                 </div>
 
                 <div class="single-review ">
-                    <h2>Do you experience that the official employee
-                        <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b> has
-                        sufficient competence, is professional
-                        and qualified for the given service and role?<br>(from 1 to 5)
+                    <h2>
+                        <?php
+                        printf(
+                            esc_html__('Do you experience that the official employee %1$s has sufficient competence, is professional and qualified for the given service and role? (from 1 to 5)', 'tjmk'),
+                            '<b>' . esc_html(($profile_data !== null) ? $profile_data->first_name : '') . '</b>'
+                        );
+                        ?>
                     </h2>
+
                     <ul class="review-icon">
                         <li data-value="1" class="star"><img
                                 src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
@@ -275,10 +304,13 @@ get_header();
                 </div>
 
                 <div class="single-review ">
-                    <h2>Do you experience that the official employee
-                        <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b> have
-                        given you a good response that you
-                        understand?<br>(from 1 to 5)
+                    <h2>
+                        <?php
+                        printf(
+                            esc_html__('Do you experience that the official employee %1$s has given you a good response that you understand? (from 1 to 5)', 'tjmk'),
+                            '<b>' . esc_html(($profile_data !== null) ? $profile_data->first_name : '') . '</b>'
+                        );
+                        ?>
                     </h2>
                     <ul class="review-icon">
                         <li data-value="1" class="star"><img
@@ -296,61 +328,87 @@ get_header();
                 </div>
 
                 <div class="single-review ">
-                    <h2>Do you experience that the official employee
-                        <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b> have
-                        good
-                        communication skills and good
-                        response time?<br>(from 1 to 5)
+                    <h2>
+                        <?php
+                        printf(
+                            esc_html__('Do you experience that the official employee %1$s has good communication skills and good response time? (from 1 to 5)', 'tjmk'),
+                            '<b>' . esc_html(($profile_data !== null) ? $profile_data->first_name : '') . '</b>'
+                        );
+                        ?>
                     </h2>
+
                     <ul class="review-icon">
-                        <li data-value="1" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="2" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="3" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="4" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="5" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
+                        <li data-value="1" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="2" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="3" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="4" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="5" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
                     </ul>
                     <input type="hidden" name="communication" id="communication-skills-input" value="0">
                 </div>
 
 
                 <div class="single-review ">
-                    <h2>Do you experience that the official employee
-                        <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b> makes
-                        fair decisions?<br>(from 1 to 5)
+                    <h2>
+                        <?php
+                        printf(
+                            esc_html__('Do you experience that the official employee %1$s makes fair decisions? (from 1 to 5)', 'tjmk'),
+                            '<b>' . esc_html(($profile_data !== null) ? $profile_data->first_name : '') . '</b>'
+                        );
+                        ?>
                     </h2>
+
                     <ul class="review-icon">
-                        <li data-value="1" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="2" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="3" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="4" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="5" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
+                        <li data-value="1" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="2" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="3" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="4" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="5" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
                     </ul>
                     <input type="hidden" name="decisions" id="fair-decisions-input" value="0">
                 </div>
 
                 <div class="single-review ">
-                    <h2>Do you recommend this official employee?<br>(from 1 to 5)</h2>
+                    <h2>
+                        <?php echo esc_html__('Do you recommend this official employee? (from 1 to 5)', 'tjmk'); ?>
+                    </h2>
+
                     <ul class="review-icon">
-                        <li data-value="1" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="2" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="3" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="4" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
-                        <li data-value="5" class="star"><img
-                                src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
+                        <li data-value="1" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="2" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="3" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="4" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
+                        <li data-value="5" class="star">
+                            <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt="">
+                        </li>
                     </ul>
                     <input type="hidden" name="recommend" id="recommend-profile-input" value="0">
                 </div>
@@ -361,9 +419,15 @@ get_header();
         <div class="comment-wrpper">
             <div class="inner-comment-wrpper">
                 <div class="title-box">
-                    <h2>Say something about
-                        <b><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></b>
+                    <h2>
+                        <?php
+                        printf(
+                            esc_html__('Say something about %1$s', 'tjmk'),
+                            '<b>' . esc_html(($profile_data !== null) ? $profile_data->first_name : '') . '</b>'
+                        );
+                        ?>
                     </h2>
+
                 </div>
                 <div class="comment-form">
                     <textarea name="comments"></textarea>
@@ -373,19 +437,25 @@ get_header();
         <div class="submit-form">
             <?php if (!$is_logged_in): ?>
                 <!-- Show login prompt if user is not logged in -->
-                <p>Please <a href="<?php echo esc_url(wc_get_page_permalink('myaccount')); ?>">log in</a> to submit a
-                    review.</p>
+                <p>
+                    <?php
+                    printf(
+                        esc_html__('Please <a href="%s">log in</a> to submit a review.', 'tjmk'),
+                        esc_url(wc_get_page_permalink('myaccount'))
+                    );
+                    ?>
+                </p>
             <?php elseif ($is_review_exist === true): ?>
                 <!-- Show message if the user has already reviewed this profile -->
-                <p>You have already reviewed this profile</p>
+                <p><?php echo esc_html__('You have already reviewed this profile', 'tjmk'); ?></p>
+
             <?php else: ?>
                 <!-- Show the submit button if the user has not yet reviewed this profile -->
                 <p class="submit">
                     <input type="submit" name="singleperson" id="singlereview" class="button button-primary"
-                        value="Submit Review">
+                        value="<?php echo esc_attr__('Submit Review', 'tjmk'); ?>">
                 </p>
             <?php endif; ?>
-
             <div id="user-review-form">
                 <p id="review-message"></p>
             </div>

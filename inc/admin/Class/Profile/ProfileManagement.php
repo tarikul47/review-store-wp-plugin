@@ -10,14 +10,12 @@ class ProfileManagement
 {
     private $plugin_name;
     private $version;
-    private $plugin_text_domain;
     private $db;
 
-    public function __construct($plugin_name, $version, $plugin_text_domain)
+    public function __construct($plugin_name, $version)
     {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        $this->plugin_text_domain = $plugin_text_domain;
         $this->db = Database::getInstance();
         // add_action('woocommerce_email_classes', [$this, 'tjmk_register_wc_email_class']);
         $this->init();

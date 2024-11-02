@@ -96,7 +96,7 @@ class AjaxHandler
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No profiles found. <a href='/add-profile'>Please add a profile</a></td></tr>";
+            echo "<tr><td colspan='9'>" . esc_html__('No profiles found.', 'tjmk') . " <a href='" . esc_url('/add-profile') . "'>" . esc_html__('Please add a profile', 'tjmk') . "</a></td></tr>";
         }
         $profiles_html = ob_get_clean();
 

@@ -136,17 +136,17 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
     //  echo "<pre>";
     // print_r($reviews);
     ?>
-    <h2><?php printf(__('Reviews for External Profile ID: %d', $this->plugin_text_domain), esc_html($profile_id)); ?>
+    <h2><?php printf(__('Reviews for External Profile ID: %d', 'tjmk'), esc_html($profile_id)); ?>
     </h2>
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
-                <th><?php _e('No.', $this->plugin_text_domain); ?></th>
-                <th><?php _e('Average Rating', $this->plugin_text_domain); ?></th>
-                <th><?php _e('Status', $this->plugin_text_domain); ?></th>
-                <th><?php _e('Created At', $this->plugin_text_domain); ?></th>
-                <th><?php _e('Review Data', $this->plugin_text_domain); ?></th>
-                <th><?php _e('Action', $this->plugin_text_domain); ?></th>
+                <th><?php _e('No.', 'tjmk'); ?></th>
+                <th><?php _e('Average Rating', 'tjmk'); ?></th>
+                <th><?php _e('Status', 'tjmk'); ?></th>
+                <th><?php _e('Created At', 'tjmk'); ?></th>
+                <th><?php _e('Review Data', 'tjmk'); ?></th>
+                <th><?php _e('Action', 'tjmk'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -162,7 +162,7 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                     <td>
                         <a href="#" class="view-details-link custom-button"
                             data-review-id="<?php echo esc_attr($review['review_id']); ?>">
-                            <?php _e('View Details', $this->plugin_text_domain); ?>
+                            <?php _e('View Details', 'tjmk'); ?>
                         </a>
                     </td>
                     <td>
@@ -218,7 +218,7 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
         </tbody>
     </table>
 <?php } else { ?>
-    <p><?php _e('No reviews found for this external profile.', $this->plugin_text_domain); ?></p>
+    <p><?php _e('No reviews found for this external profile.', 'tjmk'); ?></p>
 <?php } ?>
 
 <style>

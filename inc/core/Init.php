@@ -53,15 +53,6 @@ class Init
     protected $version;
 
     /**
-     * The text domain of the plugin.
-     *
-     * @since    1.0.0
-     * @access   protected
-     * @var      string    $version    The current version of the plugin.
-     */
-    protected $plugin_text_domain;
-
-    /**
      * Initialize and define the core functionality of the plugin.
      */
     public function __construct()
@@ -70,7 +61,6 @@ class Init
         $this->plugin_name = PLUGIN_NAME;
         $this->version = PLUGIN_VERSION;
         $this->plugin_basename = PLUGIN_BASENAME;
-        $this->plugin_text_domain = PLUGIN_TEXT_DOMAIN;
 
         $this->load_dependencies();
         $this->set_locale();
@@ -124,7 +114,7 @@ class Init
     private function set_locale()
     {
 
-        $plugin_i18n = new InternationalizationI18n($this->plugin_text_domain);
+        $plugin_i18n = new InternationalizationI18n('tjmk');
 
         $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 
@@ -139,23 +129,11 @@ class Init
     private function define_admin_hooks()
     {
 
-        $plugin_admin = new Admin\Admin($this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain());
+        $plugin_admin = new Admin\Admin($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles', 100);
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
-        /*
-         * Additional Hooks go here
-         *
-         * e.g.
-         *
-         * //admin menu pages
-         * $this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_admin_menu');
-         *
-         *  //plugin action links
-         * $this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename, $plugin_admin, 'add_additional_action_link' );
-         *
-         */
     }
 
     /**
@@ -167,9 +145,9 @@ class Init
     private function define_public_hooks()
     {
 
-        $plugin_public = new Frontend\Frontend($this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain());
+        $plugin_public = new Frontend\Frontend($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles',100);
+        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles', 100);
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
     }
@@ -211,16 +189,4 @@ class Init
     {
         return $this->version;
     }
-
-    /**
-     * Retrieve the text domain of the plugin.
-     *
-     * @since     1.0.0
-     * @return    string    The text domain of the plugin.
-     */
-    public function get_plugin_text_domain()
-    {
-        return $this->plugin_text_domain;
-    }
-
 }

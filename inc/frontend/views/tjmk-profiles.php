@@ -11,12 +11,12 @@ $db = Database::getInstance();
             <!-- Search Box -->
             <div class="search-input-wrpper">
                 <img src="<?php echo PLUGIN_NAME_ASSETS_URI . "/images/icons/search-icon.svg" ?>" alt="Search Icon">
-                <input type="search" id="profile-search" placeholder="Search profiles...">
+                <input type="search" id="profile-search" placeholder="<?php esc_html_e('Search profiles...', 'tjmk'); ?>">
             </div>
             <!-- Search button -->
-            <button id="search-button">Search</button>
+            <button id="search-button"><?php esc_html_e('Search', 'tjmk'); ?></button>
             <!-- Clear button (initially hidden) -->
-            <button id="clear-button" style="display: none;">Clear</button>
+            <button id="clear-button" style="display: none;"><?php esc_html_e('Clear', 'tjmk'); ?></button>
         </div>
 
         <!-- Table to Show Search Results -->
@@ -25,14 +25,14 @@ $db = Database::getInstance();
                 <table id="profiles-table">
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Title</th>
-                            <th>Type of Employee</th>
-                            <th>Department</th>
-                            <th>Municipality</th>
-                            <th>Rating</th>
-                            <th>Buy report</th>
+                            <th><?php esc_html_e('First Name', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Last Name', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Title', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Type of Employee', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Department', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Municipality', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Rating', 'tjmk'); ?></th>
+                            <th><?php esc_html_e('Buy report', 'tjmk'); ?></th>
                         </tr>
                     </thead>
                     <tbody id="profile-list">
