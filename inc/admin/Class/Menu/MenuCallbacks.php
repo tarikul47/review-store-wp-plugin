@@ -1,7 +1,7 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Admin\Class\Menu;
-use Tarikul\PersonsStore\Inc\Database\Database;
+namespace Tarikul\TJMK\Inc\Admin\Class\Menu;
+use Tarikul\TJMK\Inc\Database\Database;
 
 class MenuCallbacks
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Admin\Class\Review;
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Email\Email;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+namespace Tarikul\TJMK\Inc\Admin\Class\Review;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 class ReviewManagement
 {

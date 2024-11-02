@@ -1,9 +1,9 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\BulkUploadHandler;
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
-use Tarikul\PersonsStore\Inc\Email\Email;
+namespace Tarikul\TJMK\Inc\BulkUploadHandler;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Email\Email;
 
 
 class BulkUploadHandler
@@ -199,7 +199,7 @@ class BulkUploadHandler
                             throw new \Exception('Failed to process review content');
                         }
 
-                        // Insert person into database
+                        // Insert profile into database
                         $profile_id = $this->db->insert_user($user_data);
                         if (!$profile_id) {
                             throw new \Exception('Failed to insert user');

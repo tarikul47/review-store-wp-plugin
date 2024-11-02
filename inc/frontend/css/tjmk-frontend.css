@@ -26,9 +26,9 @@ ul.striped>:nth-child(odd) {
 
 
 
-/* person add/edit css  */
+/* profile add/edit css  */
 
-.person-edit-page {
+.profile-edit-page {
     padding: 30px;
 }
 
@@ -65,7 +65,7 @@ input#createpersonsub {
     margin: auto;
 }
 
-.person-rating-wrpper h3 {
+.profile-rating-wrpper h3 {
     font-size: 2rem;
 }
 

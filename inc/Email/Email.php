@@ -1,7 +1,7 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Email;
+namespace Tarikul\TJMK\Inc\Email;
 
-use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
+use Tarikul\TJMK\Inc\Email\Class\WC_TJMK_Email;
 
 /**
  * Email Class for handling email operations including sending emails instantly, 

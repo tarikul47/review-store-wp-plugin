@@ -1,15 +1,15 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Admin;
+namespace Tarikul\TJMK\Inc\Admin;
 
-use Tarikul\PersonsStore\Inc\Admin\Class\Menu\MenuManager;
-use Tarikul\PersonsStore\Inc\Admin\Class\Profile\ProfileManagement;
-use Tarikul\PersonsStore\Inc\Admin\Class\Review\ReviewManagement;
-use Tarikul\PersonsStore\Inc\Admin\Class\Settings\Settings;
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
-use Tarikul\PersonsStore\Inc\Email\Email;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
-use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
+use Tarikul\TJMK\Inc\Admin\Class\Menu\MenuManager;
+use Tarikul\TJMK\Inc\Admin\Class\Profile\ProfileManagement;
+use Tarikul\TJMK\Inc\Admin\Class\Review\ReviewManagement;
+use Tarikul\TJMK\Inc\Admin\Class\Settings\Settings;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Email\Class\WC_TJMK_Email;
+use Tarikul\TJMK\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\AjaxHandler\AjaxHandler;
 
 //use Tarikul\ReviewStore\Inc\AjaxHandler\AjaxHandler;
 
@@ -74,7 +74,7 @@ class Admin
         $allowed_pages = [
             'toplevel_page_tjmk',
             'tjmk_page_tjmk-pending-profiles',
-            'tjmk_page_tjmk-add-person',
+            'tjmk_page_tjmk-add-profile',
             'tjmk_page_tjmk-approve-reviews',
             'tjmk_page_tjmk-pending-review',
             'tjmk_page_tjmk-view-reviews',
@@ -90,7 +90,7 @@ class Admin
         }
 
         // Check if the current page is in the allowed pages
-        if (isset($screen->id) && $screen->id === 'tjmk_page_tjmk-add-person') {
+        if (isset($screen->id) && $screen->id === 'tjmk_page_tjmk-add-profile') {
             // Enqueue the stylesheet only for the allowed pages
             wp_enqueue_style('tjmk-admin-form-css', PLUGIN_ADMIN_URL . 'css/tjmk-admin-form.css', array(), $this->version, 'all');
         }
@@ -109,7 +109,7 @@ class Admin
         $allowed_pages = [
             'toplevel_page_tjmk',
             'tjmk_page_tjmk-pending-profiles',
-            'tjmk_page_tjmk-add-person',
+            'tjmk_page_tjmk-add-profile',
             'tjmk_page_tjmk-approve-reviews',
             'tjmk_page_tjmk-pending-review',
             'tjmk_page_tjmk-view-reviews',

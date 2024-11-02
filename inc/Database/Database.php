@@ -1,7 +1,7 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Database;
+namespace Tarikul\TJMK\Inc\Database;
 
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 class Database
 {
@@ -405,13 +405,13 @@ class Database
     }
 
     /**
-     * Retrieve person data by profile ID.
+     * Retrieve profile data by profile ID.
      *
      * This function retrieves all columns from the `ps_person` table for the specified profile ID.
-     * It is a dedicated function to encapsulate the logic for fetching person data based on `profile_id`.
+     * It is a dedicated function to encapsulate the logic for fetching profile data based on `profile_id`.
      *
      * @param int $profile_id The ID of the profile to retrieve.
-     * @return object|null The person data as an object, or null if no record is found.
+     * @return object|null The profile data as an object, or null if no record is found.
      */
     public function get_profile_by_id(int $profile_id)
     {
@@ -726,10 +726,10 @@ class Database
 
 
     /**
-     * Retrieve the full name of a person by their profile ID.
+     * Retrieve the full name of a profile by their profile ID.
      *
      * @param int $profile_id The ID of the profile.
-     * @return string|null The full name of the person (first name and last name concatenated) or null if not found.
+     * @return string|null The full name of the profile (first name and last name concatenated) or null if not found.
      */
     public function get_person_name_by_id($profile_id)
     {
@@ -825,7 +825,7 @@ class Database
     }
 
     /**
-     * Update person data by profile ID.
+     * Update profile data by profile ID.
      *
      * @param int $profile_id
      * @param array $data

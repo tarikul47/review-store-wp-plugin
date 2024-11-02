@@ -1,5 +1,5 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Frontend\Class;
+namespace Tarikul\TJMK\Inc\Frontend\Class;
 
 class Shortcode
 {
@@ -19,11 +19,11 @@ class Shortcode
         // Start output buffering
         ob_start(); ?>
 
-        <div class="tjmk-search-person-content-box">
+        <div class="tjmk-search-profile-content-box">
             <div class="content-title">
                 <h2>vem letar du efter?</h2>
             </div>
-            <form class="search-person-form" action="<?php echo esc_url($atts['action']); ?>" method="get">
+            <form class="search-profile-form" action="<?php echo esc_url($atts['action']); ?>" method="get">
                 <div class="name-button-box">
                     <input type="text" name="search_term" placeholder="Enter name..." value="">
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Core;
+namespace Tarikul\TJMK\Inc\Core;
 
 /**
  * Register all actions and filters for the plugin

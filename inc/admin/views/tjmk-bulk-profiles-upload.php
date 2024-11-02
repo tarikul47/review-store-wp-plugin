@@ -12,7 +12,7 @@
  */
 
 ?>
-<div class="person-edit-page">
+<div class="profile-edit-page">
     <h3>Bulk Upload</h3>
     <form id="urp-import-form" method="post" enctype="multipart/form-data">
         <input type="file" name="user_file" required>

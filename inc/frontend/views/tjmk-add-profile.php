@@ -12,7 +12,7 @@
  */
 get_header();
 ?>
-<div id="profile-form" class="tjmk-person-content-wrpper">
+<div id="profile-form" class="tjmk-profile-content-wrpper">
 
     <?php
     // if (isset($_GET['error_message'])) {
@@ -322,7 +322,7 @@ get_header();
                                     src="http://team.local/wp-content/plugins/tjmk//assets/images/icons/rating-two.png"
                                     alt=""></li>
                         </ul>
-                        <input type="hidden" name="recommend" id="recommend-person-input" value="1">
+                        <input type="hidden" name="recommend" id="recommend-profile-input" value="1">
                     </div>
                 </div>
             </div>

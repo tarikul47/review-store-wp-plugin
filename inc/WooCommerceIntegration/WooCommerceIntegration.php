@@ -1,7 +1,7 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\WooCommerceIntegration;
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+namespace Tarikul\TJMK\Inc\WooCommerceIntegration;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 class WooCommerceIntegration
 {
@@ -156,7 +156,7 @@ class WooCommerceIntegration
     // }
 
     /**
-     * Add person ID to cart item data.
+     * Add profile ID to cart item data.
      *
      * @param array $cart_item_data Cart item data.
      * @param int $product_id Product ID.

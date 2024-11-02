@@ -8,9 +8,9 @@ ul.striped>:nth-child(odd) {
     width: 100%;
 }
 
-/* person add/edit css  */
+/* profile add/edit css  */
 
-.person-edit-page {
+.profile-edit-page {
     padding: 30px;
 }
 

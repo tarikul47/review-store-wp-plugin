@@ -1,4 +1,4 @@
-<div class="person-edit-page">
+<div class="profile-edit-page">
     <h3>Add New Person</h3>
     <div class="edit-options">
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" name="createperson"

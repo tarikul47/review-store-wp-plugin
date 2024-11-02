@@ -5,7 +5,7 @@
     "license": "GPLv2",
     "autoload": {
         "psr-4": {
-            "Tarikul\\PersonsStore\\Inc\\": "inc/"
+            "Tarikul\\TJMK\\Inc\\": "inc/"
         }
     },
     "authors": [

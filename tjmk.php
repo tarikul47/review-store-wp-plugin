@@ -9,10 +9,10 @@
  *
  * @link              http://onlytarikul.com
  * @since             1.0.0
- * @package           Persons_Store
+ * @package           TJMK
  *
  * @wordpress-plugin
- * Plugin Name:       Persons Store
+ * Plugin Name:       TJMK
  * Plugin URI:        http://onlytarikul.com/wp-plugin-name-uri/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -24,7 +24,7 @@
  * Domain Path:       /languages
  */
 
-//namespace Persons_Store;
+//namespace TJMK;
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -35,9 +35,9 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-use Tarikul\PersonsStore\Inc\Core\Activate;
-use Tarikul\PersonsStore\Inc\Core\Deactivate;
-use Tarikul\PersonsStore\Inc\Core\Init;
+use Tarikul\TJMK\Inc\Core\Activate;
+use Tarikul\TJMK\Inc\Core\Deactivate;
+use Tarikul\TJMK\Inc\Core\Init;
 
 /**
  * Define Constants
@@ -92,7 +92,7 @@ add_filter('cron_schedules', [Activate::class, 'ps_add_cron_schedule']);
  *
  * @since    1.0.0
  */
-class Persons_Store
+class TJMK
 {
     /**
      * The instance of the plugin.
@@ -128,14 +128,14 @@ class Persons_Store
  * Also returns copy of the app object so 3rd party developers
  * can interact with the plugin's hooks contained within.
 //  **/
-function persons_store_init()
+function tjmk_init()
 {
-    return Persons_Store::init();
+    return TJMK::init();
 }
 
 $min_php = '5.6.0';
 
 // Check the minimum required PHP version and run the plugin.
 if (version_compare(PHP_VERSION, $min_php, '>=')) {
-    persons_store_init();
+    tjmk_init();
 }

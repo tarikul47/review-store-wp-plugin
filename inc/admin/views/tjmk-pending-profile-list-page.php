@@ -1,5 +1,5 @@
 <?php
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 /**
  * Provide an admin area view for the plugin
@@ -89,7 +89,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                             </td>
                             <td class="column-actions" data-colname="Actions">
                                 <a class="custom-button button-edit"
-                                    href="<?php echo esc_url(admin_url('admin.php?page=tjmk-add-person&action=edit-person&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
+                                    href="<?php echo esc_url(admin_url('admin.php?page=tjmk-add-profile&action=edit-profile&profile_id=' . esc_attr($user->profile_id))); ?>">Edit</a>
 <!-- 
                                 <a class="custom-button delete-profile-btn" href="#"
                                     data-profile-id="<?php //echo esc_attr($user->profile_id); ?>">Delete</a> -->
@@ -102,7 +102,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="10"><?php _e('No person found.', 'text-domain'); ?></td>
+                        <td colspan="10"><?php _e('No profile found.', 'text-domain'); ?></td>
                     </tr>
                 <?php endif; ?>
             </tbody>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Core;
+namespace Tarikul\TJMK\Inc\Core;
 
 /**
  * Fired during plugin deactivation

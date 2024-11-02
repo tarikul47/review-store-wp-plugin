@@ -1,4 +1,4 @@
-<div class="person-edit-page">
+<div class="profile-edit-page">
     <div class="edit-options">
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" name="reviewupdate"
             id="reviewupdate" class="validate" novalidate="novalidate">

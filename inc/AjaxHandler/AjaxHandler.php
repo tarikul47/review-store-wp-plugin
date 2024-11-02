@@ -1,10 +1,10 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\AjaxHandler;
+namespace Tarikul\TJMK\Inc\AjaxHandler;
 
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\BulkUploadHandler\BulkUploadHandler;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
-use Tarikul\PersonsStore\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\BulkUploadHandler\BulkUploadHandler;
+use Tarikul\TJMK\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Email\Email;
 
 class AjaxHandler
 {
@@ -386,13 +386,13 @@ class AjaxHandler
             // Fetch Person data
             $profile_data = $this->db->get_profile_by_id($profile_id);
             if (!$profile_data) {
-                throw new \Exception('Failed to fetch person data.');
+                throw new \Exception('Failed to fetch profile data.');
             }
 
             // Fetch Person Full Name
             $person_name = Helper::get_person_name_process($profile_data);
             if (!$person_name) {
-                throw new \Exception('Failed to fetch person name.');
+                throw new \Exception('Failed to fetch profile name.');
             }
 
             // Fetch all approved reviews

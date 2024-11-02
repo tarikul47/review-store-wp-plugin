@@ -9,10 +9,10 @@
  *
  * @author    Your Name or Your Company
  */
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
-// Check if this is an edit form  edit-person&profile_id
+// Check if this is an edit form  edit-profile&profile_id
 $profile_id = (isset($_GET['profile_id']) && !empty($_GET['profile_id'])) ? $_GET['profile_id'] : false;
 $db = Database::getInstance();
 
@@ -37,19 +37,19 @@ get_header();
 
 ?>
 <!-- Main Content Area -->
-<div class="tjmk-person-content-wrpper" style="padding-bottom: 50px;">
+<div class="tjmk-profile-content-wrpper" style="padding-bottom: 50px;">
     <!-- Person Details Area -->
     <div class="need-border">
         <div class="inner-wrpper">
-            <div class="person-details-wrpper">
+            <div class="profile-details-wrpper">
 
                 <div class="details-left-wrpper">
                     <!-- Profile images Here -->
-                    <div class="person-img-box">
-                        <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/person.svg" alt="">
+                    <div class="profile-img-box">
+                        <img src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/profile.svg" alt="">
                     </div>
                     <!-- Person Name Here -->
-                    <div class="person-title">
+                    <div class="profile-title">
                         <h3>What do others think of
                             <span><?php echo ($profile_data !== null) ? esc_html($profile_data->first_name) : '' ?></span>
                             ?
@@ -58,7 +58,7 @@ get_header();
                     <!-- $average_rating = $this->db->get_average_meta_rating($profile_id, $key); -->
 
                     <!-- Person Info Here -->
-                    <div class="person-rating-wrpper">
+                    <div class="profile-rating-wrpper">
 
                         <?php
                         $criteria = [
@@ -67,7 +67,7 @@ get_header();
                             'response' => ['title' => 'PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'image' => 'personal-response'],
                             'communication' => ['title' => 'HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'image' => 'communication-skills'],
                             'decisions' => ['title' => 'MAKES FAIR AND WISE DECISIONS', 'image' => 'fair-decisions'],
-                            'recommend' => ['title' => 'IS RECOMMENDED BY OTHERS', 'image' => 'recommend-person'],
+                            'recommend' => ['title' => 'IS RECOMMENDED BY OTHERS', 'image' => 'recommend-profile'],
                         ];
 
                         // get all approves for the profile 
@@ -85,7 +85,7 @@ get_header();
                         <?php } ?>
                     </div>
 
-                    <div class="person-profile">
+                    <div class="profile-profile">
                         <h2>if this is you, you can <br> claim this profile here</h2>
                     </div>
 
@@ -352,7 +352,7 @@ get_header();
                         <li data-value="5" class="star"><img
                                 src="<?php echo PLUGIN_NAME_ASSETS_URI ?>/images/icons/rating-two.png" alt=""></li>
                     </ul>
-                    <input type="hidden" name="recommend" id="recommend-person-input" value="0">
+                    <input type="hidden" name="recommend" id="recommend-profile-input" value="0">
                 </div>
             </div>
         </div>

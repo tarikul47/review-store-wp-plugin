@@ -1,7 +1,7 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Admin\Class\Settings;
+namespace Tarikul\TJMK\Inc\Admin\Class\Settings;
 
-use Tarikul\PersonsStore\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Database\Database;
 
 class Settings
 {

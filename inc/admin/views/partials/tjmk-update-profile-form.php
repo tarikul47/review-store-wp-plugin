@@ -1,4 +1,4 @@
-<div class="person-edit-page">
+<div class="profile-edit-page">
     <h3>Update Profile</h3>
     <div class="edit-options">
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" name="updateperson"

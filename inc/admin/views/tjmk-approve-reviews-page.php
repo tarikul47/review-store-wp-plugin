@@ -1,5 +1,5 @@
 <?php
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 /**
  * Provide a admin area view for the plugin

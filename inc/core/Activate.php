@@ -1,9 +1,9 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Core;
+namespace Tarikul\TJMK\Inc\Core;
 
-use Tarikul\PersonsStore\Inc\Database as Database;
-use Tarikul\PersonsStore\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Database as Database;
+use Tarikul\TJMK\Inc\Email\Email;
 
 /**
  * Fired during plugin activation
@@ -66,8 +66,6 @@ class Activate
             'interval' => 300, // 5 minutes in seconds
             'display' => __('Every Five Minutes')
         );
-        //  error_log(print_r('Activate class - $schedules', true)); // Log the schedules to ensure yours is added
-        // error_log(print_r('$schedules set', true)); // Log the schedules to ensure yours is added
         return $schedules;
     }
 }

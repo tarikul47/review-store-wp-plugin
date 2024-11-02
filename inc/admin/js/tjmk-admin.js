@@ -93,7 +93,7 @@
     });
 
     /**
-     * Bulk person import functionality.
+     * Bulk profile import functionality.
      *
      * @since 1.0.0
      */

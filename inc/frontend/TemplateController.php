@@ -1,6 +1,6 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Frontend;
+namespace Tarikul\TJMK\Inc\Frontend;
 
 /**
  * The Template functionality.
@@ -18,9 +18,9 @@ class TemplateController
     public function __construct()
     {
         $this->templates = [
-            'person-store-home.php' => 'TJMK Home Template',
-            'person-store-display.php' => 'TJMK Profile Template',
-            'person-store-add-profile.php' => 'TJMK Add Profile Template'
+            //'profile-store-home.php' => 'TJMK Home Template',
+            'tjmk-profiles.php' => 'TJMK Profiles List Template',
+            'tjmk-add-profile.php' => 'TJMK Add Profile Template'
         ];
 
         add_filter('theme_page_templates', [$this, 'custom_template']);
@@ -46,7 +46,7 @@ class TemplateController
 
         // Check if it's a single user view based on a query parameter or other criteria
         if (isset($_GET['profile_id']) && !empty($_GET['profile_id'])) {
-            $template_name = 'single-user-template.php'; // Your custom template file for single user view
+            $template_name = 'tjmk-single-template.php'; // Your custom template file for single user view
 
             // Define the path to your custom template file
             $file = PLUGIN_FRONTEND_VIEWS_DIR . $template_name;

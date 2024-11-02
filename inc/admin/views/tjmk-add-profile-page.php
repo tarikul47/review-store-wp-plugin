@@ -1,5 +1,5 @@
 <?php
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 /**
  * Provide a admin area view for the plugin
@@ -15,7 +15,7 @@ use Tarikul\PersonsStore\Inc\Helper\Helper;
 //var_dump($person_data);
 ?>
 
-<?php if (isset($_GET['profile_id']) && !empty($_GET['profile_id']) && isset($_GET['action']) && $_GET['action'] === 'edit-person') {
+<?php if (isset($_GET['profile_id']) && !empty($_GET['profile_id']) && isset($_GET['action']) && $_GET['action'] === 'edit-profile') {
 
     $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : false;
     $person_data = $this->db->get_profile_by_id($profile_id);

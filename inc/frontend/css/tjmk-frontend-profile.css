@@ -1,82 +1,82 @@
 /*
 ====================================
-Single person page css start
+Single profile page css start
 ====================================
 */
 
 
-.tjmk-person-content-wrpper {
+.tjmk-profile-content-wrpper {
     max-width: 1200px;
     padding: 0px 30px;
     margin: auto;
 }
 
-.tjmk-person-content-wrpper .inner-wrpper {
+.tjmk-profile-content-wrpper .inner-wrpper {
     width: 90%;
     margin: auto;
 }
 
-.tjmk-person-content-wrpper .need-border {
+.tjmk-profile-content-wrpper .need-border {
     padding-bottom: 17px;
     border-bottom: 1px solid #BFBFBF;
 }
 
-.tjmk-person-content-wrpper .person-details-wrpper {
+.tjmk-profile-content-wrpper .profile-details-wrpper {
     display: flex;
 }
 
 
 
-.tjmk-person-content-wrpper .details-left-wrpper {
+.tjmk-profile-content-wrpper .details-left-wrpper {
     width: 40%;
 }
 
-.tjmk-person-content-wrpper .details-right-area {
+.tjmk-profile-content-wrpper .details-right-area {
     width: 60%;
     padding-left: 40px;
     margin-top: 183px;
 }
 
-.tjmk-person-content-wrpper .person-img-box {
+.tjmk-profile-content-wrpper .profile-img-box {
     text-align: center;
     max-width: 135px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.tjmk-person-content-wrpper .person-title h3 {
+.tjmk-profile-content-wrpper .profile-title h3 {
     margin: 12px 0 10px 0;
     color: #1A1919;
     text-align: center;
     font-family: 'Have nothing to do with';
 }
 
-.tjmk-person-content-wrpper .person-title h3 span {
+.tjmk-profile-content-wrpper .profile-title h3 span {
     color: #5CB994;
 }
 
-.tjmk-person-content-wrpper .person-rating-wrpper {
+.tjmk-profile-content-wrpper .profile-rating-wrpper {
     border-radius: 12px;
     background-color: #000105;
     padding: 25px 5px;
 }
 
-.tjmk-person-content-wrpper .scale-wrpper {
+.tjmk-profile-content-wrpper .scale-wrpper {
     margin-bottom: 20px;
     border-bottom: 1px solid #a7a7a73b;
 }
 
-.tjmk-person-content-wrpper .scale-wrpper:nth-last-child(1) {
+.tjmk-profile-content-wrpper .scale-wrpper:nth-last-child(1) {
     border-bottom: none;
     margin-bottom: 0;
 }
 
-.tjmk-person-content-wrpper .scale-wrpper:nth-last-child(1) h3 {
+.tjmk-profile-content-wrpper .scale-wrpper:nth-last-child(1) h3 {
     margin-bottom: unset;
 }
 
 
-.tjmk-person-content-wrpper .scale-reviews {
+.tjmk-profile-content-wrpper .scale-reviews {
     max-width: 200px;
     margin-left: auto;
     margin-right: auto;
@@ -84,7 +84,7 @@ Single person page css start
     margin-bottom: 15px;
 }
 
-.tjmk-person-content-wrpper .scale-wrpper h3 {
+.tjmk-profile-content-wrpper .scale-wrpper h3 {
     color: #fff;
     font-family: 'Have nothing to do with';
     margin-top: 5px;
@@ -93,7 +93,7 @@ Single person page css start
 }
 
 
-.tjmk-person-content-wrpper .person-profile h2 {
+.tjmk-profile-content-wrpper .profile-profile h2 {
     color: #000;
     text-align: center;
     font-family: 'Have nothing to do with';
@@ -103,11 +103,11 @@ Single person page css start
     margin-bottom: 17px;
 }
 
-.tjmk-person-content-wrpper .clame-btn {
+.tjmk-profile-content-wrpper .clame-btn {
     text-align: center;
 }
 
-.tjmk-person-content-wrpper .clame-btn a {
+.tjmk-profile-content-wrpper .clame-btn a {
     padding: 13px 17px 12px 17px;
     color: #FFF;
     font-family: 'Have nothing to do with';
@@ -119,19 +119,19 @@ Single person page css start
     text-decoration: none;
 }
 
-.tjmk-person-content-wrpper .clame-btn a:hover {
+.tjmk-profile-content-wrpper .clame-btn a:hover {
     background-color: rgba(92, 193, 159, 0.8);
 }
 
 
 
-.tjmk-person-content-wrpper .single-details-wrpper {
+.tjmk-profile-content-wrpper .single-details-wrpper {
     display: flex;
     align-items: center;
     margin-top: 10px;
 }
 
-.tjmk-person-content-wrpper .tittle-box p {
+.tjmk-profile-content-wrpper .tittle-box p {
     color: #000;
     font-family: 'Have nothing to do with';
     font-size: 20px;
@@ -139,11 +139,11 @@ Single person page css start
     margin: 4px;
 }
 
-.tjmk-person-content-wrpper .tittle-box {
+.tjmk-profile-content-wrpper .tittle-box {
     width: 200px;
 }
 
-.tjmk-person-content-wrpper .detail-content-box>input {
+.tjmk-profile-content-wrpper .detail-content-box>input {
     width: 100%;
     height: 49px;
     color: #FFF;
@@ -159,22 +159,22 @@ Single person page css start
     outline: none;
 }
 
-.tjmk-person-content-wrpper .detail-rating {
+.tjmk-profile-content-wrpper .detail-rating {
     padding-left: 5px;
     list-style: none;
 }
 
-.tjmk-person-content-wrpper .detail-rating li:first-child p {
+.tjmk-profile-content-wrpper .detail-rating li:first-child p {
     color: #000;
     font-family: 'Have nothing to do with';
     font-size: 20px;
     font-weight: 400;
 }
 
-.tjmk-person-content-wrpper .detail-rating li {
+.tjmk-profile-content-wrpper .detail-rating li {
     width: 210px;
 }
-.tjmk-person-content-wrpper .all-reviwe-btn a {
+.tjmk-profile-content-wrpper .all-reviwe-btn a {
     color: #FFF;
     font-family: 'Have nothing to do with';
     font-size: 20px;
@@ -188,7 +188,7 @@ Single person page css start
 }
 
 
-.tjmk-person-content-wrpper .all-reviwe-btn a:hover {
+.tjmk-profile-content-wrpper .all-reviwe-btn a:hover {
     background-color: rgba(92, 193, 159, 0.8);
 }
 
@@ -196,11 +196,11 @@ Single person page css start
 /*==================
 Review Area CSS Here
 ====================*/
-.tjmk-person-content-wrpper .review-area {
+.tjmk-profile-content-wrpper .review-area {
     margin-top: 23px;
 }
 
-.tjmk-person-content-wrpper .review-title h2 {
+.tjmk-profile-content-wrpper .review-title h2 {
     color: #000;
     font-family: 'Have nothing to do with';
     font-size: 48px;
@@ -208,7 +208,7 @@ Review Area CSS Here
     text-align: center;
 }
 
-.tjmk-person-content-wrpper .review-wrpper {
+.tjmk-profile-content-wrpper .review-wrpper {
     justify-content: space-between;
     display: flex;
     flex-direction: row;
@@ -216,7 +216,7 @@ Review Area CSS Here
     gap: 20px;
 }
 
-.tjmk-person-content-wrpper .single-review {
+.tjmk-profile-content-wrpper .single-review {
     padding: 30px 20px;
     border-radius: 30px;
     background: #F3F3F3;
@@ -228,7 +228,7 @@ Review Area CSS Here
     box-sizing: border-box;
 }
 
-.tjmk-person-content-wrpper .single-review h2 {
+.tjmk-profile-content-wrpper .single-review h2 {
     color: #000;
     text-align: center;
     font-family: 'Have nothing to do with';
@@ -237,14 +237,14 @@ Review Area CSS Here
     margin-top: 10px;
 }
 
-.tjmk-person-content-wrpper .review-icon {
+.tjmk-profile-content-wrpper .review-icon {
     margin: 0;
     padding: 0;
     list-style: none;
     text-align: center;
 }
 
-.tjmk-person-content-wrpper .review-icon li {
+.tjmk-profile-content-wrpper .review-icon li {
     display: inline-block;
     height: 35.707px;
     width: 35.707px;
@@ -258,11 +258,11 @@ Review Area CSS Here
 }
 
 
-.tjmk-person-content-wrpper .review-icon li img {
+.tjmk-profile-content-wrpper .review-icon li img {
     transform: scale(1.5);
 }
 
-.tjmk-person-content-wrpper .star.selected {
+.tjmk-profile-content-wrpper .star.selected {
     opacity: 1;
 }
 
@@ -272,16 +272,16 @@ Review Area CSS Here
 /*=============
 Comment Box CSS
 ===============*/
-.tjmk-person-content-wrpper .comment-wrpper {
+.tjmk-profile-content-wrpper .comment-wrpper {
     margin-top: 84px;
 }
 
-.tjmk-person-content-wrpper .inner-comment-wrpper {
+.tjmk-profile-content-wrpper .inner-comment-wrpper {
     width: 70%;
     margin: auto;
 }
 
-.tjmk-person-content-wrpper .title-box h2 {
+.tjmk-profile-content-wrpper .title-box h2 {
     color: #000;
     text-align: center;
     font-family: 'Have nothing to do with';
@@ -290,11 +290,11 @@ Comment Box CSS
     margin-bottom: 20px;
 }
 
-.tjmk-person-content-wrpper .comment-form form {
+.tjmk-profile-content-wrpper .comment-form form {
     text-align: center;
 }
 
-.tjmk-person-content-wrpper .comment-form form textarea {
+.tjmk-profile-content-wrpper .comment-form form textarea {
     width: 100%;
     resize: none;
     border-radius: 30px;
@@ -307,7 +307,7 @@ Comment Box CSS
     color: rgba(0, 0, 0, 0.6);
 }
 
-.tjmk-person-content-wrpper .comment-form form input {
+.tjmk-profile-content-wrpper .comment-form form input {
     width: 380px;
     height: 72px;
     color: #FFF;
@@ -323,7 +323,7 @@ Comment Box CSS
     transition: 0.2s;
 }
 
-.tjmk-person-content-wrpper .comment-form form input:hover {
+.tjmk-profile-content-wrpper .comment-form form input:hover {
     background-color: rgba(92, 193, 159, 0.8);
 }
 
@@ -336,83 +336,83 @@ Comment Box CSS
 
 @media screen and (max-width: 778px) {
 
-    .tjmk-person-content-wrpper {
+    .tjmk-profile-content-wrpper {
         padding-left: 10px;
         padding-right: 10px;
     }
 
-    .tjmk-person-content-wrpper .inner-wrpper {
+    .tjmk-profile-content-wrpper .inner-wrpper {
         width: 100%;
     }
 
-    .tjmk-person-content-wrpper .details-left-wrpper {
+    .tjmk-profile-content-wrpper .details-left-wrpper {
         width: 100%;
     }
 
-    .tjmk-person-content-wrpper .details-right-area {
+    .tjmk-profile-content-wrpper .details-right-area {
         width: 100%;
         padding-left: unset;
         margin-top: 20px;
     }
 
-    .tjmk-person-content-wrpper .person-details-wrpper {
+    .tjmk-profile-content-wrpper .profile-details-wrpper {
         flex-direction: column;
     }
 
-    .tjmk-person-content-wrpper .clame-btn {
+    .tjmk-profile-content-wrpper .clame-btn {
         height: 56px;
     }
 
-    .tjmk-person-content-wrpper .single-details-wrpper {
+    .tjmk-profile-content-wrpper .single-details-wrpper {
         flex-direction: column;
         align-items: start;
     }
 
-    .tjmk-person-content-wrpper .detail-content-box {
+    .tjmk-profile-content-wrpper .detail-content-box {
         width: 100%;
 
     }
 
-    .tjmk-person-content-wrpper .detail-rating {
+    .tjmk-profile-content-wrpper .detail-rating {
         text-align: center;
     }
 
-    .tjmk-person-content-wrpper .detail-rating li {
+    .tjmk-profile-content-wrpper .detail-rating li {
         width: 100%;
     }
 
-    .tjmk-person-content-wrpper .detail-rating .single-total-reivew {
+    .tjmk-profile-content-wrpper .detail-rating .single-total-reivew {
         max-width: 204px;
     }
 
-    .tjmk-person-content-wrpper .all-reviwe-btn {
+    .tjmk-profile-content-wrpper .all-reviwe-btn {
         text-align: center;
     }
 
-    .tjmk-person-content-wrpper .detail-content-box>input {
+    .tjmk-profile-content-wrpper .detail-content-box>input {
         padding-left: 5px;
     }
 
-    .tjmk-person-content-wrpper .single-review {
+    .tjmk-profile-content-wrpper .single-review {
         flex: 1 1 calc(100% - 20px);
         min-height: unset;
     }
 
-    .tjmk-person-content-wrpper .comment-wrpper {
+    .tjmk-profile-content-wrpper .comment-wrpper {
         margin-top: 50px;
 
     }
 
-    .tjmk-person-content-wrpper .inner-comment-wrpper {
+    .tjmk-profile-content-wrpper .inner-comment-wrpper {
         width: 90%;
     }
 
-    .tjmk-person-content-wrpper .comment-form form input {
+    .tjmk-profile-content-wrpper .comment-form form input {
         width: 100%;
         margin-top: 25px;
     }
 
-    .tjmk-person-content-wrpper .comment-form form textarea {
+    .tjmk-profile-content-wrpper .comment-form form textarea {
         padding: 10px;
     }
 }
@@ -421,6 +421,6 @@ Comment Box CSS
 
 /*
 ====================================
-Single person page css End
+Single profile page css End
 ====================================
 */

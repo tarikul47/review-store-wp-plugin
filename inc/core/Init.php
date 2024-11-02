@@ -1,10 +1,10 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Core;
+namespace Tarikul\TJMK\Inc\Core;
 
-use Tarikul\PersonsStore\Inc\Admin as Admin;
-use Tarikul\PersonsStore\Inc\Email\Email;
-use Tarikul\PersonsStore\Inc\Frontend as Frontend;
-use Tarikul\PersonsStore\Inc\WooCommerceIntegration\WooCommerceIntegration;
+use Tarikul\TJMK\Inc\Admin as Admin;
+use Tarikul\TJMK\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Frontend as Frontend;
+use Tarikul\TJMK\Inc\WooCommerceIntegration\WooCommerceIntegration;
 
 /**
  * The core plugin class.

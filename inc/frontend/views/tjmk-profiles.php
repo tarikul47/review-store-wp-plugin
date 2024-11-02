@@ -1,5 +1,5 @@
 <?php
-use Tarikul\PersonsStore\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Database\Database;
 
 get_header();
 $db = Database::getInstance();

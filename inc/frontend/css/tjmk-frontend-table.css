@@ -183,7 +183,7 @@ Search Result table css Start
     text-decoration-line: underline;
 }
 
-.tjmk-search-result-wrpper .no-person-found a {
+.tjmk-search-result-wrpper .no-profile-found a {
     color: #5CC19F;
     font-family: 'roboto';
     font-size: 14px;
@@ -201,7 +201,7 @@ Search Result table css Start
         min-width: 110px;
     }
 
-    .tjmk-search-result-wrpper .no-person-found {
+    .tjmk-search-result-wrpper .no-profile-found {
         text-align: left;
     }
 

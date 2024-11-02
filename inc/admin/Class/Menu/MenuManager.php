@@ -1,5 +1,5 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Admin\Class\Menu;
+namespace Tarikul\TJMK\Inc\Admin\Class\Menu;
 
 class MenuManager
 {
@@ -44,7 +44,7 @@ class MenuManager
             __('Add Profile', $this->plugin_text_domain),
             __('Add Profile', $this->plugin_text_domain),
             'manage_options',
-            $this->plugin_name . '-add-person',
+            $this->plugin_name . '-add-profile',
             array($this->menuCallbacks, 'tjmk_add_profile_page')
         );
         add_submenu_page(

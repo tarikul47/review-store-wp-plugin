@@ -1,10 +1,10 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Admin\Class\Profile;
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Email\Class\WC_TJMK_Email;
-use Tarikul\PersonsStore\Inc\Email\Email;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+namespace Tarikul\TJMK\Inc\Admin\Class\Profile;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Email\Class\WC_TJMK_Email;
+use Tarikul\TJMK\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 class ProfileManagement
 {
@@ -92,7 +92,7 @@ class ProfileManagement
                 throw new \Exception('Failed to process review content');
             }
 
-            // Insert person into database
+            // Insert profile into database
             $profile_id = $this->db->insert_user($user_data);
             if (!$profile_id) {
                 throw new \Exception('Failed to insert user');
@@ -218,9 +218,9 @@ class ProfileManagement
         $result = $this->db->update_person($profile_id, $data);
 
         if ($result !== false) {
-            error_log('Successfully updated person with profile_id: ' . $profile_id);
+            error_log('Successfully updated profile with profile_id: ' . $profile_id);
         } else {
-            error_log('Failed to update person with profile_id: ' . $profile_id);
+            error_log('Failed to update profile with profile_id: ' . $profile_id);
         }
 
         // get profile status 

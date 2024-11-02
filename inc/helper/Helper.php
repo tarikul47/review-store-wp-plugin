@@ -1,5 +1,5 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\Helper;
+namespace Tarikul\TJMK\Inc\Helper;
 
 class Helper
 {

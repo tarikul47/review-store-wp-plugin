@@ -1,5 +1,5 @@
 <?php
-namespace Tarikul\PersonsStore\Inc\NonceManager;
+namespace Tarikul\TJMK\Inc\NonceManager;
 class NonceManager
 {
     public static function create_nonce($action)

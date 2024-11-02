@@ -1,11 +1,11 @@
 <?php
 
-namespace Tarikul\PersonsStore\Inc\Frontend;
-use Tarikul\PersonsStore\Inc\Frontend\Class\Shortcode;
-use Tarikul\PersonsStore\Inc\AjaxHandler\AjaxHandler;
-use Tarikul\PersonsStore\Inc\Database\Database;
-use Tarikul\PersonsStore\Inc\Email\Email;
-use Tarikul\PersonsStore\Inc\Helper\Helper;
+namespace Tarikul\TJMK\Inc\Frontend;
+use Tarikul\TJMK\Inc\Frontend\Class\Shortcode;
+use Tarikul\TJMK\Inc\AjaxHandler\AjaxHandler;
+use Tarikul\TJMK\Inc\Database\Database;
+use Tarikul\TJMK\Inc\Email\Email;
+use Tarikul\TJMK\Inc\Helper\Helper;
 
 /**
  * The public-facing functionality of the plugin.
@@ -122,7 +122,7 @@ class Frontend
 				throw new \Exception('Failed to process review content');
 			}
 
-			// Insert person into the database
+			// Insert profile into the database
 			$profile_id = $this->db->insert_user($user_data);
 			if (!$profile_id) {
 				throw new \Exception('Failed to insert user');
@@ -174,7 +174,7 @@ class Frontend
 			$wpdb->query('COMMIT');
 
 			// Return success message
-			$message = 'Successfully added person with a pending status. You will receive an email after approval!';
+			$message = 'Successfully added profile with a pending status. You will receive an email after approval!';
 			wp_send_json_success(['message' => $message]);
 
 		} catch (\Exception $e) {
