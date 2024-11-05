@@ -250,7 +250,7 @@
                     'response' => ['title' => __('PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'tjmk'), 'image' => 'personal-response'],
                     'communication' => ['title' => __('HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'tjmk'), 'image' => 'communication-skills'],
                     'decisions' => ['title' => __('MAKES FAIR AND WISE DECISIONS', 'tjmk'), 'image' => 'fair-decisions'],
-                    'recommend' => ['title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'), 'image' => 'recommend-person'],
+                    'recommend' => ['title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'), 'image' => 'recommend-profile'],
                 ];
 
                 // Split criteria into two sets for two rows
@@ -329,7 +329,7 @@
                             'response' => ['title' => __('PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'tjmk'), 'image' => 'personal-response'],
                             'communication' => ['title' => __('HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'tjmk'), 'image' => 'communication-skills'],
                             'decisions' => ['title' => __('MAKES FAIR AND WISE DECISIONS', 'tjmk'), 'image' => 'fair-decisions'],
-                            'recommend' => ['title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'), 'image' => 'recommend-person'],
+                            'recommend' => ['title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'), 'image' => 'recommend-profile'],
                         ];
 
                         // Split the criteria into two rows

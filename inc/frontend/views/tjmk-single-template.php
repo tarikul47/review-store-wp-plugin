@@ -113,7 +113,8 @@ get_header();
                     </div>
 
                     <div class="clame-btn">
-                        <a href="" title="<?php esc_attr_e('Click here for claim', 'tjmk'); ?>"><?php esc_html_e('Click here for claim', 'tjmk'); ?></a>
+                        <a href=""
+                            title="<?php esc_attr_e('Click here for claim', 'tjmk'); ?>"><?php esc_html_e('Click here for claim', 'tjmk'); ?></a>
                     </div>
                 </div>
 
