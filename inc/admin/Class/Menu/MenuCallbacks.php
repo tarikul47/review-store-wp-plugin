@@ -39,7 +39,7 @@ class MenuCallbacks
         //  echo "<pre>";
         //print_r($users);
 
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-profile-list-page.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-profile-list-page.php';
     }
 
     public function tjmk_pending_profile_list_page()
@@ -51,18 +51,18 @@ class MenuCallbacks
         }
 
         $users = $this->db->get_profiles_with_review_data('pending');
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-pending-profile-list-page.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-pending-profile-list-page.php';
     }
 
     public function tjmk_add_profile_page()
     {
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-add-profile-page.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-add-profile-page.php';
     }
 
     public function tjmk_approve_reviews_page()
     {
         $approved_reviews = $this->db->get_reviews('approved'); // Get approved reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-approve-reviews-page.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-approve-reviews-page.php';
     }
 
     public function tjmk_pending_reviews_page()
@@ -74,7 +74,7 @@ class MenuCallbacks
         }
 
         $pending_reviews = $this->db->get_reviews('pending'); // Get pending reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-pending-reviews-page.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-pending-reviews-page.php';
     }
 
     public function tjmk_disply_reviews_page()
@@ -95,17 +95,17 @@ class MenuCallbacks
         }
 
         // Include the view file to display the reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-display-reviews-page.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-display-reviews-page.php';
     }
 
     public function tjmk_bulk_profiles_upload()
     {
         // Include the view file to display the reviews
-        include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-bulk-profiles-upload.php';
+        include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-bulk-profiles-upload.php';
     }
     // public function tjmk_settings_page()
     // {
     //     // Include the view file to display the reviews
-    //     include_once PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-settings-page.php';
+    //     include_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'tjmk-settings-page.php';
     // }
 }

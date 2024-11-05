@@ -49,7 +49,7 @@ class TemplateController
             $template_name = 'tjmk-single-template.php'; // Your custom template file for single user view
 
             // Define the path to your custom template file
-            $file = PLUGIN_FRONTEND_VIEWS_DIR . $template_name;
+            $file = TJMK_PLUGIN_FRONTEND_VIEWS_DIR . $template_name;
 
             // If the custom template file exists, use it
             if (file_exists($file)) {
@@ -61,7 +61,7 @@ class TemplateController
             return $template;
         }
 
-        $file = PLUGIN_FRONTEND_VIEWS_DIR . $template_name;
+        $file = TJMK_PLUGIN_FRONTEND_VIEWS_DIR . $template_name;
 
         if (file_exists($file)) {
             return $file;

@@ -139,7 +139,7 @@ get_header();
                     <tr class="form-field">
                         <th scope="row"><label for="state"><?php esc_html_e('State', 'tjmk'); ?></label></th>
                         <td>
-                            <input name="state" type="text" id="state" value="Gazipurss" autocapitalize="none"
+                            <input name="state" type="text" id="state" value="Gazipur" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -147,7 +147,7 @@ get_header();
                     <tr class="form-field">
                         <th scope="row"><label for="country"><?php esc_html_e('Country', 'tjmk'); ?></label></th>
                         <td>
-                            <input name="country" type="text" id="country" value="Bangladeshss" autocapitalize="none"
+                            <input name="country" type="text" id="country" value="Bangladesh" autocapitalize="none"
                                 autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -156,16 +156,17 @@ get_header();
                         <th scope="row"><label for="municipality"><?php esc_html_e('Municipality', 'tjmk'); ?></label>
                         </th>
                         <td>
-                            <input name="municipality" type="text" id="municipality" value="Municipalityss"
+                            <input name="municipality" type="text" id="municipality" value="Municipality"
                                 autocapitalize="none" autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
 
                     <tr class="form-field">
-                        <th scope="row"><label for="department"><?php esc_html_e('Municipality', 'tjmk'); ?></label>
+                        <th scope="row">
+                            <label for="department"><?php esc_html_e('Department', 'tjmk'); ?></label>
                         </th>
                         <td>
-                            <input name="department" type="text" id="department" value="Departmentss"
+                            <input name="department" type="text" id="department" value="Department"
                                 autocapitalize="none" autocorrect="off" autocomplete="off" required>
                         </td>
                     </tr>
@@ -181,7 +182,7 @@ get_header();
                         <?php
                         printf(
                             esc_html__('Give reviews to %1$s?', 'tjmk'),
-                            '<b>' . esc_html('Rinku') . '</b>'
+                            '<b>' . esc_html('The Profile') . '</b>'
                         );
                         ?>
                     </h2>
@@ -194,29 +195,30 @@ get_header();
                             <?php
                             printf(
                                 esc_html__('Do you experience the official employee %1$s as impartial, factual, and fair? (from 1 to 5)', 'tjmk'),
-                                '<b>' . esc_html('Rinku') . '</b>'
+                                '<b>' . esc_html('The Profile') . '</b>'
                             );
                             ?>
                         </h2>
 
                         <ul class="review-icon">
                             <li data-value="1" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>" alt="">
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
+                                    alt="">
                             </li>
                             <li data-value="2" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="3" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="4" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="5" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                         </ul>
@@ -228,30 +230,30 @@ get_header();
                             <?php
                             printf(
                                 esc_html__('Do you experience that the official employee %1$s has sufficient competence, is professional, and qualified for the given service and role? (from 1 to 5)', 'tjmk'),
-                                '<b>' . esc_html('Rinku') . '</b>'
+                                '<b>' . esc_html('The Profile') . '</b>'
                             );
                             ?>
                         </h2>
 
                         <ul class="review-icon">
                             <li data-value="1" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="2" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="3" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="4" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="5" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                         </ul>
@@ -263,30 +265,30 @@ get_header();
                             <?php
                             printf(
                                 esc_html__('Do you experience that the official employee %1$s has given you a good response that you understand? (from 1 to 5)', 'tjmk'),
-                                '<b>' . esc_html('Rinku') . '</b>'
+                                '<b>' . esc_html('The Profile') . '</b>'
                             );
                             ?>
                         </h2>
 
                         <ul class="review-icon">
                             <li data-value="1" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="2" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="3" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="4" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="5" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                         </ul>
@@ -298,30 +300,30 @@ get_header();
                             <?php
                             printf(
                                 esc_html__('Do you experience that the official employee %1$s has good communication skills and good response time? (from 1 to 5)', 'tjmk'),
-                                '<b>' . esc_html('Rinku') . '</b>'
+                                '<b>' . esc_html('The Profile') . '</b>'
                             );
                             ?>
                         </h2>
 
                         <ul class="review-icon">
                             <li data-value="1" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="2" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="3" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="4" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="5" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                         </ul>
@@ -334,30 +336,30 @@ get_header();
                             <?php
                             printf(
                                 esc_html__('Do you experience that the official employee %1$s makes fair decisions? (from 1 to 5)', 'tjmk'),
-                                '<b>' . esc_html('Rinku') . '</b>'
+                                '<b>' . esc_html('The Profile') . '</b>'
                             );
                             ?>
                         </h2>
 
                         <ul class="review-icon">
                             <li data-value="1" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="2" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="3" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="4" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="5" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                         </ul>
@@ -371,23 +373,23 @@ get_header();
 
                         <ul class="review-icon">
                             <li data-value="1" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="2" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="3" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="4" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                             <li data-value="5" class="star">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/icons/rating-two.png'; ?>"
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/icons/rating-two.png'; ?>"
                                     alt="">
                             </li>
                         </ul>

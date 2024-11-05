@@ -84,11 +84,11 @@ class AjaxHandler
                 echo "<td>" . esc_html($profile->department) . "</td>";
                 echo "<td>" . esc_html($profile->municipality) . "</td>";
 
-                $review_score_image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/review-icon' . '-' . $profile->average_rating . '.png';
+                $review_score_image_path = TJMK_PLUGIN_ASSETS_URL . '/images/icons/review-icon' . '-' . $profile->average_rating . '.png';
 
                 echo "<td><img class='review-score-icon' src='" . $review_score_image_path . "' alt=''></td>";
 
-                $review_icon_image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/card-icon' . '.svg';
+                $review_icon_image_path = TJMK_PLUGIN_ASSETS_URL . '/images/icons/card-icon' . '.svg';
 
                 echo '<td><a href="' . wc_get_cart_url() . "?add-to-cart=" . $product_id . "&p_id=" . $profile->profile_id . '"><img src="' . $review_icon_image_path . '" alt="card-icon"></a></td>';
 

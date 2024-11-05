@@ -23,7 +23,7 @@ class MenuManager
             'manage_options',
             $this->plugin_name,
             array($this->menuCallbacks, 'tjmk_profile_list_page'),
-            //   PLUGIN_NAME_ASSETS_URI . '/images/tjmk-logo.png', // Path to custom image,
+            //   TJMK_PLUGIN_ASSETS_URL . '/images/tjmk-logo.png', // Path to custom image,
             'dashicons-admin-generic',
             6
         );

@@ -96,7 +96,7 @@ class Email
     {
         if ('woocommerce_page_wc-settings' === $hook) {
             wp_enqueue_editor();
-            wp_enqueue_script('wc-email-rich-editor', PLUGIN_ADMIN_EMAIL_URL . 'js/wc-email-rich-editor.js', array('jquery'), null, true);
+            wp_enqueue_script('wc-email-rich-editor', TJMK_PLUGIN_ADMIN_EMAIL_URL . 'js/wc-email-rich-editor.js', array('jquery'), null, true);
         }
     }
 

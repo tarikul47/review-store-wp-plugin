@@ -58,9 +58,9 @@ class Init
     public function __construct()
     {
 
-        $this->plugin_name = PLUGIN_NAME;
-        $this->version = PLUGIN_VERSION;
-        $this->plugin_basename = PLUGIN_BASENAME;
+        $this->plugin_name = TJMK_PLUGIN_NAME;
+        $this->version = TJMK_PLUGIN_VERSION;
+        $this->plugin_basename = TJMK_PLUGIN_BASENAME;
 
         $this->load_dependencies();
         $this->set_locale();

@@ -10,7 +10,7 @@ $db = Database::getInstance();
         <div class="top-wrpper">
             <!-- Search Box -->
             <div class="search-input-wrpper">
-                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . "/images/icons/search-icon.svg" ?>" alt="Search Icon">
+                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . "/images/icons/search-icon.svg" ?>" alt="Search Icon">
                 <input type="search" id="profile-search" placeholder="<?php esc_html_e('Search profiles...', 'tjmk'); ?>">
             </div>
             <!-- Search button -->

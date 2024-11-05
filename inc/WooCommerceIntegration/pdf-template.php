@@ -202,13 +202,15 @@
                     <tr>
                         <td class="logo">
                             <a href="https://tjanstemannakollen.se">
-                                <img src="<?php echo PLUGIN_NAME_ASSETS_URI . '/images/logos-white.png' ?>" alt=""
+                                <img src="<?php echo TJMK_PLUGIN_ASSETS_URL . '/images/logos-white.png' ?>" alt=""
                                     style="width: 138px; height: auto;">
                             </a>
                         </td>
                         <td class="order-date">
-                            <span>Order Date: <?php esc_html_e($formatted_order_date, 'tjmk') ?></span><br>
-                            <span>Order ID: #<?php esc_html_e($order_id, 'tjmk') ?></span>
+                            <span><?php esc_html_e('Order Date:', 'tjmk'); ?>
+                                <?php esc_html_e($formatted_order_date, 'tjmk') ?></span><br>
+                            <span><?php esc_html_e('Order ID:', 'tjmk'); ?>
+                                #<?php esc_html_e($order_id, 'tjmk') ?></span>
                         </td>
                     </tr>
                 </tbody>
@@ -217,36 +219,38 @@
 
         <!-- Profile Section -->
         <div class="profile">
-            <h2><?php esc_html_e($profile_user_name, 'tjmk') ?></h2>
+            <h2><?php echo esc_html($profile_user_name); ?></h2>
             <p>
-                <?php esc_html_e($profile_user_name, 'tjmk') ?> is a
-                <strong><?php esc_html_e($profile_data->title, 'tjmk') ?></strong> working in
-                <strong><?php esc_html_e($profile_data->municipality, 'tjmk') ?></strong> in city
-                <strong><?php esc_html_e($profile_data->state, 'tjmk') ?></strong>, in
-                <strong><?php esc_html_e($profile_data->country, 'tjmk') ?></strong>.
+                <?php echo esc_html($profile_user_name); ?> <?php esc_html_e('is a', 'tjmk'); ?>
+                <strong><?php echo esc_html($profile_data->title); ?></strong>
+                <?php esc_html_e('working in', 'tjmk'); ?>
+                <strong><?php echo esc_html($profile_data->municipality); ?></strong>
+                <?php esc_html_e('in city', 'tjmk'); ?>
+                <strong><?php echo esc_html($profile_data->state); ?></strong>, <?php esc_html_e('in', 'tjmk'); ?>
+                <strong><?php echo esc_html($profile_data->country); ?></strong>.
             </p>
 
             <div class="info">
-                <?php esc_html_e($profile_data->email, 'tjmk') ?> |
-                <?php esc_html_e($profile_data->phone, 'tjmk') ?>
+                <?php echo esc_html($profile_data->email); ?> |
+                <?php echo esc_html($profile_data->phone); ?>
             </div>
             <div class="info">
-                <strong><?php esc_html_e(count($approved_reviews), 'tjmk') ?> TOTAL REVIEWS</strong>
+                <strong><?php echo esc_html(count($approved_reviews)) . ' ' . __('TOTAL REVIEWS', 'tjmk'); ?></strong>
             </div>
         </div>
 
         <!-- Overall Ratings -->
         <div class="ratings">
-            <div class="ratings-title">Overall Ratings</div>
+            <div class="ratings-title"><?php esc_html_e('Overall Ratings', 'tjmk'); ?></div>
             <table class="ratings-table">
                 <?php
                 $criteria = [
-                    'fair' => ['title' => 'IS SEEN AS FAIR AND IMPARTIAL', 'image' => 'fair-impartial-icon'],
-                    'professional' => ['title' => 'HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM', 'image' => 'sufficient-competence'],
-                    'response' => ['title' => 'PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'image' => 'personal-response'],
-                    'communication' => ['title' => 'HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'image' => 'communication-skills'],
-                    'decisions' => ['title' => 'MAKES FAIR AND WISE DECISIONS', 'image' => 'fair-decisions'],
-                    'recommend' => ['title' => 'IS RECOMMENDED BY OTHERS', 'image' => 'recommend-person'],
+                    'fair' => ['title' => __('IS SEEN AS FAIR AND IMPARTIAL', 'tjmk'), 'image' => 'fair-impartial-icon'],
+                    'professional' => ['title' => __('HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM', 'tjmk'), 'image' => 'sufficient-competence'],
+                    'response' => ['title' => __('PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'tjmk'), 'image' => 'personal-response'],
+                    'communication' => ['title' => __('HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'tjmk'), 'image' => 'communication-skills'],
+                    'decisions' => ['title' => __('MAKES FAIR AND WISE DECISIONS', 'tjmk'), 'image' => 'fair-decisions'],
+                    'recommend' => ['title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'), 'image' => 'recommend-person'],
                 ];
 
                 // Split criteria into two sets for two rows
@@ -259,8 +263,8 @@
                     $average_rating = $this->db->get_average_meta_rating($profile_id, $key);
 
                     // Construct the image path
-                    $image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/' . $data['image'] . '-' . $average_rating . '.png';
-                    //  $image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/communication-skills-1.png';
+                    $image_path = TJMK_PLUGIN_ASSETS_URL . '/images/icons/' . $data['image'] . '-' . $average_rating . '.png';
+                    //  $image_path = TJMK_PLUGIN_ASSETS_URL . '/images/icons/communication-skills-1.png';
                 
                     // Log image path and rating to the error log for debugging
                     //   error_log("Criterion: $key, Rating: $average_rating, Image Path: $image_path");
@@ -279,7 +283,7 @@
                     $average_rating = $this->db->get_average_meta_rating($profile_id, $key);
 
                     // Construct the image path
-                    $image_path = PLUGIN_NAME_ASSETS_URI . '/images/icons/' . $data['image'] . '-' . $average_rating . '.png';
+                    $image_path = TJMK_PLUGIN_ASSETS_URL . '/images/icons/' . $data['image'] . '-' . $average_rating . '.png';
 
                     // Log image path and rating to the error log for debugging
                     //  error_log("Criterion: $key, Rating: $average_rating, Image Path: $image_path");
@@ -299,30 +303,33 @@
 
         <!-- Reviews Section -->
         <div class="ratings">
-            <div class="ratings-title">All Reviews (<?php echo count($approved_reviews); ?>)</div>
+            <div class="ratings-title"><?php echo __('All Reviews', 'tjmk') . ' (' . count($approved_reviews) . ')'; ?>
+            </div>
 
             <?php
             // Function to get image path based on rating
             function get_image_path($image_base, $rating)
             {
-                return PLUGIN_NAME_ASSETS_URI . '/images/icons/' . $image_base . '-' . $rating . '.png';
+                return TJMK_PLUGIN_ASSETS_URL . '/images/icons/' . $image_base . '-' . $rating . '.png';
             }
             foreach ($approved_reviews as $review): ?>
                 <div class="review-box">
                     <div class="title">
-                        Reviewed By: Anonymous | Date: <?php echo date('Y-m-d', strtotime($review['created_at'])); ?> |
-                        ID: <?php echo $review['review_id']; ?>
+                        <?php esc_html_e('Reviewed By:', 'tjmk'); ?>     <?php esc_html_e('Anonymous', 'tjmk'); ?> |
+                        <?php esc_html_e('Date:', 'tjmk'); ?>
+                        <?php echo esc_html(date('Y-m-d', strtotime($review['created_at']))); ?> |
+                        <?php esc_html_e('ID:', 'tjmk'); ?>     <?php echo esc_html($review['review_id']); ?>
                     </div>
                     <table class="ratings-table">
                         <?php
                         // Define the criteria keys and their labels and icons
                         $criteria = [
-                            'fair' => ['title' => 'IS SEEN AS FAIR AND IMPARTIAL', 'image' => 'fair-impartial-icon'],
-                            'professional' => ['title' => 'HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM', 'image' => 'sufficient-competence'],
-                            'response' => ['title' => 'PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'image' => 'personal-response'],
-                            'communication' => ['title' => 'HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'image' => 'communication-skills'],
-                            'decisions' => ['title' => 'MAKES FAIR AND WISE DECISIONS', 'image' => 'fair-decisions'],
-                            'recommend' => ['title' => 'IS RECOMMENDED BY OTHERS', 'image' => 'recommend-person'],
+                            'fair' => ['title' => __('IS SEEN AS FAIR AND IMPARTIAL', 'tjmk'), 'image' => 'fair-impartial-icon'],
+                            'professional' => ['title' => __('HAS SUFFICIENT COMPETENCE AND PROFESSIONALISM', 'tjmk'), 'image' => 'sufficient-competence'],
+                            'response' => ['title' => __('PROVIDES CLEAR AND UNDERSTANDABLE RESPONSES', 'tjmk'), 'image' => 'personal-response'],
+                            'communication' => ['title' => __('HAS GOOD COMMUNICATION SKILLS AND RESPONSE TIME', 'tjmk'), 'image' => 'communication-skills'],
+                            'decisions' => ['title' => __('MAKES FAIR AND WISE DECISIONS', 'tjmk'), 'image' => 'fair-decisions'],
+                            'recommend' => ['title' => __('IS RECOMMENDED BY OTHERS', 'tjmk'), 'image' => 'recommend-person'],
                         ];
 
                         // Split the criteria into two rows
@@ -361,8 +368,8 @@
                         ?>
                     </table>
                     <div class="comemnt-box">
-                        <div class="title">COMMENT</div>
-                        <p><?php echo htmlspecialchars($review['meta']['comments'] ?? 'Comment text goes here.'); ?></p>
+                        <div class="title"><?php esc_html_e('COMMENT', 'tjmk'); ?></div>
+                        <p><?php echo esc_html($review['meta']['comments'] ?? __('Comment text goes here.', 'tjmk')); ?></p>
                     </div>
                 </div>
                 <?php
@@ -373,7 +380,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            © 2024 Tjanstemannakollen - Alla rättigheter förbehållna.
+            © 2024 Tjanstemannakollen - <?php esc_html_e('All rights reserved.', 'tjmk'); ?>
         </div>
     </div>
 </body>

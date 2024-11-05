@@ -43,26 +43,26 @@ use Tarikul\TJMK\Inc\Core\Init;
  * Define Constants
  */
 
-define('PLUGIN_NAME', 'tjmk');
-define('PLUGIN_VERSION', '1.0.0');
-define('PLUGIN_NAME_DIR', plugin_dir_path(__FILE__));
-define('PLUGIN_NAME_URL', plugin_dir_url(__FILE__));
-define('PLUGIN_NAME_ASSETS_URI', PLUGIN_NAME_URL . 'assets');
-define('PLUGIN_BASENAME', plugin_basename(__FILE__));
+define('TJMK_PLUGIN_NAME', 'tjmk');
+define('TJMK_PLUGIN_VERSION', '1.0.0');
+define('TJMK_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('TJMK_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('TJMK_PLUGIN_ASSETS_URL', TJMK_PLUGIN_URL . 'assets');
+define('TJMK_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
 
 // New constants for admin directories
-define('PLUGIN_ADMIN_DIR', PLUGIN_NAME_DIR . 'inc/Admin/');
-define('PLUGIN_ADMIN_URL', PLUGIN_NAME_URL . 'inc/Admin/');
-define('PLUGIN_ADMIN_VIEWS_DIR', PLUGIN_ADMIN_DIR . 'views/');
-define('PLUGIN_ADMIN_EMAIL_DIR', PLUGIN_NAME_DIR . 'inc/Email/');
-define('PLUGIN_ADMIN_EMAIL_URL', PLUGIN_NAME_URL . 'inc/Email/');
+define('TJMK_PLUGIN_ADMIN_DIR', TJMK_PLUGIN_DIR . 'inc/Admin/');
+define('TJMK_PLUGIN_ADMIN_URL', TJMK_PLUGIN_URL . 'inc/Admin/');
+define('TJMK_PLUGIN_ADMIN_VIEWS_DIR', TJMK_PLUGIN_ADMIN_DIR . 'views/');
+define('TJMK_PLUGIN_ADMIN_EMAIL_DIR', TJMK_PLUGIN_DIR . 'inc/Email/');
+define('TJMK_PLUGIN_ADMIN_EMAIL_URL', TJMK_PLUGIN_URL . 'inc/Email/');
 
-define('PLUGIN_FRONTEND_DIR', PLUGIN_NAME_DIR . 'inc/Frontend/');
-define('PLUGIN_FRONTEND_URL', PLUGIN_NAME_URL . 'inc/Frontend/');
-define('PLUGIN_FRONTEND_VIEWS_DIR', PLUGIN_FRONTEND_DIR . 'views/');
+define('TJMK_PLUGIN_FRONTEND_DIR', TJMK_PLUGIN_DIR . 'inc/Frontend/');
+define('TJMK_PLUGIN_FRONTEND_URL', TJMK_PLUGIN_URL . 'inc/Frontend/');
+define('TJMK_PLUGIN_FRONTEND_VIEWS_DIR', TJMK_PLUGIN_FRONTEND_DIR . 'views/');
 
-define('PRODUCT_ID', 509);
+define('TJMK_PRODUCT_ID', 509);
 
 
 /**

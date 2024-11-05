@@ -47,7 +47,7 @@ class InternationalizationI18n
     {
 
         // custom language file path 
-        $mofile = PLUGIN_NAME_DIR . 'languages/tjmk-' . get_locale() . '.mo';
+        $mofile = TJMK_PLUGIN_DIR . 'languages/tjmk-' . get_locale() . '.mo';
 
         if (file_exists($mofile)) {
             load_textdomain($this->text_domain, $mofile);

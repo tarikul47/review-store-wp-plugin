@@ -84,13 +84,13 @@ class Admin
         // Check if the current page is in the allowed pages
         if (isset($screen->id) && in_array($screen->id, $allowed_pages)) {
             // Enqueue the stylesheet only for the allowed pages
-            wp_enqueue_style('tjmk-admin-css', PLUGIN_ADMIN_URL . 'css/tjmk-admin.css', array(), $this->version, 'all');
+            wp_enqueue_style('tjmk-admin-css', TJMK_PLUGIN_ADMIN_URL . 'css/tjmk-admin.css', array(), $this->version, 'all');
         }
 
         // Check if the current page is in the allowed pages
         if (isset($screen->id) && $screen->id === 'tjmk_page_tjmk-add-profile') {
             // Enqueue the stylesheet only for the allowed pages
-            wp_enqueue_style('tjmk-admin-form-css', PLUGIN_ADMIN_URL . 'css/tjmk-admin-form.css', array(), $this->version, 'all');
+            wp_enqueue_style('tjmk-admin-form-css', TJMK_PLUGIN_ADMIN_URL . 'css/tjmk-admin-form.css', array(), $this->version, 'all');
         }
 
 

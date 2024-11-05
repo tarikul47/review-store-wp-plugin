@@ -20,7 +20,7 @@ use Tarikul\TJMK\Inc\Helper\Helper;
     $profile_id = isset($_GET['profile_id']) ? intval($_GET['profile_id']) : false;
     $person_data = $this->db->get_profile_by_id($profile_id);
 
-    require_once PLUGIN_ADMIN_VIEWS_DIR . 'partials/tjmk-update-profile-form.php';
+    require_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'partials/tjmk-update-profile-form.php';
 
 } else if (isset($_GET['profile_id']) && !empty($_GET['profile_id']) && isset($_GET['review_id']) && !empty($_GET['review_id']) && isset($_GET['action']) && $_GET['action'] === 'edit-review') {
    
@@ -28,9 +28,9 @@ use Tarikul\TJMK\Inc\Helper\Helper;
    // $person_data = $this->db->get_profile_by_id($profile_id);
     $review_data = $this->db->get_review_meta_by_review_id($profile_id);
 
-    require_once PLUGIN_ADMIN_VIEWS_DIR . 'partials/tjmk-update-review-form.php';
+    require_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'partials/tjmk-update-review-form.php';
 
 } else {
-    require_once PLUGIN_ADMIN_VIEWS_DIR . 'partials/tjmk-add-profile-form.php';
+    require_once TJMK_PLUGIN_ADMIN_VIEWS_DIR . 'partials/tjmk-add-profile-form.php';
 }
 

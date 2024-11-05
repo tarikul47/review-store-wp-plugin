@@ -210,7 +210,7 @@ class WC_TJMK_Email extends \WC_Email
                 'custom_data' => $this->custom_data, // Pass custom_data here
             ),
             '',
-            PLUGIN_ADMIN_EMAIL_DIR
+            TJMK_PLUGIN_ADMIN_EMAIL_DIR
         );
     }
     /**
@@ -230,7 +230,7 @@ class WC_TJMK_Email extends \WC_Email
                 'email' => $this
             ),
             '',
-            PLUGIN_ADMIN_EMAIL_DIR,
+            TJMK_PLUGIN_ADMIN_EMAIL_DIR,
         );
     }
 

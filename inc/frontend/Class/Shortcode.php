@@ -21,17 +21,18 @@ class Shortcode
 
         <div class="tjmk-search-profile-content-box">
             <div class="content-title">
-                <h2>vem letar du efter?</h2>
+                <h2><?php esc_html_e('Who are you looking for?', 'tjmk'); ?></h2>
             </div>
             <form class="search-profile-form" action="<?php echo esc_url($atts['action']); ?>" method="get">
                 <div class="name-button-box">
-                    <input type="text" name="search_term" placeholder="Enter name..." value="">
+                    <input type="text" name="search_term" placeholder="<?php esc_attr_e('Enter name...', 'tjmk'); ?>" value="">
                 </div>
                 <div class="search-button">
-                    <input type="submit" value="Search Now">
+                    <input type="submit" value="<?php esc_attr_e('Search Now', 'tjmk'); ?>">
                 </div>
             </form>
         </div>
+
 
         <?php
         // Return the buffered content
