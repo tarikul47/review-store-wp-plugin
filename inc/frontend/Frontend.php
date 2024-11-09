@@ -1,6 +1,7 @@
 <?php
 
 namespace Tarikul\TJMK\Inc\Frontend;
+use Tarikul\TJMK\Inc\AjaxHandler\FrontendAjaxHandler\FrontendAjaxHandler;
 use Tarikul\TJMK\Inc\Frontend\Class\Shortcode;
 use Tarikul\TJMK\Inc\AjaxHandler\AjaxHandler;
 use Tarikul\TJMK\Inc\Database\Database;
@@ -71,7 +72,9 @@ class Frontend
 		// Instantiate the shortcode class
 		new Shortcode();
 		// Initialize AJAX handling
-		new AjaxHandler();
+		//new AjaxHandler();
+
+		new FrontendAjaxHandler();
 
 		$this->db = Database::getInstance();
 		// Add action for form submission

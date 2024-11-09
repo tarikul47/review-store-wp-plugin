@@ -5,6 +5,7 @@ use Tarikul\TJMK\Inc\Admin\Class\Menu\MenuManager;
 use Tarikul\TJMK\Inc\Admin\Class\Profile\ProfileManagement;
 use Tarikul\TJMK\Inc\Admin\Class\Review\ReviewManagement;
 use Tarikul\TJMK\Inc\Admin\Class\Settings\Settings;
+use Tarikul\TJMK\Inc\AjaxHandler\BackendAjaxHandler\BackendAjaxHandler;
 use Tarikul\TJMK\Inc\Database\Database;
 use Tarikul\TJMK\Inc\Email\Class\WC_TJMK_Email;
 use Tarikul\TJMK\Inc\Email\Email;
@@ -45,7 +46,7 @@ class Admin
     public function init()
     {
         // Initialize AJAX handling
-        new AjaxHandler();
+        new BackendAjaxHandler();
 
         // Initialize MenuManager 
         new MenuManager($this->plugin_name, $this->version);
