@@ -199,6 +199,116 @@
                             </td>
                         </tr>
 
+                        <!-- Review Extra Fields Start -->
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>Share Your Experience with the Title - 1</p>
+                            </td>
+                            <td>
+                                <input type="text" name="experience_title" id="experience_title">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>In which month and year does your review refer to this person? - 2</p>
+                            </td>
+                            <td>
+                                <input type="date" name="review_date" id="review_date">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>In what context have you had contact with the official? - 3</p>
+                            </td>
+                            <td>
+                                <input type="text" name="contact_context" id="contact_context">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>Share your experience or provide feedback about the official - 4</p>
+                            </td>
+                            <td>
+                                <textarea name="comments_official" id="comments_official" cols="20" rows="4"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>How do you feel the official handled the situation? - 5</p>
+                            </td>
+                            <td>
+                                <input type="text" name="handling_feedback" id="handling_feedback">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>Have you pursued your case further, such as reporting it to another authority? - 6</p>
+                            </td>
+                            <td>
+                                <input type="radio" name="pursued_case" value="Yes" id="pursued_yes"> <label
+                                    for="pursued_yes">Yes</label><br>
+                                <input type="radio" name="pursued_case" value="No" id="pursued_no"> <label
+                                    for="pursued_no">No</label><br>
+                                <input type="radio" name="pursued_case" value="Seek Legal Advice" id="seek_legal_advice">
+                                <label for="seek_legal_advice">I would like to seek legal advice regarding this
+                                    case.</label>
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>If yes, which other authority or instance have you reported it to? - 7</p>
+                            </td>
+                            <td>
+                                <input type="text" name="reported_authority" id="reported_authority"
+                                    placeholder="Example: I've made a police report">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>If the rating is negative, what would be needed to satisfy you? - 8</p>
+                            </td>
+                            <td>
+                                <input type="text" name="satisfaction_needs" id="satisfaction_needs">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>Are you employed within the organization? - 9</p>
+                            </td>
+                            <td>
+                                <input type="text" name="employment_status" id="employment_status">
+                            </td>
+                        </tr>
+
+                        <tr class="form-field give-review">
+                            <td>
+                                <p>Would you like to hide your name and submit the review anonymously? - 10</p>
+                            </td>
+                            <td>
+                                <input type="radio" name="submit_anonymous" value="Whistleblower Protection"
+                                    id="whistleblower_protection">
+                                <label for="whistleblower_protection">Whistleblower Protection (50 SEK)</label><br>
+
+                                <input type="radio" name="submit_anonymous" value="Source Protection"
+                                    id="source_protection">
+                                <label for="source_protection">Source Protection (25 SEK)</label><br>
+
+                                <input type="radio" name="submit_anonymous" value="Display Name" id="display_names">
+                                <label for="display_names">Display my name on the review</label>
+                            </td>
+                        </tr>
+
+                        <!-- Review Extra Fields End -->
+
                         <tr class="form-field give-review">
                             <td>
                                 <p>Say something about Sven Nilsson</p>

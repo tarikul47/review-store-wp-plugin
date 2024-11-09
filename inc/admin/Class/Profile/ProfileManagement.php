@@ -29,14 +29,6 @@ class ProfileManagement
 
     }
 
-    // public function tjmk_register_wc_email_class($email_classes)
-    // {
-    //     // Register the custom email class using the fully qualified name
-    //     $email_classes['WC_TJMK_Email'] = new WC_TJMK_Email();
-    //     return $email_classes;
-
-    // }
-
     /**
      * Handles the form submission for adding a new user with an associated review.
      *
@@ -60,6 +52,9 @@ class ProfileManagement
 
         // Define your nonce action dynamically
         $nonce_action = 'tjmk_add_profile_with_review_nonce';
+
+        Helper::log_error_data('data', $_POST);
+        die();
 
         // Check nonce for security
         if (!Helper::verify_nonce($nonce_action)) {
