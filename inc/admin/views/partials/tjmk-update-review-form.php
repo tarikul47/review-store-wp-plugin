@@ -40,6 +40,14 @@
                         'decisions' => 'Do you feel that the official makes fair decisions (from 1 to 5)',
                         'recommend' => 'Do you recommend this official employee? (from 1 to 5)',
                         'comments' => "Say something about " . $this->db->get_person_name_by_id($_GET['profile_id']),
+                        // 'experience_title' => 'Share Your Experience with the Title',
+                        // 'review_date' => 'In which month and year does your review refer to this person?',
+                        // 'contact_context' => 'In what context have you had contact with the official?',
+                        // 'handling_feedback' => 'How do you feel the official handled the situation?',
+                        // 'pursued_case' => 'Have you pursued your case further, such as reporting it to another authority?',
+                        // 'reported_authority' => 'If yes, which other authority or instance have you reported it to?',
+                        // 'satisfaction_needs' => 'If the rating is negative, what would be needed to satisfy you?',
+                        // 'employment_status' => 'Are you employed within the organization?',
                     ];
 
 

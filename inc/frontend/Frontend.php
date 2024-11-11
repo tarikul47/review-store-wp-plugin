@@ -101,7 +101,7 @@ class Frontend
 
 		// Sanitize and validate input
 		$user_data = Helper::sanitize_user_data($_POST);
-		$review_data = Helper::sanitize_review_data($_POST);
+		$review_data = Helper::sanitize_review_data($_POST, 'create');
 
 		// Initialize an array to collect errors
 		$errors = [];

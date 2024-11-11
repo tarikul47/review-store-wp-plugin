@@ -10,6 +10,9 @@ class Helper
     //     $this->wpdb = $wpdb;
     // }
 
+    const RATING_MIN = 1;
+    const RATING_MAX = 100;
+
     public static function verify_nonce($action)
     {
         // Check if we are in an admin or frontend context
@@ -30,55 +33,134 @@ class Helper
     }
 
 
-    public static function sanitize_user_data($data)
+    public static function sanitize_user_data($data, $context = 'default')
     {
-        return [
-            //   'author_id' => isset($data['author_id']) ? intval($data['author_id']) : 0,
-            'first_name' => isset($data['first_name']) ? sanitize_text_field($data['first_name']) : '',
-            'last_name' => isset($data['last_name']) ? sanitize_text_field($data['last_name']) : '',
-            'title' => isset($data['title']) ? sanitize_text_field($data['title']) : '',
-            'email' => isset($data['email']) ? sanitize_email($data['email']) : '',
-            'phone' => isset($data['phone']) ? sanitize_text_field($data['phone']) : '',
-            'address' => isset($data['address']) ? sanitize_text_field($data['address']) : '',
-            'zip_code' => isset($data['zip_code']) ? sanitize_text_field($data['zip_code']) : '',
-            'city' => isset($data['city']) ? sanitize_text_field($data['city']) : '',
-            'salary_per_month' => isset($data['salary_per_month']) ? sanitize_text_field($data['salary_per_month']) : '',
-            'employee_type' => isset($data['employee_type']) ? sanitize_text_field($data['employee_type']) : '',
-            'region' => isset($data['region']) ? sanitize_text_field($data['region']) : '',
-            'state' => isset($data['state']) ? sanitize_text_field($data['state']) : '',
-            'country' => isset($data['country']) ? sanitize_text_field($data['country']) : '',
-            'municipality' => isset($data['municipality']) ? sanitize_text_field($data['municipality']) : '',
-            'department' => isset($data['department']) ? sanitize_text_field($data['department']) : '',
-        ];
+        $sanitized_data = [];
+        $profilefields = ['first_name', 'last_name', 'title', 'email', 'phone', 'address', 'zip_code', 'city', 'salary_per_month', 'employee_type', 'region', 'state', 'country', 'municipality', 'department'];
+
+        // Loop through fields and sanitize based on the field type
+        foreach ($profilefields as $profilefield) {
+            switch ($profilefield) {
+                case 'first_name':
+                case 'last_name':
+                case 'title':
+                case 'phone':
+                case 'address':
+                case 'city':
+                case 'salary_per_month':
+                case 'employee_type':
+                case 'region':
+                case 'state':
+                case 'country':
+                case 'municipality':
+                case 'department':
+                case 'zip_code':
+                    $sanitized_data[$profilefield] = isset($data[$profilefield]) ? sanitize_text_field($data[$profilefield]) : '';
+                    break;
+
+                case 'email':
+                    $sanitized_data[$profilefield] = isset($data[$profilefield]) ? sanitize_email($data[$profilefield]) : '';
+                    break;
+
+                // Add other cases as needed based on data type
+            }
+        }
+        return $sanitized_data;
     }
 
-    public static function sanitize_review_data($data)
+    /**
+     * 
+    [fair] => 2
+    [professional] => 3
+    [response] => 4
+    [communication] => 2
+    [decisions] => 5
+    [recommend] => 5
+    [experience_title] => Share Your Experience with the Title
+    [review_date] => 
+    [contact_context] => In what context have you had contact with the official?
+    [comments_official] => Share your experience or provide feedback about the official 
+    [handling_feedback] => How do you feel the official handled the situation? 
+    [pursued_case] => Yes
+    [reported_authority] => If yes, which other authority or instance have you reported it to?
+    [satisfaction_needs] => If the rating is negative, what would be needed to satisfy you? 
+    [employment_status] => yes
+    [submit_anonymous] => Whistleblower Protection // we can skip 
+     */
+
+    public static function sanitize_review_data($data, $context = 'default')
     {
         $sanitized_data = [
+            // rating fields 
             'fair' => isset($data['fair']) ? intval($data['fair']) : 0,
             'professional' => isset($data['professional']) ? intval($data['professional']) : 0,
             'response' => isset($data['response']) ? intval($data['response']) : 0,
             'communication' => isset($data['communication']) ? intval($data['communication']) : 0,
             'decisions' => isset($data['decisions']) ? intval($data['decisions']) : 0,
             'recommend' => isset($data['recommend']) ? intval($data['recommend']) : 0,
-            'comments' => isset($data['comments']) ? sanitize_textarea_field($data['comments']) : '',
+
+            // extra fields
+            'experience_title' => isset($data['experience_title']) ? sanitize_text_field($data['experience_title']) : '',
+            'review_date' => isset($data['review_date']) ? sanitize_text_field($data['review_date']) : '',
+            'contact_context' => isset($data['contact_context']) ? sanitize_text_field($data['contact_context']) : '',
+            'handling_feedback' => isset($data['handling_feedback']) ? sanitize_text_field($data['handling_feedback']) : '',
+            'pursued_case' => isset($data['pursued_case']) ? sanitize_text_field($data['pursued_case']) : '',
+            'reported_authority' => isset($data['reported_authority']) ? sanitize_text_field($data['reported_authority']) : '',
+            'satisfaction_needs' => isset($data['satisfaction_needs']) ? sanitize_text_field($data['satisfaction_needs']) : '',
+            'employment_status' => isset($data['employment_status']) ? sanitize_text_field($data['employment_status']) : '',
+
+            // comment fields 
+            'comments_official' => isset($data['comments_official']) ? sanitize_textarea_field($data['comments_official']) : '',
         ];
 
         // Conditionally add profile_id, review_id, and action if they exist in $data
-        if (isset($data['profile_id'])) {
+        if (isset($data['profile_id']) && $context === 'update') {
             $sanitized_data['profile_id'] = intval($data['profile_id']);
         }
 
-        if (isset($data['review_id'])) {
+        if (isset($data['review_id']) && $context === 'update') {
             $sanitized_data['review_id'] = intval($data['review_id']);
         }
 
-        if (isset($data['action'])) {
+        if (isset($data['action']) && $context === 'update') {
             $sanitized_data['action'] = sanitize_text_field($data['action']);
         }
 
         return $sanitized_data;
     }
+
+    public static function validate_rating($rating)
+    {
+        return is_numeric($rating) && $rating >= self::RATING_MIN && $rating <= self::RATING_MAX;
+    }
+
+    // public static function sanitize_review_data($data, $context = 'default')
+    // {
+    //     $sanitized_data = [
+    //         'fair' => isset($data['fair']) ? intval($data['fair']) : 0,
+    //         'professional' => isset($data['professional']) ? intval($data['professional']) : 0,
+    //         'response' => isset($data['response']) ? intval($data['response']) : 0,
+    //         'communication' => isset($data['communication']) ? intval($data['communication']) : 0,
+    //         'decisions' => isset($data['decisions']) ? intval($data['decisions']) : 0,
+    //         'recommend' => isset($data['recommend']) ? intval($data['recommend']) : 0,
+    //         'comments' => isset($data['comments']) ? sanitize_textarea_field($data['comments']) : '',
+    //     ];
+
+    //     // Conditionally add profile_id, review_id, and action if they exist in $data
+    //     if (isset($data['profile_id'])) {
+    //         $sanitized_data['profile_id'] = intval($data['profile_id']);
+    //     }
+
+    //     if (isset($data['review_id'])) {
+    //         $sanitized_data['review_id'] = intval($data['review_id']);
+    //     }
+
+    //     if (isset($data['action'])) {
+    //         $sanitized_data['action'] = sanitize_text_field($data['action']);
+    //     }
+
+    //     return $sanitized_data;
+    // }
 
 
 
@@ -129,7 +211,6 @@ class Helper
      */
     public static function calculate_rating($review_data)
     {
-        //  print_r($review_data);
         $keys = ['fair', 'professional', 'response', 'communication', 'decisions', 'recommend'];
         $total_score = 0;
 
@@ -417,7 +498,7 @@ class Helper
     {
         // If the profile is found, concatenate first_name and last_name
         if ($profile) {
-            return $profile->first_name .' '. $profile->last_name;
+            return $profile->first_name . ' ' . $profile->last_name;
         }
 
         // Return null if the profile was not found

@@ -123,7 +123,7 @@ class Database
                 profile_id BIGINT(20) UNSIGNED NOT NULL,
                 reviewer_user_id BIGINT(20) UNSIGNED NOT NULL,
                 rating DECIMAL(3,2),
-                status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+                status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 KEY profile_id_idx (profile_id), -- Specify index name
@@ -325,6 +325,16 @@ class Database
         $reviewer_user_id = $user_info['id'];
         $is_admin = in_array('administrator', $user_info['roles']);
         $status = $is_admin ? 'approved' : $status;
+
+        // Log data before insertion for debugging
+        Helper::log_error_data('Inserting review data', [
+            'profile_id' => $profile_id,
+            'reviewer_user_id' => $reviewer_user_id,
+            'rating' => $average_rating,
+            'status' => $status,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql')
+        ]);
 
         $this->wpdb->insert(
             "{$this->wpdb->prefix}ps_reviews",
@@ -634,12 +644,28 @@ class Database
             $results = $wpdb->get_results($wpdb->prepare($sql, $status), ARRAY_A);
         }
 
+        Helper::log_error_data('get reviews', $results);
+
         // Process the results to convert meta data into an associative array
         $reviews = [];
         foreach ($results as $row) {
             $meta_keys = explode(',', $row['meta_keys']);
             $meta_values = explode(',', $row['meta_values']);
-            $meta_data = array_combine($meta_keys, $meta_values);
+
+            // Ensure that meta_keys and meta_values have the same count
+            if (count($meta_keys) === count($meta_values)) {
+                $meta_data = array_combine($meta_keys, $meta_values);
+            } else {
+                // Log an error if the lengths don't match, and skip or handle as needed
+                Helper::log_error_data('Mismatched meta keys and values', [
+                    'review_id' => $row['review_id'],
+                    'meta_keys' => $meta_keys,
+                    'meta_values' => $meta_values,
+                ]);
+
+                //     // Optionally, set $meta_data as an empty array or handle it differently
+                //     $meta_data = [];
+            }
 
             $reviews[] = [
                 'review_id' => $row['review_id'],

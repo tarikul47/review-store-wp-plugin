@@ -91,8 +91,40 @@
           input: $(this).find('input[name="recommend"]').val(),
         },
         {
-          name: "comments",
-          input: $(this).find('textarea[name="comments"]').val(),
+          name: "experience_title",
+          input: $(this).find('textarea[name="experience_title"]').val(),
+        },
+        {
+          name: "review_date",
+          input: $(this).find('textarea[name="review_date"]').val(),
+        },
+        {
+          name: "contact_context",
+          input: $(this).find('textarea[name="contact_context"]').val(),
+        },
+        {
+          name: "comments_official",
+          input: $(this).find('textarea[name="comments_official"]').val(),
+        },
+        {
+          name: "handling_feedback",
+          input: $(this).find('textarea[name="handling_feedback"]').val(),
+        },
+        {
+          name: "pursued_case",
+          input: $(this).find('textarea[name="pursued_case"]').val(),
+        },
+        {
+          name: "reported_authority",
+          input: $(this).find('textarea[name="reported_authority"]').val(),
+        },
+        {
+          name: "satisfaction_needs",
+          input: $(this).find('textarea[name="satisfaction_needs"]').val(),
+        },
+        {
+          name: "employment_status",
+          input: $(this).find('textarea[name="employment_status"]').val(),
         },
       ];
 
@@ -121,7 +153,78 @@
         }
         // If it's the comments field, reject empty or whitespace values
         else if (
-          rating.name === "comments" &&
+          rating.name === "comments_official" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the experience_title field
+        else if (
+          rating.name === "experience_title" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the review_date field
+        else if (
+          rating.name === "review_date" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the review_date field
+        else if (
+          rating.name === "contact_context" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the review_date field
+        else if (
+          rating.name === "handling_feedback" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the review_date field
+        else if (
+          rating.name === "pursued_case" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the review_date field
+        else if (
+          rating.name === "reported_authority" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+
+        // For the review_date field
+        else if (
+          rating.name === "satisfaction_needs" &&
+          (!rating.input || rating.input.trim() === "")
+        ) {
+          isValid = false;
+          missingFields.push(rating.name);
+        }
+        // For the review_date field
+        else if (
+          rating.name === "employment_status" &&
           (!rating.input || rating.input.trim() === "")
         ) {
           isValid = false;
@@ -136,8 +239,7 @@
       // If validation fails, show an error message and prevent submission
       if (!isValid) {
         var errorMessage =
-          "Please select a rating for the following fields: " +
-          missingFields.join(", ");
+          "The following fields are required: " + missingFields.join(", ");
         $("#review-message").text(errorMessage).show(); // Show error message
         console.log("Validation failed. Missing fields: ", missingFields); // Log missing fields for debugging
         return false; // Prevent form submission

@@ -194,6 +194,23 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                     <td colspan="6">
                         <ul>
                             <?php
+                            /**
+                             * [fair] => 2
+                                [professional] => 3
+                                [response] => 4
+                                [communication] => 2
+                                [decisions] => 5
+                                [recommend] => 5
+                                [experience_title] => Share Your Experience with the Title
+                                [review_date] => 2024-12-05
+                                [contact_context] => In what context have you had contact with the official?
+                                [handling_feedback] => How do you feel the official handled the situation?
+                                [pursued_case] => Yes
+                                [reported_authority] => If yes, which other authority or instance have you reported it to?
+                                [satisfaction_needs] => If the rating is negative, what would be needed to satisfy you?
+                                [employment_status] => yes
+                                [comments_official] => Share your experience or provide feedback about the official
+                             */
                             $static_content = [
                                 'fair' => 'Do you experience the official as fair and impartial (from 1 to 5)',
                                 'professional' => 'Do you feel that the official has sufficient competence, is professional and qualified for his service (from 1 to 5)',
@@ -201,6 +218,15 @@ if (isset($_GET['profile_id']) && empty($_GET['profile_id'])) {
                                 'communication' => 'Do you feel that the official has good communication, good response time (from 1 to 5)',
                                 'decisions' => 'Do you feel that the official makes fair decisions (from 1 to 5)',
                                 'recommend' => 'Do you recommend this official employee? (from 1 to 5)',
+                                'experience_title' => 'Share Your Experience with the Title',
+                                'review_date' => 'In which month and year does your review refer to this person?',
+                                'contact_context' => 'In what context have you had contact with the official?',
+                                'handling_feedback' => 'How do you feel the official handled the situation?',
+                                'pursued_case' => 'Have you pursued your case further, such as reporting it to another authority?',
+                                'reported_authority' => 'If yes, which other authority or instance have you reported it to?',
+                                'satisfaction_needs' => 'If the rating is negative, what would be needed to satisfy you?',
+                                'employment_status' => 'Are you employed within the organization?',
+                                'comments_official' => 'Share your experience or provide feedback about the official',
                             ];
                             $reviews_with_meta = $this->db->get_review_meta_by_review_id($review['review_id']);
                             foreach ($reviews_with_meta as $key => $value) { ?>

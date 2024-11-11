@@ -53,9 +53,6 @@ class ProfileManagement
         // Define your nonce action dynamically
         $nonce_action = 'tjmk_add_profile_with_review_nonce';
 
-        //  Helper::log_error_data('data', $_POST);
-        //  die();
-
         // Check nonce for security
         if (!Helper::verify_nonce($nonce_action)) {
             wp_send_json_error(['message' => 'Security check failed']);
@@ -63,7 +60,7 @@ class ProfileManagement
         }
 
         // Sanitize and validate input
-        $user_data = Helper::sanitize_user_data($_POST);
+        $user_data = Helper::sanitize_user_data($_POST, 'create');
         $review_data = Helper::sanitize_review_data($_POST, 'create');
 
         // Initialize success tracking
@@ -80,10 +77,10 @@ class ProfileManagement
             }
 
             // Process review content
-            //  $review_content = Helper::content_process($review_data, $average_rating);
-            //  if (!$review_content) {
-            //      throw new \Exception('Failed to process review content');
-            //  }
+            // $review_content = Helper::content_process($review_data, $average_rating);
+            // if (!$review_content) {
+            //     throw new \Exception('Failed to process review content');
+            // }
 
             // Insert profile into database
             $profile_id = $this->db->insert_user($user_data);
@@ -142,7 +139,6 @@ class ProfileManagement
 
         exit; // Make sure to exit after sending the response
     }
-
 
 
     /**

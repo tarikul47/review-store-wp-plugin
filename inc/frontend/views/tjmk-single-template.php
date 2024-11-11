@@ -256,6 +256,7 @@ get_header();
             </div>
             <div class="review-wrpper">
 
+                <!-- fair -->
                 <div class="single-review ">
                     <h2>
                         <?php
@@ -281,6 +282,7 @@ get_header();
                     <input type="hidden" name="fair" id="fair-impartial-input" value="0">
                 </div>
 
+                <!-- professional -->
                 <div class="single-review ">
                     <h2>
                         <?php
@@ -306,6 +308,7 @@ get_header();
                     <input type="hidden" name="professional" id="sufficient-competence-input" value="0">
                 </div>
 
+                <!-- response -->
                 <div class="single-review ">
                     <h2>
                         <?php
@@ -330,6 +333,7 @@ get_header();
                     <input type="hidden" name="response" id="personal-response-input" value="0">
                 </div>
 
+                <!-- communication -->
                 <div class="single-review ">
                     <h2>
                         <?php
@@ -360,7 +364,7 @@ get_header();
                     <input type="hidden" name="communication" id="communication-skills-input" value="0">
                 </div>
 
-
+                <!-- decisions -->
                 <div class="single-review ">
                     <h2>
                         <?php
@@ -391,6 +395,7 @@ get_header();
                     <input type="hidden" name="decisions" id="fair-decisions-input" value="0">
                 </div>
 
+                <!-- recommend -->
                 <div class="single-review ">
                     <h2>
                         <?php echo esc_html__('Do you recommend this official employee? (from 1 to 5)', 'tjmk'); ?>
@@ -415,9 +420,74 @@ get_header();
                     </ul>
                     <input type="hidden" name="recommend" id="recommend-profile-input" value="0">
                 </div>
+
             </div>
         </div>
 
+        <div class="extra-review" style="padding: 40px 0px;">
+    <!-- Review Extra Fields Start -->
+    <table class="form-table give-review">
+        <tr>
+            <td><label for="experience_title"><?php echo esc_html__('Share Your Experience with the Title', 'tjmk'); ?></label></td>
+            <td><input type="text" name="experience_title" id="experience_title"></td>
+        </tr>
+
+        <tr>
+            <td><label for="review_date"><?php echo esc_html__('In which month and year does your review refer to this person?', 'tjmk'); ?></label></td>
+            <td><input type="date" name="review_date" id="review_date"></td>
+        </tr>
+
+        <tr>
+            <td><label for="contact_context"><?php echo esc_html__('In what context have you had contact with the official?', 'tjmk'); ?></label></td>
+            <td><input type="text" name="contact_context" id="contact_context"></td>
+        </tr>
+
+        <tr>
+            <td><label for="comments_official"><?php echo esc_html__('Share your experience or provide feedback about the official', 'tjmk'); ?></label></td>
+            <td><textarea name="comments_official" id="comments_official" cols="20" rows="4"></textarea></td>
+        </tr>
+
+        <tr>
+            <td><label for="handling_feedback"><?php echo esc_html__('How do you feel the official handled the situation?', 'tjmk'); ?></label></td>
+            <td><input type="text" name="handling_feedback" id="handling_feedback"></td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <fieldset>
+                    <legend><?php echo esc_html__('Have you pursued your case further, such as reporting it to another authority?', 'tjmk'); ?></legend>
+                    <input type="radio" name="pursued_case" value="Yes" id="pursued_yes"> <label for="pursued_yes">Yes</label><br>
+                    <input type="radio" name="pursued_case" value="No" id="pursued_no"> <label for="pursued_no">No</label><br>
+                    <input type="radio" name="pursued_case" value="Seek Legal Advice" id="seek_legal_advice">
+                    <label for="seek_legal_advice">I would like to seek legal advice regarding this case.</label>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="reported_authority"><?php echo esc_html__('If yes, which other authority or instance have you reported it to?', 'tjmk'); ?></label></td>
+            <td><input type="text" name="reported_authority" id="reported_authority" placeholder="Example: I've made a police report"></td>
+        </tr>
+
+        <tr>
+            <td><label for="satisfaction_needs"><?php echo esc_html__('If the rating is negative, what would be needed to satisfy you?', 'tjmk'); ?></label></td>
+            <td><input type="text" name="satisfaction_needs" id="satisfaction_needs"></td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <fieldset>
+                    <legend><?php echo esc_html__('Are you employed within the organization?', 'tjmk'); ?></legend>
+                    <input type="radio" name="employment_status" value="yes" id="employment_status_yes">
+                    <label for="employment_status_yes">Yes</label><br>
+                    <input type="radio" name="employment_status" value="no" id="employment_status_no">
+                    <label for="employment_status_no">No</label>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+    <!-- Review Extra Fields End -->
+</div>
         <!-- Comment Box -->
         <div class="comment-wrpper">
             <div class="inner-comment-wrpper">
@@ -433,7 +503,7 @@ get_header();
 
                 </div>
                 <div class="comment-form">
-                    <textarea name="comments"></textarea>
+                    <textarea name="comments_official"></textarea>
                 </div>
             </div>
         </div>

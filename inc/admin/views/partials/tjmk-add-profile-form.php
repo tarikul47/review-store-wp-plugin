@@ -142,7 +142,7 @@
                                 <h4>Give reviews to Sven Nilsson?</h4>
                             </th>
                         </tr>
-
+                        <!-- 1. fair -->
                         <tr class="form-field give-review">
                             <td>
                                 <p>Do you experience the official as fair and impartial (from 1 to 5)</p>
@@ -151,7 +151,7 @@
                                 <input type="number" name="fair" id="fair" value="2">
                             </td>
                         </tr>
-
+                        <!-- 2. professional -->
                         <tr class="form-field give-review">
                             <td>
                                 <p>Do you feel that the official has sufficient competence, is professional and qualified
@@ -161,7 +161,7 @@
                                 <input type="number" name="professional" id="professional" value="3">
                             </td>
                         </tr>
-
+                        <!-- 3. response -->
                         <tr class="form-field give-review">
                             <td>
                                 <p>Do you feel that the official has a personal and good response (from 1 to 5)</p>
@@ -170,7 +170,7 @@
                                 <input type="number" name="response" id="response" value="4">
                             </td>
                         </tr>
-
+                        <!-- 4. communication -->
                         <tr class="form-field give-review">
                             <td>
                                 <p>Do you feel that the official has good communication, good response time (from 1 to 5)
@@ -180,7 +180,7 @@
                                 <input type="number" name="communication" id="communication" value="2">
                             </td>
                         </tr>
-
+                        <!-- 5. decisions -->
                         <tr class="form-field give-review">
                             <td>
                                 <p>Do you feel that the official makes fair decisions (from 1 to 5)</p>
@@ -190,6 +190,7 @@
                             </td>
                         </tr>
 
+                        <!-- 6. recommend -->
                         <tr class="form-field give-review">
                             <td>
                                 <p>Do you recommend this official employee? (from 1 to 5)</p>
@@ -201,54 +202,57 @@
 
                         <!-- Review Extra Fields Start -->
 
+                        <!-- 7. experience_title -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>Share Your Experience with the Title - 1</p>
+                                <p>Share Your Experience with the Title - experience_title</p>
                             </td>
                             <td>
                                 <input type="text" name="experience_title" id="experience_title">
                             </td>
                         </tr>
 
+                        <!-- 8. review_date -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>In which month and year does your review refer to this person? - 2</p>
+                                <p>In which month and year does your review refer to this person? - review_date</p>
                             </td>
                             <td>
                                 <input type="date" name="review_date" id="review_date">
                             </td>
                         </tr>
-
+                        <!-- 9. contact_context -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>In what context have you had contact with the official? - 3</p>
+                                <p>In what context have you had contact with the official? - contact_context</p>
                             </td>
                             <td>
                                 <input type="text" name="contact_context" id="contact_context">
                             </td>
                         </tr>
-
+                        <!-- 10. comments_official -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>Share your experience or provide feedback about the official - 4</p>
+                                <p>Share your experience or provide feedback about the official - comments_official</p>
                             </td>
                             <td>
                                 <textarea name="comments_official" id="comments_official" cols="20" rows="4"></textarea>
                             </td>
                         </tr>
-
+                        <!-- 11. handling_feedback -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>How do you feel the official handled the situation? - 5</p>
+                                <p>How do you feel the official handled the situation? - handling_feedback</p>
                             </td>
                             <td>
                                 <input type="text" name="handling_feedback" id="handling_feedback">
                             </td>
                         </tr>
-
+                        <!-- 12. pursued_case -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>Have you pursued your case further, such as reporting it to another authority? - 6</p>
+                                <p>Have you pursued your case further, such as reporting it to another authority? -
+                                    pursued_case</p>
                             </td>
                             <td>
                                 <input type="radio" name="pursued_case" value="Yes" id="pursued_yes"> <label
@@ -260,36 +264,41 @@
                                     case.</label>
                             </td>
                         </tr>
-
+                        <!-- 13. reported_authority -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>If yes, which other authority or instance have you reported it to? - 7</p>
+                                <p>If yes, which other authority or instance have you reported it to? - reported_authority
+                                </p>
                             </td>
                             <td>
                                 <input type="text" name="reported_authority" id="reported_authority"
                                     placeholder="Example: I've made a police report">
                             </td>
                         </tr>
-
+                        <!-- 14. satisfaction_needs -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>If the rating is negative, what would be needed to satisfy you? - 8</p>
+                                <p>If the rating is negative, what would be needed to satisfy you? - satisfaction_needs</p>
                             </td>
                             <td>
                                 <input type="text" name="satisfaction_needs" id="satisfaction_needs">
                             </td>
                         </tr>
-
+                        <!-- 15. employment_status -->
                         <tr class="form-field give-review">
                             <td>
-                                <p>Are you employed within the organization? - 9</p>
+                                <p>Are you employed within the organization? - employment_status</p>
                             </td>
                             <td>
-                                <input type="text" name="employment_status" id="employment_status">
+                                <input type="radio" name="employment_status" value="yes" id="employment_status_yes">
+                                <label for="employment_status_yes">Yes</label><br>
+
+                                <input type="radio" name="employment_status" value="no" id="employment_status_no">
+                                <label for="employment_status_no">No</label><br>
                             </td>
                         </tr>
 
-                        <tr class="form-field give-review">
+                        <!-- <tr class="form-field give-review">
                             <td>
                                 <p>Would you like to hide your name and submit the review anonymously? - 10</p>
                             </td>
@@ -305,18 +314,9 @@
                                 <input type="radio" name="submit_anonymous" value="Display Name" id="display_names">
                                 <label for="display_names">Display my name on the review</label>
                             </td>
-                        </tr>
+                        </tr> -->
 
                         <!-- Review Extra Fields End -->
-
-                        <tr class="form-field give-review">
-                            <td>
-                                <p>Say something about Sven Nilsson</p>
-                            </td>
-                            <td>
-                                <textarea name="comments" id="comments" cols="20" rows="4"></textarea>
-                            </td>
-                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
